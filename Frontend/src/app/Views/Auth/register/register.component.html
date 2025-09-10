@@ -1,0 +1,141 @@
+<div class="layout-container">
+	<app-initial-header [text]="'Registro'" [textMargin]="'3rem'"></app-initial-header>
+
+	<main class="main-content">
+		<div class="contenedor-formulario">
+			<h1 class="kanit-bold">Registrarse</h1>
+
+			<form [formGroup]="registerForm" (ngSubmit)="onSubmit()" class="formulario">
+				<!-- Primera fila: Nombre, Apellido, Email -->
+				<div class="form-row">
+					<!-- Nombre -->
+					<div class="custom-input-group">
+						<input id="name" type="text" formControlName="name" required placeholder=" " minlength="3">
+						<label for="name">Nombres</label>
+						<div class="error-message"
+							*ngIf="registerForm.get('name')?.invalid && registerForm.get('name')?.touched">
+							<span *ngIf="registerForm.get('name')?.hasError('required')">El nombre es requerido</span>
+							<span *ngIf="registerForm.get('name')?.hasError('minlength')">Mínimo 3 caracteres</span>
+						</div>
+					</div>
+
+					<!-- Apellido -->
+					<div class="custom-input-group">
+						<input id="lastName" type="text" formControlName="lastName" required placeholder=" "
+							minlength="3">
+						<label for="lastName">Apellidos</label>
+						<div class="error-message"
+							*ngIf="registerForm.get('lastName')?.invalid && registerForm.get('lastName')?.touched">
+							<span *ngIf="registerForm.get('lastName')?.hasError('required')">El apellido es
+								requerido</span>
+							<span *ngIf="registerForm.get('lastName')?.hasError('minlength')">Mínimo 3 caracteres</span>
+						</div>
+					</div>
+
+					<!-- Email -->
+					<div class="custom-input-group">
+						<input id="email" type="email" formControlName="email" required placeholder="Ej:correo@dominio.com">
+						<label for="email">Email</label>
+						<div class="error-message"
+							*ngIf="registerForm.get('email')?.invalid && registerForm.get('email')?.touched">
+							<span *ngIf="registerForm.get('email')?.hasError('required')">Este campo es requerido</span>
+							<span *ngIf="registerForm.get('email')?.hasError('emailFormat')">Formato de email
+								inválido</span>
+						</div>
+					</div>
+				</div>
+
+				<!-- Segunda fila: Tipo documento, Número documento, Teléfono -->
+				<div class="form-row">
+					<!-- Tipo Documento -->
+					<div class="custom-select-group">
+						<select id="documentType" formControlName="documentType" required>
+							<option value="" disabled selected>Seleccione una opción</option>
+							<option *ngFor="let doc of documentTypes" [value]="doc.value">{{doc.label}}</option>
+						</select>
+						<label for="documentType">Tipo de documento</label>
+						<div class="error-message"
+							*ngIf="registerForm.get('documentType')?.invalid && registerForm.get('documentType')?.touched">
+							<span>Este campo es requerido</span>
+						</div>
+					</div>
+
+					<!-- Número de Documento -->
+					<div class="custom-input-group">
+						<input id="documentNumber" type="text" formControlName="documentNumber" required placeholder=" "
+							appOnlyNumbers minlength="6" maxlength="10">
+						<label for="documentNumber">Número de Documento</label>
+						<div class="error-message"
+							*ngIf="registerForm.get('documentNumber')?.invalid && registerForm.get('documentNumber')?.touched">
+							<span *ngIf="registerForm.get('documentNumber')?.hasError('required')">Este campo es
+								requerido</span>
+							<span *ngIf="registerForm.get('documentNumber')?.hasError('pattern')">Solo números (6-10
+								dígitos)</span>
+						</div>
+					</div>
+
+					<!-- Teléfono Celular -->
+					<div class="custom-input-group">
+						<input id="phone" type="text" formControlName="phone" required placeholder="Ej:3123456789" appColombianPhone
+							[maxLength]="10" [mustStartWith]="'3'">
+						<label for="phone">Teléfono Celular</label>
+						<div class="error-message"
+							*ngIf="registerForm.get('phone')?.invalid && registerForm.get('phone')?.touched">
+							<span *ngIf="registerForm.get('phone')?.hasError('required')">Este campo es requerido</span>
+							<span *ngIf="registerForm.get('phone')?.hasError('colombianPhone')">Formato inválido</span>
+						</div>
+					</div>
+				</div>
+
+				<!-- Tercera fila: Usuario y Contraseña -->
+				<div class="form-row">
+					<!-- Nombre de Usuario -->
+					<div class="custom-input-group">
+						<input id="username" type="text" formControlName="username" required placeholder=" "
+							minlength="3">
+						<label for="username">Nombre de usuario</label>
+						<div class="error-message"
+							*ngIf="registerForm.get('username')?.invalid && registerForm.get('username')?.touched">
+							<span *ngIf="registerForm.get('username')?.hasError('required')">El nombre de usuario es
+								requerido</span>
+							<span *ngIf="registerForm.get('username')?.hasError('minlength')">Mínimo 3 caracteres</span>
+						</div>
+					</div>
+
+					<!-- Contraseña -->
+					<div class="custom-input-group">
+						<div class="password-container">
+							<input id="password" [type]="hidePassword ? 'password' : 'text'" formControlName="password"
+								required placeholder=" ">
+							<button type="button" class="toggle-password" (click)="hidePassword = !hidePassword">
+								<mat-icon class="material-icons">
+									{{ hidePassword ? 'visibility_off' : 'visibility' }}
+								</mat-icon>
+							</button>
+							<label for="password">Contraseña</label>
+						</div>
+						<div class="error-message"
+							*ngIf="registerForm.get('password')?.invalid && registerForm.get('password')?.touched">
+							<span *ngIf="registerForm.get('password')?.hasError('required')">La contraseña es
+								requerida</span>
+							<span *ngIf="registerForm.get('password')?.hasError('minlength')">Mínimo 8 caracteres</span>
+							<span *ngIf="registerForm.get('password')?.hasError('strongPassword')">
+								Debe incluir mayúsculas, minúsculas, números y caracteres especiales
+							</span>
+						</div>
+					</div>
+				</div>
+
+				<!-- Botón de registro -->
+				<button mat-raised-button type="submit" [disabled]="registerForm.invalid || isSubmit()">
+					{{ isSubmit() ? 'Registrando...' : 'Registrarse' }}
+				</button>
+
+				<!-- Enlace a login -->
+				<div class="register-link">
+					¿Ya tienes cuenta? <a routerLink="/Login">Inicia sesión</a>
+				</div>
+			</form>
+		</div>
+	</main>
+</div>

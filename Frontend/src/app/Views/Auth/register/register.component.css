@@ -1,0 +1,536 @@
+.layout-container {
+	display: flex;
+	flex-direction: column;
+	min-height: 100vh;
+}
+
+.main-content {
+	flex: 1;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	background-color: var(--color-blue-1000);
+	box-sizing: border-box;
+	padding: 1rem;
+}
+
+.contenedor-formulario {
+	display: flex;
+	flex-direction: column;
+	justify-content: flex-start; /* Cambiado para scroll */
+	align-items: center;
+	padding: 1.2rem;
+	border-radius: 20px;
+	border: 2px solid var(--color-white);
+	background-color: var(--color-blue-variante-1);
+	width: 100%;
+	max-width: 790px;
+	box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+	box-sizing: border-box;
+	gap: 1.6rem;
+
+	/* Altura máxima y scroll para dispositivos móviles */
+	max-height: 90vh; /* Limita la altura máxima */
+	overflow: hidden; /* Oculta el overflow por defecto */
+}
+
+
+.contenedor-formulario h1 {
+	font-size: 2rem;
+	color: var(--color-white);
+	margin: 0;
+	font-weight: 600;
+	text-align: center;
+	/* Evita que el título se oculte con el scroll */
+	flex-shrink: 0;
+}
+
+
+.formulario {
+	display: flex;
+	flex-direction: column;
+	justify-content: flex-start; /* Cambiado para scroll */
+	align-items: center;
+	width: 100%;
+	padding: 0.5rem 1rem;
+	box-sizing: border-box;
+	gap: 1.2rem;
+
+	/* Scroll interno para el formulario */
+	max-height: 60vh; /* Altura máxima para el área del formulario */
+	overflow-y: auto; /* Scroll vertical cuando sea necesario */
+	overflow-x: hidden; /* Previene scroll horizontal */
+
+	/* Personalización del scroll */
+	scrollbar-width: thin;
+	scrollbar-color: var(--color-white) transparent;
+}
+
+/* Personalización del scroll para Webkit (Chrome, Safari) */
+.formulario::-webkit-scrollbar {
+	width: 6px;
+}
+
+.formulario::-webkit-scrollbar-track {
+	background: transparent;
+}
+
+.formulario::-webkit-scrollbar-thumb {
+	background-color: var(--color-white);
+	border-radius: 3px;
+}
+
+.formulario::-webkit-scrollbar-thumb:hover {
+	background-color: rgba(255, 255, 255, 0.8);
+}
+
+.form-row {
+	display: flex;
+	gap: 1rem;
+	width: 100%;
+	flex-shrink: 0; /* Evita que las filas se compriman */
+}
+
+.form-row>* {
+	flex: 1;
+}
+
+/* GRUPO DE INPUT PERSONALIZADO */
+.custom-input-group,
+.custom-select-group {
+	position: relative;
+	width: 100%;
+}
+
+/* LABEL */
+.custom-input-group label,
+.custom-select-group label {
+	position: absolute;
+	top: 16px;
+	left: 16px;
+	color: var(--color-white);
+	font-weight: 500;
+	font-size: 1rem;
+	transition: all 0.3s ease;
+	pointer-events: none;
+	background-color: var(--color-blue-variante-1);
+	padding: 0 4px;
+	z-index: 1;
+}
+
+/* INPUT */
+.custom-input-group input,
+.custom-select-group select {
+	width: 100%;
+	padding: 14px 16px;
+	border: 2px solid var(--color-white);
+	border-radius: 8px;
+	background-color: transparent;
+	color: var(--color-white);
+	font-size: 1rem;
+	transition: all 0.3s ease;
+	box-sizing: border-box;
+}
+
+/* SELECT ESPECÍFICO */
+.custom-select-group select {
+	appearance: none;
+	-webkit-appearance: none;
+	-moz-appearance: none;
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='white'%3e%3cpath d='M7 10l5 5 5-5z'/%3e%3c/svg%3e");
+	background-repeat: no-repeat;
+	background-position: right 12px center;
+	background-size: 16px;
+	padding-right: 40px;
+}
+
+/* INPUT FOCUS */
+.custom-input-group input:focus,
+.custom-select-group select:focus {
+	outline: none;
+	border-color: var(--color-white);
+	box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.2);
+}
+
+/* LABEL CUANDO INPUT ESTÁ FOCUS O TIENE TEXTO */
+.custom-input-group input:focus+label,
+.custom-input-group input:not(:placeholder-shown)+label,
+.custom-select-group select:focus+label,
+.custom-select-group select:not([value=""])+label,
+.password-container input:focus~label,
+.password-container input:not(:placeholder-shown)~label {
+	top: -10px;
+	left: 12px;
+	font-size: 0.85rem;
+	color: var(--color-white);
+	background-color: var(--color-blue-variante-1);
+}
+
+/* INPUT ERROR */
+.custom-input-group input.ng-invalid.ng-touched,
+.custom-select-group select.ng-invalid.ng-touched {
+	border-color: var(--color-red-700) !important;
+}
+
+.custom-input-group input.ng-invalid.ng-touched+label,
+.custom-select-group select.ng-invalid.ng-touched+label,
+.password-container input.ng-invalid.ng-touched~label {
+	color: var(--color-red-700) !important;
+}
+
+/* CONTENEDOR DE PASSWORD */
+.password-container {
+	position: relative;
+	display: flex;
+	align-items: center;
+}
+
+.password-container input {
+	padding-right: 50px;
+}
+
+/* BOTÓN TOGGLE PASSWORD */
+.toggle-password {
+	position: absolute;
+	right: 12px;
+	background: none;
+	border: none;
+	color: var(--color-white);
+	cursor: pointer;
+	padding: 4px;
+	border-radius: 4px;
+	transition: background-color 0.3s ease;
+	z-index: 2;
+}
+
+.toggle-password:hover {
+	background-color: rgba(255, 255, 255, 0.1);
+}
+
+/* Estilos para el select y sus opciones */
+.custom-select-group select {
+	appearance: none;
+	-webkit-appearance: none;
+	-moz-appearance: none;
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='white'%3e%3cpath d='M7 10l5 5 5-5z'/%3e%3c/svg%3e");
+	background-repeat: no-repeat;
+	background-position: right 12px center;
+	background-size: 16px;
+	padding-right: 40px;
+	color: var(--color-white);
+}
+
+/* Estilo para las opciones del select */
+.custom-select-group select option {
+	background-color: var(--color-blue-variante-1);
+	color: var(--color-white);
+	padding: 10px;
+}
+
+/* Cuando el select está abierto */
+.custom-select-group select:focus {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='white'%3e%3cpath d='M7 15l5-5 5 5z'/%3e%3c/svg%3e");
+}
+
+/* Placeholders visibles para algunos campos */
+.custom-input-group input::placeholder {
+	color: transparent;
+}
+
+.custom-input-group input:focus::placeholder {
+	color: rgba(255, 255, 255, 0.6);
+}
+
+/* Placeholder específico para el campo de teléfono */
+#phone::placeholder {
+	color: rgba(255, 255, 255, 0.6);
+}
+
+#phone:focus::placeholder {
+	color: rgba(255, 255, 255, 0.6);
+}
+
+/* MENSAJES DE ERROR */
+.error-message {
+	color: var(--color-red-600);
+	font-size: 0.85rem;
+	margin-top: 0.5rem;
+	font-weight: 500;
+	padding-left: 8px;
+	display: flex;
+	flex-direction: column;
+}
+
+/* Ajustes para el botón de submit en el scroll */
+button[type="submit"] {
+	align-self: center;
+	height: 48px;
+	font-size: 1rem;
+	font-weight: 600;
+	width: 30%;
+	background-color: var(--color-white);
+	color: var(--color-blue-1000);
+	border-radius: 6px;
+	transition: all 0.2s ease;
+	/* Mantener el botón visible */
+	position: sticky;
+	bottom: 0;
+	background-color: var(--color-white);
+	padding: 0.5rem;
+	z-index: 10;
+	margin-top: auto; /* Empuja el botón hacia abajo */
+}
+
+.custom-input-group,
+.custom-select-group {
+	position: relative;
+	width: 100%;
+}
+
+.custom-input-group label,
+.custom-select-group label {
+	position: absolute;
+	top: 16px;
+	left: 16px;
+	color: var(--color-white);
+	font-weight: 500;
+	font-size: 1rem;
+	transition: all 0.3s ease;
+	pointer-events: none;
+	background-color: var(--color-blue-variante-1);
+	padding: 0 4px;
+	z-index: 1;
+}
+
+.custom-input-group input,
+.custom-select-group select {
+	width: 100%;
+	padding: 14px 16px;
+	border: 2px solid var(--color-white);
+	border-radius: 8px;
+	background-color: transparent;
+	color: var(--color-white);
+	font-size: 1rem;
+	transition: all 0.3s ease;
+	box-sizing: border-box;
+}
+
+.custom-select-group select {
+	appearance: none;
+	-webkit-appearance: none;
+	-moz-appearance: none;
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='white'%3e%3cpath d='M7 10l5 5 5-5z'/%3e%3c/svg%3e");
+	background-repeat: no-repeat;
+	background-position: right 12px center;
+	background-size: 16px;
+	padding-right: 40px;
+}
+
+.custom-input-group input:focus,
+.custom-select-group select:focus {
+	outline: none;
+	border-color: var(--color-white);
+	box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.2);
+}
+
+.custom-input-group input:focus+label,
+.custom-input-group input:not(:placeholder-shown)+label,
+.custom-select-group select:focus+label,
+.custom-select-group select:not([value=""])+label,
+.password-container input:focus~label,
+.password-container input:not(:placeholder-shown)~label {
+	top: -10px;
+	left: 12px;
+	font-size: 0.85rem;
+	color: var(--color-white);
+	background-color: var(--color-blue-variante-1);
+}
+
+.custom-input-group input.ng-invalid.ng-touched,
+.custom-select-group select.ng-invalid.ng-touched {
+	border-color: var(--color-red-700) !important;
+}
+
+.custom-input-group input.ng-invalid.ng-touched+label,
+.custom-select-group select.ng-invalid.ng-touched+label,
+.password-container input.ng-invalid.ng-touched~label {
+	color: var(--color-red-700) !important;
+}
+
+.password-container {
+	position: relative;
+	display: flex;
+	align-items: center;
+}
+
+.password-container input {
+	padding-right: 50px;
+}
+
+.toggle-password {
+	position: absolute;
+	right: 12px;
+	background: none;
+	border: none;
+	color: var(--color-white);
+	cursor: pointer;
+	padding: 4px;
+	border-radius: 4px;
+	transition: background-color 0.3s ease;
+	z-index: 2;
+}
+
+.toggle-password:hover {
+	background-color: rgba(255, 255, 255, 0.1);
+}
+
+.custom-select-group select option {
+	background-color: var(--color-blue-variante-1);
+	color: var(--color-white);
+	padding: 10px;
+}
+
+.custom-select-group select:focus {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='white'%3e%3cpath d='M7 15l5-5 5 5z'/%3e%3c/svg%3e");
+}
+
+.custom-input-group input::placeholder {
+	color: transparent;
+}
+
+.custom-input-group input:focus::placeholder {
+	color: rgba(255, 255, 255, 0.6);
+}
+
+#phone::placeholder {
+	color: rgba(255, 255, 255, 0.6);
+}
+
+#phone:focus::placeholder {
+	color: rgba(255, 255, 255, 0.6);
+}
+
+.error-message {
+	color: var(--color-red-600);
+	font-size: 0.85rem;
+	margin-top: 0.5rem;
+	font-weight: 500;
+	padding-left: 8px;
+	display: flex;
+	flex-direction: column;
+}
+
+button[type="submit"]:hover:not([disabled]) {
+	background-color: #f0f0f0;
+	transform: translateY(-1px);
+	box-shadow: 0 3px 8px rgba(0, 0, 0, 0.12);
+}
+
+button[type="submit"]:disabled {
+	background-color: rgba(255, 255, 255, 0.8);
+	color: rgba(0, 0, 0, 0.3);
+	cursor: not-allowed;
+}
+
+.register-link {
+	text-align: center;
+	color: var(--color-white);
+	font-size: 0.9rem;
+	flex-shrink: 0; /* Evita compresión */
+}
+
+.register-link a {
+	color: #ffffff;
+	text-decoration: underline;
+	font-weight: 600;
+	transition: color 0.2s ease;
+	font-size: 0.9rem;
+}
+
+.register-link a:hover {
+	color: #e0e0e0;
+}
+
+/* Responsividad */
+@media (max-width: 900px) {
+	.contenedor-formulario {
+		max-height: 85vh;
+		padding: 1.5rem;
+		max-width: 95%;
+	}
+
+	.form-row {
+		flex-direction: column;
+		gap: 1.6rem;
+	}
+
+	button[type="submit"] {
+		width: 50%;
+	}
+}
+
+@media (max-width: 600px) {
+	.main-content {
+		padding: 0.5rem;
+		justify-content: center;
+		padding-top: 1rem;
+	}
+
+	.header {
+		height: 55px;
+		padding: 0 1rem;
+	}
+
+	.title {
+		font-size: 1.5rem;
+	}
+
+	.contenedor-formulario {
+		padding: 1.2rem;
+		max-width: 98%;
+		max-height: 70vh; /* Ajuste para móviles */
+	}
+
+	.contenedor-formulario h1 {
+		font-size: 1.6rem;
+		margin-bottom: 0.5rem;
+	}
+
+	.formulario {
+		padding: 0.6rem;
+		gap: 1.2rem;
+		max-height: 65vh; /* Más espacio para el formulario en móviles */
+	}
+
+	button[type="submit"] {
+		width: 65%;
+		height: 42px;
+		margin-top: 0.5rem;
+	}
+
+	.register-link {
+		margin-top: 0.5rem;
+	}
+}
+
+/* Para pantallas muy pequeñas en orientación horizontal */
+@media (max-width: 600px) and (max-height: 500px) {
+	.contenedor-formulario {
+		max-height: 88vh;
+		padding: 1rem;
+		gap: 1rem;
+	}
+
+	.formulario {
+		max-height: 70vh;
+		gap: 1rem;
+		padding: 0.5rem;
+	}
+
+	.form-row {
+		gap: 1rem;
+	}
+}
+
+
