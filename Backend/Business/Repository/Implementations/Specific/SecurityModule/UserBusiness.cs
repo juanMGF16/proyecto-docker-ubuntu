@@ -46,7 +46,7 @@ namespace Business.Repository.Implementations.Specific.SecurityModule
             return _mapper.Map<UserDTO>(entity);
         }
 
-        public async Task<bool> HasCompanyAsync(int userId)
+        public async Task<UserCompanyCheckDTO> HasCompanyAsync(int userId)
         {
             ValidationHelper.EnsureValidId(userId, "UserId");
 
@@ -56,7 +56,7 @@ namespace Business.Repository.Implementations.Specific.SecurityModule
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, $"Error en Business al verificar Company para el usuario {userId}");
+                _logger.LogError(ex, $"Error en Business al obtener info de Company para el usuario {userId}");
                 throw;
             }
         }
@@ -88,14 +88,6 @@ namespace Business.Repository.Implementations.Specific.SecurityModule
             // --- Person asociada ---
             if (user.Person != null)
             {
-                if (!string.IsNullOrWhiteSpace(dto.Name) &&
-                    !StringHelper.EqualsNormalized(user.Person.Name, dto.Name))
-                    user.Person.Name = dto.Name;
-
-                if (!string.IsNullOrWhiteSpace(dto.LastName) &&
-                    !StringHelper.EqualsNormalized(user.Person.LastName, dto.LastName))
-                    user.Person.LastName = dto.LastName;
-
                 if (!string.IsNullOrWhiteSpace(dto.Email) &&
                     !StringHelper.EqualsNormalized(user.Person.Email, dto.Email))
                 {
@@ -137,7 +129,7 @@ namespace Business.Repository.Implementations.Specific.SecurityModule
             await _userData.UpdateAsync(user);
         }
 
-
+        //Actions
         protected override Task BeforeCreateMap(UserOptionsDTO dto, User entity)
         {
             ValidationHelper.ThrowIfEmpty(dto.Username, "Username");

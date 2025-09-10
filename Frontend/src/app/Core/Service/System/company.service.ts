@@ -1,28 +1,40 @@
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { GenericService } from '../generic.service';
-import { HttpClient } from '@angular/common/http';
-import { environment } from '../../../../environments/environment';
 import { Observable } from 'rxjs';
-import { CompanyConsultDTO, CompanyCreateDTO } from '../../Models/System/CompanyMod.model';
+import { environment } from '../../../../environments/environment';
+import { CompanyMod, CompanyOptionsMod, CompanyPartialUpdateMod } from '../../Models/System/CompanyMod.model';
+import { GenericService } from '../generic.service';
+import { DashboardModel } from '../../Models/System/Others/Dashboard.model';
 
 @Injectable({
 	providedIn: 'root'
 })
-export class CompanyService extends GenericService<CompanyCreateDTO, CompanyConsultDTO> {
+export class CompanyService extends GenericService<CompanyOptionsMod, CompanyMod> {
 
 	constructor(http: HttpClient) {
 		const urlBase = environment.apiURL + 'api/Company/';
 		super(http, urlBase);
 	}
 
-	// Método específico para registrar una empresa
-	registerCompany(companyData: CompanyCreateDTO): Observable<CompanyConsultDTO> {
+	registerCompany(companyData: CompanyOptionsMod): Observable<CompanyMod> {
 		return this.create(companyData);
 	}
 
-	// Método para obtener empresas por usuario (si lo necesitas más adelante)
-	getCompaniesByUserId(userId: number): Observable<CompanyConsultDTO[]> {
-		return this.http.get<CompanyConsultDTO[]>(`${this.baseUrl}GetByUserId/${userId}`);
+	partialUpdate(companyData: CompanyPartialUpdateMod): Observable<CompanyMod> {
+		return this.http.patch<CompanyMod>(`${this.baseUrl}PartialUpdate/`, companyData);
+	}
+
+	getDashboard(companyId: number, branchId?: number, zoneId?: number): Observable<DashboardModel> {
+		let params = new HttpParams().set('companyId', companyId);
+
+		if (branchId !== undefined && branchId !== null) {
+			params = params.set('branchId', branchId);
+		}
+		if (zoneId !== undefined && zoneId !== null) {
+			params = params.set('zoneId', zoneId);
+		}
+
+		return this.http.get<DashboardModel>(environment.apiURL + 'api/Dashboard', { params });
 	}
 }
 

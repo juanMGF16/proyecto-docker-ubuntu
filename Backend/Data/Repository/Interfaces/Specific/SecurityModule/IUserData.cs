@@ -1,4 +1,5 @@
-﻿using Entity.Models.SecurityModule;
+﻿using Entity.DTOs.SecurityModule.User;
+using Entity.Models.SecurityModule;
 
 namespace Data.Repository.Interfaces.Specific.SecurityModule
 {
@@ -7,6 +8,6 @@ namespace Data.Repository.Interfaces.Specific.SecurityModule
         Task<User?> GetByUsernameAsync(string username);
 
         //Specific
-        Task<bool> HasCompanyAsync(int userId);
+        Task<UserCompanyCheckDTO> HasCompanyAsync(int userId);
     }
 }

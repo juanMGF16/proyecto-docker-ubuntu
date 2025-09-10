@@ -36,6 +36,10 @@ namespace Business.Repository.Implementations.Specific.SecurityModule
             return _mapper.Map<IEnumerable<RoleDTO>>(active);
         }
 
+        //Specific
+
+
+        //Actions
         protected override Task BeforeCreateMap(RoleDTO dto, Role entity)
         {
             ValidationHelper.ThrowIfEmpty(dto.Name, "Name");

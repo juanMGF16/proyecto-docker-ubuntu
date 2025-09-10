@@ -11,7 +11,7 @@ namespace Entity.DTOs.System.Inventary
     {
         public int Id { get; set; }
         public DateTime Date { get; set; }
-        public string Observations { get; set; }
+        public string Observations { get; set; } = string.Empty;
         public int ZoneId { get; set; }
         public int OperatingGroupId { get; set; }
 

@@ -17,12 +17,16 @@ export interface UserOptionsMod {
 	personId: number,
 }
 
-export interface UserPartialUpdate {
+export interface UserPartialUpdateMod {
 	id: number;
 	username?: string;
 
-	name?: string;
-	lastName?: string;
 	email?: string;
 	phone?: string;
 }
+
+export interface UserHasCompanyMod {
+  hasCompany: boolean;
+  companyId: number | null;
+}
+

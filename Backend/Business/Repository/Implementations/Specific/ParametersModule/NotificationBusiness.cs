@@ -122,6 +122,7 @@ namespace Business.Repository.Implementations.Specific.ParametersModule
             }
         }
 
+        //Actions
         protected override Task BeforeCreateMap(NotificationOptionsDTO dto, Notification entity)
         {
             ValidationHelper.ThrowIfEmpty(dto.Title, "Title");

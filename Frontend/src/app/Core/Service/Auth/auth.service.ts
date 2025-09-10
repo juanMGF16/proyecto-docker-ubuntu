@@ -50,6 +50,18 @@ export class AuthService {
 		this.router.navigate(['']);
 	}
 
+	forgotPassword(email: string): Observable<any> {
+		return this.http.post<any>(`${this.baseUrl}forgot-password`, { email });
+	}
+
+	validateRecoveryToken(token: string): Observable<any> {
+		return this.http.get<any>(`${this.baseUrl}validate-recovery-token?token=${token}`);
+	}
+
+	resetPassword(data: { token: string; newPassword: string;}): Observable<any> {
+		return this.http.post<any>(`${this.baseUrl}reset-password`, data);
+	}
+
 	getToken(): string | null {
 		return localStorage.getItem(this.tokenKey);
 	}

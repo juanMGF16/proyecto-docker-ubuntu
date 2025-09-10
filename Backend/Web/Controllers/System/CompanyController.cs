@@ -1,5 +1,6 @@
 ﻿using Business.Repository.Interfaces.Specific.System;
 using Entity.DTOs.System.Company;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Utilities.Enums;
 using Web.Controllers.Base;
@@ -17,7 +18,6 @@ namespace Web.Controllers.System
         [ProducesResponseType(typeof(IEnumerable<CompanyConsultDTO>), 200)]
         public async Task<IActionResult> GetAll() =>
             await TryExecuteAsync(() => _service.GetAllAsync(), "GetAllCategory");
-
 
         [HttpGet("GetById/{id:int}")]
         [ProducesResponseType(typeof(CompanyConsultDTO), 200)]
@@ -45,13 +45,22 @@ namespace Web.Controllers.System
         public async Task<IActionResult> Update([FromBody] CompanyDTO dto) =>
             await TryExecuteAsync(() => _service.UpdateAsync(dto), "Updateitem");
 
+        [HttpPatch("PartialUpdate/")]
+        [Authorize(Roles = "SM_ACTION, ADMINISTRADOR")]
+        [ProducesResponseType(typeof(CompanyDTO), 200)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(404)]
+        public async Task<IActionResult> PartialUpdate([FromBody] CompanyPartialUpdateDTO dto) =>
+            await TryExecuteAsync(() => _service.PartialUpdateAsync(dto), "PartialUpdateCompany");
+
+        [Authorize(Roles = "SM_ACTION, ADMINISTRADOR")]
         [HttpDelete("Delete/{id:int}")]
         [ProducesResponseType(200)]
         [ProducesResponseType(400)]
         [ProducesResponseType(404)]
         public async Task<IActionResult> Delete(int id, [FromQuery] DeleteType strategy = DeleteType.Logical)
         {
-            return await TryExecuteAsync(() => _service.DeleteAsync(id, strategy), "DeleteItem");
+            return await TryExecuteAsync(() => _service.DeleteAsync(id, strategy), "DeleteCompany");
         }
     }
 }

@@ -1,13 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Data.Repository.Interfaces.System;
+﻿using Data.Repository.Interfaces.System;
 using Entity.Context;
 using Entity.Models.System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using Utilities.Enums.Models;
 
 namespace Data.Repository.Implementations.System
 {
@@ -71,36 +72,32 @@ namespace Data.Repository.Implementations.System
             }
         }
 
-        //public async Task<List<Zone>> GetZonesByUserAsync(int userId)
-        //{
-        //    var zones = await _context.Zone
-        //        .Where(z => z.Active &&
-        //            z.Inventories.Any(i =>
-        //                i.OperatingGroup.Operatings.Any(o =>
-        //                    o.UserId == userId && o.Active)))
-        //        .ToListAsync();
-
-        //    return zones;
-        //}
-        public override async Task<IEnumerable<Zone>> GetZonesByUserAsync(int userId)
+        public override async Task<IEnumerable<Zone>> GetAvailableZonesByUserAsync(int userId)
         {
             try
             {
-                return await _context.Zone
-                    .Where(z => z.Active &&
-                        z.Inventories.Any(i =>
-                            i.OperatingGroup.Operatings.Any(o =>
-                                o.UserId == userId && o.Active)))
-                    .Include(z => z.Branch)   
-                    .Include(z => z.User)   
+                var now = DateTime.UtcNow;
+
+                var zones = await _context.Operating
+                    .Where(o => o.UserId == userId &&
+                                o.OperationalGroup.DateStart <= now &&
+                                (o.OperationalGroup.DateEnd == null || o.OperationalGroup.DateEnd >= now))
+                    .SelectMany(o => o.OperationalGroup.User.Branch.Zones)
+                    .Where(z => z.StateZone == StateZone.Available)
+                    .Include(z => z.Branch)                  
+                        .ThenInclude(b => b.Company)         
                     .ToListAsync();
+
+                return zones;
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, $"No se pudieron obtener las zonas para el usuario {userId}");
+                _logger.LogError(ex, "Error al obtener las zonas disponibles por usuario.");
                 throw;
             }
         }
+
+
 
     }
 }

@@ -36,7 +36,7 @@ namespace Web.Controllers.System
         {
             try
             {
-                var zones = await _service.GetZonesByUserAsync(userId);
+                var zones = await _service.GetAvailableZonesByUserAsync(userId);
 
                 if (zones == null || !zones.Any())
                     return NotFound($"No se encontraron zonas para el usuario {userId}");

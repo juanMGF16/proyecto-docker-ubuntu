@@ -73,7 +73,7 @@ export class AdminSidebarComponent implements OnInit, OnDestroy, OnChanges {
 			id: `dynamic-sucursal-${sucursal.id}`,
 			label: sucursal.nombre,
 			icon: 'store',
-			route: `/admin/sucursales/${sucursal.id}`
+			route: `/admin/branch/${sucursal.id}`
 		}));
 
 		this.navigationService.addDynamicItems('sucursales', dynamicSucursales);

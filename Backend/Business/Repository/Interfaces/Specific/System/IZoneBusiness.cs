@@ -6,6 +6,6 @@ namespace Business.Repository.Interfaces.Specific.System
     {
         // General
         Task<IEnumerable<ZoneConsultDTO>> GetAllTotalAsync();
-
+        Task<IEnumerable<ZoneOperatingDTO>> GetAvailableZonesByUserAsync(int userId);
     }
 }

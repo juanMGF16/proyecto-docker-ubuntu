@@ -6,6 +6,7 @@ using Data.Repository.Interfaces.Strategy;
 using Entity.DTOs.System.Zone;
 using Entity.Models.System;
 using Microsoft.Extensions.Logging;
+using Utilities.Enums.Models;
 using Utilities.Exceptions;
 using Utilities.Helpers;
 
@@ -34,7 +35,25 @@ namespace Business.Repository.Implementations.Specific.System
             var active = await _general.GetAllTotalAsync();
             return _mapper.Map<IEnumerable<ZoneConsultDTO>>(active);
         }
-        
+
+        public async Task<IEnumerable<ZoneOperatingDTO>> GetAvailableZonesByUserAsync(int userId)
+        {
+            // 1️ Llamo al método de Data
+            var zones = await _general.GetAvailableZonesByUserAsync(userId);
+
+            // 2️ Transformo a DTO
+            var zoneDtos = zones.Select(z => new ZoneOperatingDTO
+            {
+                Id = z.Id,
+                Name = z.Name,
+                Description = z.Description,
+                BranchName = z.Branch.Name,
+                CompanyName = z.Branch.Company.Name
+            }).ToList();
+
+            return zoneDtos;
+        }
+
 
         protected override Task BeforeCreateMap(ZoneDTO dto, Zone entity)
         {

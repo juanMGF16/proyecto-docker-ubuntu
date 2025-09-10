@@ -42,6 +42,18 @@ namespace Data.Repository.Implementations
             }
         }
 
+        public virtual async Task<IEnumerable<T>> GetAvailableZonesByUserAsync(int id)
+        {
+            try
+            {
+                return await _context.Set<T>().ToListAsync();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogInformation(ex, "Error al obtener las zonas disponibles por usuario.");
+                throw;
+            }
+        }
 
     }
 }

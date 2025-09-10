@@ -36,6 +36,10 @@ namespace Business.Repository.Implementations.Specific.SecurityModule
             return _mapper.Map<IEnumerable<RoleFormPermissionDTO>>(active);
         }
 
+        //Specific
+
+
+        //Actions
         protected override Task BeforeCreateMap(RoleFormPermissionOptionsDTO dto, RoleFormPermission entity)
         {
             ValidationHelper.EnsureValidId(dto.RoleId, "RolId");

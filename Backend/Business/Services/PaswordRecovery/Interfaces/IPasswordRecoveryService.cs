@@ -1,12 +1,12 @@
-﻿using Entity.DTOs.SecurityModule;
+﻿using Entity.DTOs.Auth;
 
 namespace Business.Services.PaswordRecovery.Interfaces
 {
     public interface IPasswordRecoveryService
     {
         Task<bool> SendPasswordRecoveryEmailAsync(string email);
-        Task<bool> ValidateRecoveryTokenAsync(string token);
+        Task<(bool isValid, string? email)> ValidateRecoveryTokenWithEmailAsync(string token);
         Task<bool> ResetPasswordAsync(PasswordResetDTO resetDto);
-        Task<string> GenerateRecoveryTokenAsync(int userId);
+        Task<string> GenerateRecoveryTokenAsync(int userId, string email);
     }
 }

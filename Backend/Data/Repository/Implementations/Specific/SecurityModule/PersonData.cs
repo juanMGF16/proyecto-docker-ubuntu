@@ -23,9 +23,8 @@ namespace Data.Repository.Implementations.Specific.SecurityModule
             try
             {
                 return await _context.Person
-                    .Where(p => p.Active && !p.Users.Any())
+                    .Where(p => p.Active && p.User == null)
                     .ToListAsync();
-
             }
             catch (Exception ex)
             {
@@ -33,6 +32,7 @@ namespace Data.Repository.Implementations.Specific.SecurityModule
                 throw;
             }
         }
+
 
     }
 }

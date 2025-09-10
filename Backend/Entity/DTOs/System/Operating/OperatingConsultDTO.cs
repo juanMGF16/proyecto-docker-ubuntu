@@ -12,9 +12,9 @@ namespace Entity.DTOs.System.Operating
     {
         public int Id { get; set; }
         public int UserId { get; set; }
-        public string UserName { get; set; } 
+        public string UserName { get; set; } = string.Empty;
 
         public int OperationalGroupId { get; set; }
-        public string OperationalGroupName { get; set; }
+        public string OperationalGroupName { get; set; } = string.Empty;
     }
 }

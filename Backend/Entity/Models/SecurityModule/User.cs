@@ -22,7 +22,7 @@ namespace Entity.Models.SecurityModule
         public Zone Zone { get; set; } = null!;
         public Operating Operating { get; set; } = null!;
         public OperatingGroup OperationalGroup { get; set; } = null!;
-        public Verification Verification { get; set; } = null!;
+        public List<Verification> Verifications { get; set; } = [];
         public List<Notification> Notifications { get; set; } = [];
 
         // Funcionalides

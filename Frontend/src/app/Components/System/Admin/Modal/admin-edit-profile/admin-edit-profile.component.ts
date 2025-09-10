@@ -6,7 +6,7 @@ import { MatIconModule } from '@angular/material/icon';
 
 import Swal from 'sweetalert2';
 import { UserService } from '../../../../../Core/Service/SecurityModule/user.service';
-import { UserPartialUpdate } from '../../../../../Core/Models/SecurityModule/UserMod.model';
+import { UserPartialUpdateMod } from '../../../../../Core/Models/SecurityModule/UserMod.model';
 import { AuthService } from '../../../../../Core/Service/Auth/auth.service';
 import { colombianPhoneValidator, emailValidator } from '../../../../../Core/Utils/input-validators.util';
 
@@ -27,7 +27,7 @@ export class AdminEditProfileModalComponent implements OnInit, OnChanges {
 	private readonly userService = inject(UserService);
 	private readonly authService = inject(AuthService);
 
-	@Input({ required: true }) user!: UserPartialUpdate;
+	@Input({ required: true }) user!: UserPartialUpdateMod;
 	@Input({ required: true }) isOpen = false;
 	@Output() onClose = new EventEmitter<void>();
 	@Output() onSave = new EventEmitter<any>();
@@ -47,14 +47,6 @@ export class AdminEditProfileModalComponent implements OnInit, OnChanges {
 
 	private initForm(): void {
 		this.profileForm = this.formBuilder.group({
-			name: [
-				this.user?.name || '',
-				[Validators.required, Validators.minLength(3), Validators.maxLength(50)]
-			],
-			lastName: [
-				this.user?.lastName || '',
-				[Validators.required, Validators.minLength(3), Validators.maxLength(50)]
-			],
 			email: [
 				this.user?.email || '',
 				[Validators.required, emailValidator()]
@@ -73,8 +65,6 @@ export class AdminEditProfileModalComponent implements OnInit, OnChanges {
 
 	private updateFormValues(): void {
 		this.profileForm.patchValue({
-			name: this.user?.name || '',
-			lastName: this.user?.lastName || '',
 			email: this.user?.email || '',
 			phone: this.user?.phone || '',
 			username: this.user?.username || ''
@@ -143,33 +133,6 @@ export class AdminEditProfileModalComponent implements OnInit, OnChanges {
 			const control = formGroup.get(key);
 			control?.markAsTouched();
 		});
-	}
-
-	// Getters para validaciones
-	get nameErrors(): string[] {
-		const control = this.profileForm.get('name');
-		const errors: string[] = [];
-
-		if (control?.errors && control.touched) {
-			if (control.errors['required']) errors.push('Los nombres son requeridos');
-			if (control.errors['minlength']) errors.push('Mínimo 3 caracteres');
-			if (control.errors['maxlength']) errors.push('Máximo 50 caracteres');
-		}
-
-		return errors;
-	}
-
-	get lastNameErrors(): string[] {
-		const control = this.profileForm.get('lastName');
-		const errors: string[] = [];
-
-		if (control?.errors && control.touched) {
-			if (control.errors['required']) errors.push('Los apellidos son requeridos');
-			if (control.errors['minlength']) errors.push('Mínimo 3 caracteres');
-			if (control.errors['maxlength']) errors.push('Máximo 50 caracteres');
-		}
-
-		return errors;
 	}
 
 	get emailErrors(): string[] {

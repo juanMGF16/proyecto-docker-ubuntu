@@ -9,7 +9,7 @@ namespace Business.Repository.Interfaces.Specific.SecurityModule
 
         // Especific
         Task<UserDTO?> GetByUsernameAsync(string username);
-        Task<bool> HasCompanyAsync(int userId);
+        Task<UserCompanyCheckDTO> HasCompanyAsync(int userId);
         Task<UserDTO> PartialUpdateAsync(UserPartialUpdateDTO dto);
         Task ChangePasswordAsync(int userId, ChangePasswordDTO dto);
     }

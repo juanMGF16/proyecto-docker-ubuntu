@@ -46,6 +46,7 @@ namespace Business.Repository.Implementations.Specific.SecurityModule
 
         }
 
+        //Actions
         protected override Task BeforeCreateMap(PersonDTO dto, Person entity)
         {
             ValidationHelper.ThrowIfEmpty(dto.Name, "Name");

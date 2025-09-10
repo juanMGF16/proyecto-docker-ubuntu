@@ -1,14 +1,8 @@
 ﻿using Data.Repository.Interfaces.Specific.System;
-using Data.Repository.Interfaces.System;
 using Entity.Context;
 using Entity.Models.System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Data.Repository.Implementations.Specific.System
 {

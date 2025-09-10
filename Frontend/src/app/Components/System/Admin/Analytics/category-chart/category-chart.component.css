@@ -1,0 +1,23 @@
+.chart-container {
+	background: rgba(255, 255, 255, 0.02);
+	backdrop-filter: blur(10px);
+	border: 1px solid rgba(255, 255, 255, 0.1);
+	border-radius: 16px;
+	padding: 1.5rem;
+	height: 400px;
+	position: relative;
+}
+
+.chart-title {
+	font-size: 1.25rem;
+	color: var(--color-white);
+	margin-bottom: 1rem;
+	font-weight: 600;
+}
+
+@media (max-width: 768px) {
+	.chart-container {
+		height: 350px;
+		padding: 1rem;
+	}
+}

@@ -35,6 +35,10 @@ namespace Business.Repository.Implementations.Specific.System
             return _mapper.Map<IEnumerable<BranchConsultDTO>>(active);
         }
 
+        //Specific
+
+
+        //Actions
         protected override Task BeforeCreateMap(BranchDTO dto, Branch entity)
         {
             ValidationHelper.ThrowIfEmpty(dto.Name, "Name");

@@ -1,14 +1,14 @@
-import { Component, Input, Output, EventEmitter, OnInit, inject, signal, computed } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators, AbstractControl, ValidationErrors } from '@angular/forms';
+import { Component, EventEmitter, Input, OnInit, Output, computed, inject, signal } from '@angular/core';
+import { AbstractControl, FormBuilder, FormGroup, ReactiveFormsModule, ValidationErrors, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 
+import { Router } from '@angular/router';
 import Swal from 'sweetalert2';
 import { AuthService } from '../../../../../Core/Service/Auth/auth.service';
-import { Router, RouterLink } from '@angular/router';
-import { confirmLogout, successMessage } from '../../../../../Core/Utils/alerts.util';
 import { UserService } from '../../../../../Core/Service/SecurityModule/user.service';
+import { successMessage } from '../../../../../Core/Utils/alerts.util';
 
 
 @Component({
@@ -19,7 +19,6 @@ import { UserService } from '../../../../../Core/Service/SecurityModule/user.ser
 		ReactiveFormsModule,
 		MatButtonModule,
 		MatIconModule,
-		RouterLink
 	],
 	templateUrl: './admin-change-password.component.html',
 	styleUrls: ['../../../../Shared/Styles/modal-shared.css', './admin-change-password.component.css']
@@ -87,6 +86,56 @@ export class AdminChangePasswordModalComponent implements OnInit {
 		const confirmPassword = form.get('confirmPassword')?.value;
 
 		return newPassword === confirmPassword ? null : { passwordMismatch: true };
+	}
+
+	onForgotPassword(): void {
+		Swal.fire({
+			title: 'Recuperar contraseña',
+			text: 'Ingresa tu correo electrónico',
+			input: 'email',
+			inputPlaceholder: 'correo@ejemplo.com',
+			showCancelButton: true,
+			confirmButtonText: 'Enviar',
+			cancelButtonText: 'Cancelar',
+			inputValidator: (value) => {
+				if (!value) {
+					return 'Por favor ingresa tu correo';
+				}
+				return null;
+			}
+		}).then((result) => {
+			if (result.isConfirmed && result.value) {
+				const email = result.value;
+
+				Swal.fire({
+					title: 'Procesando...',
+					text: 'Por favor espera un momento ⏳',
+					allowOutsideClick: false,
+					didOpen: () => {
+						Swal.showLoading();
+					}
+				});
+
+				this.authService.forgotPassword(email).subscribe({
+					next: (res) => {
+						Swal.fire({
+							icon: 'success',
+							title: 'Solicitud enviada',
+							text: res.message || 'Si el email está registrado, recibirás instrucciones en tu bandeja de entrada 📩',
+							confirmButtonText: 'Aceptar'
+						});
+					},
+					error: (err) => {
+						Swal.fire({
+							icon: 'error',
+							title: 'Error',
+							text: err.error?.message || 'Ocurrió un error al procesar la solicitud',
+							confirmButtonText: 'Aceptar'
+						});
+					}
+				});
+			}
+		});
 	}
 
 	closeModal(): void {

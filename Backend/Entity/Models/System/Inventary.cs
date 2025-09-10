@@ -16,7 +16,7 @@ namespace Entity.Models.System
 
         // Propiedades de Navegacion Inversa
         public List<InventaryDetail> InventaryDetails { get; set; } = [];
-        public Verification Verification { get; set; } = null!;
+        public List<Verification> Verifications { get; set; } = [];
 
     }
 }

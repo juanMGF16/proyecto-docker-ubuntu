@@ -3,20 +3,48 @@
   "WorkspaceRootPath": "C:\\proyectos cSharp\\Codexy_Project\\Backend\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{5BDC2FAA-8E9B-4B9A-B497-E6C500214FBA}|Business\\Business.csproj|c:\\proyectos csharp\\codexy_project\\backend\\business\\repository\\interfaces\\specific\\system\\izonebusiness.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{5BDC2FAA-8E9B-4B9A-B497-E6C500214FBA}|Business\\Business.csproj|solutionrelative:business\\repository\\interfaces\\specific\\system\\izonebusiness.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{5BDC2FAA-8E9B-4B9A-B497-E6C500214FBA}|Business\\Business.csproj|c:\\proyectos csharp\\codexy_project\\backend\\business\\repository\\implementations\\specific\\parametersmodule\\categoryitembusiness.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{5BDC2FAA-8E9B-4B9A-B497-E6C500214FBA}|Business\\Business.csproj|solutionrelative:business\\repository\\implementations\\specific\\parametersmodule\\categoryitembusiness.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{5BDC2FAA-8E9B-4B9A-B497-E6C500214FBA}|Business\\Business.csproj|c:\\proyectos csharp\\codexy_project\\backend\\business\\repository\\implementations\\specific\\system\\zonebusiness.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{5BDC2FAA-8E9B-4B9A-B497-E6C500214FBA}|Business\\Business.csproj|solutionrelative:business\\repository\\implementations\\specific\\system\\zonebusiness.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{5BDC2FAA-8E9B-4B9A-B497-E6C500214FBA}|Business\\Business.csproj|c:\\proyectos csharp\\codexy_project\\backend\\business\\automapper\\generalmapper.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{5BDC2FAA-8E9B-4B9A-B497-E6C500214FBA}|Business\\Business.csproj|solutionrelative:business\\automapper\\generalmapper.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{D1A83C7D-F6BB-453C-9761-58DC343F0BD0}|Data\\Data.csproj|c:\\proyectos csharp\\codexy_project\\backend\\data\\repository\\interfaces\\general\\igettotalgeneral.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{D1A83C7D-F6BB-453C-9761-58DC343F0BD0}|Data\\Data.csproj|solutionrelative:data\\repository\\interfaces\\general\\igettotalgeneral.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{830BBD80-B192-4CE2-AF57-CE8E6FDFAE88}|Entity\\Entity.csproj|c:\\proyectos csharp\\codexy_project\\backend\\entity\\dtos\\system\\item\\itemconsultdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{830BBD80-B192-4CE2-AF57-CE8E6FDFAE88}|Entity\\Entity.csproj|solutionrelative:entity\\dtos\\system\\item\\itemconsultdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{D1A83C7D-F6BB-453C-9761-58DC343F0BD0}|Data\\Data.csproj|c:\\proyectos csharp\\codexy_project\\backend\\data\\repository\\implementations\\general.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{D1A83C7D-F6BB-453C-9761-58DC343F0BD0}|Data\\Data.csproj|solutionrelative:data\\repository\\implementations\\general.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{830BBD80-B192-4CE2-AF57-CE8E6FDFAE88}|Entity\\Entity.csproj|c:\\proyectos csharp\\codexy_project\\backend\\entity\\dtos\\system\\item\\itemconsultcategorydto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{830BBD80-B192-4CE2-AF57-CE8E6FDFAE88}|Entity\\Entity.csproj|solutionrelative:entity\\dtos\\system\\item\\itemconsultcategorydto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{D46C42A7-7048-4296-BEB9-4EC8644E61CD}|Web\\Web.csproj|c:\\proyectos csharp\\codexy_project\\backend\\web\\extensions\\entitiesserviceextensions.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{D46C42A7-7048-4296-BEB9-4EC8644E61CD}|Web\\Web.csproj|solutionrelative:web\\extensions\\entitiesserviceextensions.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{830BBD80-B192-4CE2-AF57-CE8E6FDFAE88}|Entity\\Entity.csproj|c:\\proyectos csharp\\codexy_project\\backend\\entity\\models\\system\\item.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{830BBD80-B192-4CE2-AF57-CE8E6FDFAE88}|Entity\\Entity.csproj|solutionrelative:entity\\models\\system\\item.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{D46C42A7-7048-4296-BEB9-4EC8644E61CD}|Web\\Web.csproj|c:\\proyectos csharp\\codexy_project\\backend\\web\\appsettings.development.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
+      "RelativeMoniker": "D:0:0:{D46C42A7-7048-4296-BEB9-4EC8644E61CD}|Web\\Web.csproj|solutionrelative:web\\appsettings.development.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{D46C42A7-7048-4296-BEB9-4EC8644E61CD}|Web\\Web.csproj|c:\\proyectos csharp\\codexy_project\\backend\\web\\appsettings.production.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
+      "RelativeMoniker": "D:0:0:{D46C42A7-7048-4296-BEB9-4EC8644E61CD}|Web\\Web.csproj|solutionrelative:web\\appsettings.production.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{D46C42A7-7048-4296-BEB9-4EC8644E61CD}|Web\\Web.csproj|c:\\proyectos csharp\\codexy_project\\backend\\web\\properties\\launchsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
+      "RelativeMoniker": "D:0:0:{D46C42A7-7048-4296-BEB9-4EC8644E61CD}|Web\\Web.csproj|solutionrelative:web\\properties\\launchsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{830BBD80-B192-4CE2-AF57-CE8E6FDFAE88}|Entity\\Entity.csproj|c:\\proyectos csharp\\codexy_project\\backend\\entity\\migrations\\appdbcontextmodelsnapshot.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{830BBD80-B192-4CE2-AF57-CE8E6FDFAE88}|Entity\\Entity.csproj|solutionrelative:entity\\migrations\\appdbcontextmodelsnapshot.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{D46C42A7-7048-4296-BEB9-4EC8644E61CD}|Web\\Web.csproj|c:\\proyectos csharp\\codexy_project\\backend\\web\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
+      "RelativeMoniker": "D:0:0:{D46C42A7-7048-4296-BEB9-4EC8644E61CD}|Web\\Web.csproj|solutionrelative:web\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{D1A83C7D-F6BB-453C-9761-58DC343F0BD0}|Data\\Data.csproj|c:\\proyectos csharp\\codexy_project\\backend\\data\\repository\\implementations\\specific\\system\\zonedata.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -27,23 +55,59 @@
       "RelativeMoniker": "D:0:0:{D46C42A7-7048-4296-BEB9-4EC8644E61CD}|Web\\Web.csproj|solutionrelative:web\\controllers\\system\\zonecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{5BDC2FAA-8E9B-4B9A-B497-E6C500214FBA}|Business\\Business.csproj|c:\\proyectos csharp\\codexy_project\\backend\\business\\repository\\implementations\\specific\\parametersmodule\\categoryitembusiness.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{5BDC2FAA-8E9B-4B9A-B497-E6C500214FBA}|Business\\Business.csproj|solutionrelative:business\\repository\\implementations\\specific\\parametersmodule\\categoryitembusiness.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{5BDC2FAA-8E9B-4B9A-B497-E6C500214FBA}|Business\\Business.csproj|c:\\proyectos csharp\\codexy_project\\backend\\business\\repository\\implementations\\specific\\system\\zonebusiness.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{5BDC2FAA-8E9B-4B9A-B497-E6C500214FBA}|Business\\Business.csproj|solutionrelative:business\\repository\\implementations\\specific\\system\\zonebusiness.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{D46C42A7-7048-4296-BEB9-4EC8644E61CD}|Web\\Web.csproj|c:\\proyectos csharp\\codexy_project\\backend\\web\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
-      "RelativeMoniker": "D:0:0:{D46C42A7-7048-4296-BEB9-4EC8644E61CD}|Web\\Web.csproj|solutionrelative:web\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
+      "AbsoluteMoniker": "D:0:0:{D1A83C7D-F6BB-453C-9761-58DC343F0BD0}|Data\\Data.csproj|c:\\proyectos csharp\\codexy_project\\backend\\data\\repository\\implementations\\general.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{D1A83C7D-F6BB-453C-9761-58DC343F0BD0}|Data\\Data.csproj|solutionrelative:data\\repository\\implementations\\general.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{D46C42A7-7048-4296-BEB9-4EC8644E61CD}|Web\\Web.csproj|c:\\proyectos csharp\\codexy_project\\backend\\web\\appsettings.development.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
-      "RelativeMoniker": "D:0:0:{D46C42A7-7048-4296-BEB9-4EC8644E61CD}|Web\\Web.csproj|solutionrelative:web\\appsettings.development.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
+      "AbsoluteMoniker": "D:0:0:{D1A83C7D-F6BB-453C-9761-58DC343F0BD0}|Data\\Data.csproj|c:\\proyectos csharp\\codexy_project\\backend\\data\\repository\\interfaces\\general\\igettotalgeneral.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{D1A83C7D-F6BB-453C-9761-58DC343F0BD0}|Data\\Data.csproj|solutionrelative:data\\repository\\interfaces\\general\\igettotalgeneral.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{D1A83C7D-F6BB-453C-9761-58DC343F0BD0}|Data\\Data.csproj|c:\\proyectos csharp\\codexy_project\\backend\\data\\repository\\implementations\\specific\\system\\itemdata.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{D1A83C7D-F6BB-453C-9761-58DC343F0BD0}|Data\\Data.csproj|solutionrelative:data\\repository\\implementations\\specific\\system\\itemdata.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{D1A83C7D-F6BB-453C-9761-58DC343F0BD0}|Data\\Data.csproj|c:\\proyectos csharp\\codexy_project\\backend\\data\\repository\\implementations\\specific\\parametersmodule\\stateitemdata.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{D1A83C7D-F6BB-453C-9761-58DC343F0BD0}|Data\\Data.csproj|solutionrelative:data\\repository\\implementations\\specific\\parametersmodule\\stateitemdata.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{D1A83C7D-F6BB-453C-9761-58DC343F0BD0}|Data\\Data.csproj|c:\\proyectos csharp\\codexy_project\\backend\\data\\repository\\implementations\\specific\\parametersmodule\\notificationdata.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{D1A83C7D-F6BB-453C-9761-58DC343F0BD0}|Data\\Data.csproj|solutionrelative:data\\repository\\implementations\\specific\\parametersmodule\\notificationdata.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{D1A83C7D-F6BB-453C-9761-58DC343F0BD0}|Data\\Data.csproj|c:\\proyectos csharp\\codexy_project\\backend\\data\\repository\\implementations\\specific\\parametersmodule\\categoryitemdata.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{D1A83C7D-F6BB-453C-9761-58DC343F0BD0}|Data\\Data.csproj|solutionrelative:data\\repository\\implementations\\specific\\parametersmodule\\categoryitemdata.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{D1A83C7D-F6BB-453C-9761-58DC343F0BD0}|Data\\Data.csproj|c:\\proyectos csharp\\codexy_project\\backend\\data\\repository\\interfaces\\igenericdata.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{D1A83C7D-F6BB-453C-9761-58DC343F0BD0}|Data\\Data.csproj|solutionrelative:data\\repository\\interfaces\\igenericdata.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{5BDC2FAA-8E9B-4B9A-B497-E6C500214FBA}|Business\\Business.csproj|c:\\proyectos csharp\\codexy_project\\backend\\business\\repository\\interfaces\\specific\\system\\izonebusiness.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{5BDC2FAA-8E9B-4B9A-B497-E6C500214FBA}|Business\\Business.csproj|solutionrelative:business\\repository\\interfaces\\specific\\system\\izonebusiness.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{830BBD80-B192-4CE2-AF57-CE8E6FDFAE88}|Entity\\Entity.csproj|c:\\proyectos csharp\\codexy_project\\backend\\entity\\dtos\\system\\zone\\zoneconsultdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{830BBD80-B192-4CE2-AF57-CE8E6FDFAE88}|Entity\\Entity.csproj|solutionrelative:entity\\dtos\\system\\zone\\zoneconsultdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{830BBD80-B192-4CE2-AF57-CE8E6FDFAE88}|Entity\\Entity.csproj|c:\\proyectos csharp\\codexy_project\\backend\\entity\\dtos\\system\\zone\\zonedto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{830BBD80-B192-4CE2-AF57-CE8E6FDFAE88}|Entity\\Entity.csproj|solutionrelative:entity\\dtos\\system\\zone\\zonedto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{D1A83C7D-F6BB-453C-9761-58DC343F0BD0}|Data\\Data.csproj|c:\\proyectos csharp\\codexy_project\\backend\\data\\repository\\interfaces\\specific\\system\\izone.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{D1A83C7D-F6BB-453C-9761-58DC343F0BD0}|Data\\Data.csproj|solutionrelative:data\\repository\\interfaces\\specific\\system\\izone.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{5BDC2FAA-8E9B-4B9A-B497-E6C500214FBA}|Business\\Business.csproj|c:\\proyectos csharp\\codexy_project\\backend\\business\\repository\\implementations\\specific\\system\\itembusiness.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{5BDC2FAA-8E9B-4B9A-B497-E6C500214FBA}|Business\\Business.csproj|solutionrelative:business\\repository\\implementations\\specific\\system\\itembusiness.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\gutie\\AppData\\Roaming\\Microsoft\\UserSecrets\\658b2bbe-fa9c-4d34-892f-c27114ed343e\\secrets.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{D46C42A7-7048-4296-BEB9-4EC8644E61CD}|Web\\Web.csproj|c:\\proyectos csharp\\codexy_project\\backend\\web\\appsettings.production.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
-      "RelativeMoniker": "D:0:0:{D46C42A7-7048-4296-BEB9-4EC8644E61CD}|Web\\Web.csproj|solutionrelative:web\\appsettings.production.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{5BDC2FAA-8E9B-4B9A-B497-E6C500214FBA}|Business\\Business.csproj|c:\\proyectos csharp\\codexy_project\\backend\\business\\services\\jwt\\authservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -70,10 +134,6 @@
       "RelativeMoniker": "D:0:0:{D46C42A7-7048-4296-BEB9-4EC8644E61CD}|Web\\Web.csproj|solutionrelative:web\\extensions\\corsextensions.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{D46C42A7-7048-4296-BEB9-4EC8644E61CD}|Web\\Web.csproj|c:\\proyectos csharp\\codexy_project\\backend\\web\\extensions\\entitiesserviceextensions.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{D46C42A7-7048-4296-BEB9-4EC8644E61CD}|Web\\Web.csproj|solutionrelative:web\\extensions\\entitiesserviceextensions.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{5BDC2FAA-8E9B-4B9A-B497-E6C500214FBA}|Business\\Business.csproj|c:\\proyectos csharp\\codexy_project\\backend\\business\\services\\jwt\\interfaces\\ijwtservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{5BDC2FAA-8E9B-4B9A-B497-E6C500214FBA}|Business\\Business.csproj|solutionrelative:business\\services\\jwt\\interfaces\\ijwtservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
@@ -82,20 +142,12 @@
       "RelativeMoniker": "D:0:0:{830BBD80-B192-4CE2-AF57-CE8E6FDFAE88}|Entity\\Entity.csproj|solutionrelative:entity\\models\\system\\inventarydetail.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{D46C42A7-7048-4296-BEB9-4EC8644E61CD}|Web\\Web.csproj|c:\\proyectos csharp\\codexy_project\\backend\\web\\properties\\launchsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
-      "RelativeMoniker": "D:0:0:{D46C42A7-7048-4296-BEB9-4EC8644E61CD}|Web\\Web.csproj|solutionrelative:web\\properties\\launchsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{5BDC2FAA-8E9B-4B9A-B497-E6C500214FBA}|Business\\Business.csproj|c:\\proyectos csharp\\codexy_project\\backend\\business\\repository\\implementations\\specific\\parametersmodule\\stateitembusiness.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{5BDC2FAA-8E9B-4B9A-B497-E6C500214FBA}|Business\\Business.csproj|solutionrelative:business\\repository\\implementations\\specific\\parametersmodule\\stateitembusiness.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{830BBD80-B192-4CE2-AF57-CE8E6FDFAE88}|Entity\\Entity.csproj|c:\\proyectos csharp\\codexy_project\\backend\\entity\\dtos\\parametersmodels\\stateitem\\stateitemdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{830BBD80-B192-4CE2-AF57-CE8E6FDFAE88}|Entity\\Entity.csproj|solutionrelative:entity\\dtos\\parametersmodels\\stateitem\\stateitemdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{5BDC2FAA-8E9B-4B9A-B497-E6C500214FBA}|Business\\Business.csproj|c:\\proyectos csharp\\codexy_project\\backend\\business\\automapper\\generalmapper.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{5BDC2FAA-8E9B-4B9A-B497-E6C500214FBA}|Business\\Business.csproj|solutionrelative:business\\automapper\\generalmapper.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{830BBD80-B192-4CE2-AF57-CE8E6FDFAE88}|Entity\\Entity.csproj|c:\\proyectos csharp\\codexy_project\\backend\\entity\\models\\system\\verification.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -133,102 +185,43 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 0,
+          "SelectedChildIndex": 7,
           "Children": [
             {
-              "$type": "Document",
-              "DocumentIndex": 0,
-              "Title": "IZoneBusiness.cs",
-              "DocumentMoniker": "C:\\proyectos cSharp\\Codexy_Project\\Backend\\Business\\Repository\\Interfaces\\Specific\\System\\IZoneBusiness.cs",
-              "RelativeDocumentMoniker": "Business\\Repository\\Interfaces\\Specific\\System\\IZoneBusiness.cs",
-              "ToolTip": "C:\\proyectos cSharp\\Codexy_Project\\Backend\\Business\\Repository\\Interfaces\\Specific\\System\\IZoneBusiness.cs",
-              "RelativeToolTip": "Business\\Repository\\Interfaces\\Specific\\System\\IZoneBusiness.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAcAAAA9AAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-09-07T21:44:39.721Z",
-              "EditorCaption": ""
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{1c4feeaa-4718-4aa9-859d-94ce25d182ba}"
             },
             {
-              "$type": "Document",
-              "DocumentIndex": 1,
-              "Title": "ZoneBusiness.cs",
-              "DocumentMoniker": "C:\\proyectos cSharp\\Codexy_Project\\Backend\\Business\\Repository\\Implementations\\Specific\\System\\ZoneBusiness.cs",
-              "RelativeDocumentMoniker": "Business\\Repository\\Implementations\\Specific\\System\\ZoneBusiness.cs",
-              "ToolTip": "C:\\proyectos cSharp\\Codexy_Project\\Backend\\Business\\Repository\\Implementations\\Specific\\System\\ZoneBusiness.cs",
-              "RelativeToolTip": "Business\\Repository\\Implementations\\Specific\\System\\ZoneBusiness.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA8AAAAVAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-09-07T21:44:28.508Z",
-              "EditorCaption": ""
+              "$type": "Bookmark",
+              "Name": "ST:1:0:{d212f56b-c48a-434c-a121-1c5d80b59b9f}"
             },
             {
               "$type": "Document",
               "DocumentIndex": 2,
-              "Title": "IGetTotalGeneral.cs",
-              "DocumentMoniker": "C:\\proyectos cSharp\\Codexy_Project\\Backend\\Data\\Repository\\Interfaces\\General\\IGetTotalGeneral.cs",
-              "RelativeDocumentMoniker": "Data\\Repository\\Interfaces\\General\\IGetTotalGeneral.cs",
-              "ToolTip": "C:\\proyectos cSharp\\Codexy_Project\\Backend\\Data\\Repository\\Interfaces\\General\\IGetTotalGeneral.cs",
-              "RelativeToolTip": "Data\\Repository\\Interfaces\\General\\IGetTotalGeneral.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAcAAAA5AAAAAAAAAA==",
+              "Title": "ItemConsultDTO.cs",
+              "DocumentMoniker": "C:\\proyectos cSharp\\Codexy_Project\\Backend\\Entity\\DTOs\\System\\Item\\ItemConsultDTO.cs",
+              "RelativeDocumentMoniker": "Entity\\DTOs\\System\\Item\\ItemConsultDTO.cs",
+              "ToolTip": "C:\\proyectos cSharp\\Codexy_Project\\Backend\\Entity\\DTOs\\System\\Item\\ItemConsultDTO.cs",
+              "RelativeToolTip": "Entity\\DTOs\\System\\Item\\ItemConsultDTO.cs",
+              "ViewState": "AgIAAAYAAAAAAAAAAIA6wAwAAAAfAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-09-07T05:09:21.988Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-09-09T16:29:09.979Z"
             },
             {
               "$type": "Document",
               "DocumentIndex": 3,
-              "Title": "General.cs",
-              "DocumentMoniker": "C:\\proyectos cSharp\\Codexy_Project\\Backend\\Data\\Repository\\Implementations\\General.cs",
-              "RelativeDocumentMoniker": "Data\\Repository\\Implementations\\General.cs",
-              "ToolTip": "C:\\proyectos cSharp\\Codexy_Project\\Backend\\Data\\Repository\\Implementations\\General.cs",
-              "RelativeToolTip": "Data\\Repository\\Implementations\\General.cs",
-              "ViewState": "AgIAACUAAAAAAAAAAIAwwCsAAAAAAAAAAAAAAA==",
+              "Title": "ItemConsultCategoryDTO.cs",
+              "DocumentMoniker": "C:\\proyectos cSharp\\Codexy_Project\\Backend\\Entity\\DTOs\\System\\Item\\ItemConsultCategoryDTO.cs",
+              "RelativeDocumentMoniker": "Entity\\DTOs\\System\\Item\\ItemConsultCategoryDTO.cs",
+              "ToolTip": "C:\\proyectos cSharp\\Codexy_Project\\Backend\\Entity\\DTOs\\System\\Item\\ItemConsultCategoryDTO.cs",
+              "RelativeToolTip": "Entity\\DTOs\\System\\Item\\ItemConsultCategoryDTO.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAuwAgAAAAyAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-09-07T05:07:47.99Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 5,
-              "Title": "ZoneController.cs",
-              "DocumentMoniker": "C:\\proyectos cSharp\\Codexy_Project\\Backend\\Web\\Controllers\\System\\ZoneController.cs",
-              "RelativeDocumentMoniker": "Web\\Controllers\\System\\ZoneController.cs",
-              "ToolTip": "C:\\proyectos cSharp\\Codexy_Project\\Backend\\Web\\Controllers\\System\\ZoneController.cs",
-              "RelativeToolTip": "Web\\Controllers\\System\\ZoneController.cs",
-              "ViewState": "AgIAAB0AAAAAAAAAAAAIwCYAAAA+AAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-09-07T05:04:07.866Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-09-09T16:23:21.331Z"
             },
             {
               "$type": "Document",
               "DocumentIndex": 6,
-              "Title": "CategoryItemBusiness.cs",
-              "DocumentMoniker": "C:\\proyectos cSharp\\Codexy_Project\\Backend\\Business\\Repository\\Implementations\\Specific\\ParametersModule\\CategoryItemBusiness.cs",
-              "RelativeDocumentMoniker": "Business\\Repository\\Implementations\\Specific\\ParametersModule\\CategoryItemBusiness.cs",
-              "ToolTip": "C:\\proyectos cSharp\\Codexy_Project\\Backend\\Business\\Repository\\Implementations\\Specific\\ParametersModule\\CategoryItemBusiness.cs",
-              "RelativeToolTip": "Business\\Repository\\Implementations\\Specific\\ParametersModule\\CategoryItemBusiness.cs",
-              "ViewState": "AgIAACoAAAAAAAAAAIAwwC4AAAAsAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-09-07T05:03:39.269Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 4,
-              "Title": "ZoneData.cs",
-              "DocumentMoniker": "C:\\proyectos cSharp\\Codexy_Project\\Backend\\Data\\Repository\\Implementations\\Specific\\System\\ZoneData.cs",
-              "RelativeDocumentMoniker": "Data\\Repository\\Implementations\\Specific\\System\\ZoneData.cs",
-              "ToolTip": "C:\\proyectos cSharp\\Codexy_Project\\Backend\\Data\\Repository\\Implementations\\Specific\\System\\ZoneData.cs",
-              "RelativeToolTip": "Data\\Repository\\Implementations\\Specific\\System\\ZoneData.cs",
-              "ViewState": "AgIAAEoAAAAAAAAAAAAIwFUAAAAJAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-09-07T04:58:35.425Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 8,
               "Title": "appsettings.Development.json",
               "DocumentMoniker": "C:\\proyectos cSharp\\Codexy_Project\\Backend\\Web\\appsettings.Development.json",
               "RelativeDocumentMoniker": "Web\\appsettings.Development.json",
@@ -240,31 +233,116 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 11,
-              "Title": "AuthService.cs",
-              "DocumentMoniker": "C:\\proyectos cSharp\\Codexy_Project\\Backend\\Business\\Services\\Jwt\\AuthService.cs",
-              "RelativeDocumentMoniker": "Business\\Services\\Jwt\\AuthService.cs",
-              "ToolTip": "C:\\proyectos cSharp\\Codexy_Project\\Backend\\Business\\Services\\Jwt\\AuthService.cs",
-              "RelativeToolTip": "Business\\Services\\Jwt\\AuthService.cs",
-              "ViewState": "AgIAACwAAAAAAAAAAAAuwDwAAAAPAAAAAAAAAA==",
+              "DocumentIndex": 4,
+              "Title": "EntitiesServiceExtensions.cs",
+              "DocumentMoniker": "C:\\proyectos cSharp\\Codexy_Project\\Backend\\Web\\Extensions\\EntitiesServiceExtensions.cs",
+              "RelativeDocumentMoniker": "Web\\Extensions\\EntitiesServiceExtensions.cs",
+              "ToolTip": "C:\\proyectos cSharp\\Codexy_Project\\Backend\\Web\\Extensions\\EntitiesServiceExtensions.cs",
+              "RelativeToolTip": "Web\\Extensions\\EntitiesServiceExtensions.cs",
+              "ViewState": "AgIAAB4AAAAAAAAAAAAiwCQAAAA2AAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-09-05T03:25:35.411Z"
+              "WhenOpened": "2025-08-28T05:40:03.557Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "GeneralMapper.cs",
+              "DocumentMoniker": "C:\\proyectos cSharp\\Codexy_Project\\Backend\\Business\\AutoMapper\\GeneralMapper.cs",
+              "RelativeDocumentMoniker": "Business\\AutoMapper\\GeneralMapper.cs",
+              "ToolTip": "C:\\proyectos cSharp\\Codexy_Project\\Backend\\Business\\AutoMapper\\GeneralMapper.cs",
+              "RelativeToolTip": "Business\\AutoMapper\\GeneralMapper.cs",
+              "ViewState": "AgIAAD4AAAAAAAAAAAAiwEoAAAAxAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-08-28T11:21:27.477Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "CategoryItemBusiness.cs",
+              "DocumentMoniker": "C:\\proyectos cSharp\\Codexy_Project\\Backend\\Business\\Repository\\Implementations\\Specific\\ParametersModule\\CategoryItemBusiness.cs",
+              "RelativeDocumentMoniker": "Business\\Repository\\Implementations\\Specific\\ParametersModule\\CategoryItemBusiness.cs",
+              "ToolTip": "C:\\proyectos cSharp\\Codexy_Project\\Backend\\Business\\Repository\\Implementations\\Specific\\ParametersModule\\CategoryItemBusiness.cs",
+              "RelativeToolTip": "Business\\Repository\\Implementations\\Specific\\ParametersModule\\CategoryItemBusiness.cs",
+              "ViewState": "AgIAADIAAAAAAAAAAAAqwD0AAAA3AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-07T05:03:39.269Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
+              "Title": "launchSettings.json",
+              "DocumentMoniker": "C:\\proyectos cSharp\\Codexy_Project\\Backend\\Web\\Properties\\launchSettings.json",
+              "RelativeDocumentMoniker": "Web\\Properties\\launchSettings.json",
+              "ToolTip": "C:\\proyectos cSharp\\Codexy_Project\\Backend\\Web\\Properties\\launchSettings.json",
+              "RelativeToolTip": "Web\\Properties\\launchSettings.json",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAgAAAAjAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
+              "WhenOpened": "2025-08-28T13:40:31.617Z"
             },
             {
               "$type": "Document",
               "DocumentIndex": 12,
-              "Title": "AuthController.cs",
-              "DocumentMoniker": "C:\\proyectos cSharp\\Codexy_Project\\Backend\\Web\\Controllers\\AuthController.cs",
-              "RelativeDocumentMoniker": "Web\\Controllers\\AuthController.cs",
-              "ToolTip": "C:\\proyectos cSharp\\Codexy_Project\\Backend\\Web\\Controllers\\AuthController.cs",
-              "RelativeToolTip": "Web\\Controllers\\AuthController.cs",
-              "ViewState": "AgIAADMAAAAAAAAAAAAYwDsAAAAIAAAAAAAAAA==",
+              "Title": "ZoneController.cs",
+              "DocumentMoniker": "C:\\proyectos cSharp\\Codexy_Project\\Backend\\Web\\Controllers\\System\\ZoneController.cs",
+              "RelativeDocumentMoniker": "Web\\Controllers\\System\\ZoneController.cs",
+              "ToolTip": "C:\\proyectos cSharp\\Codexy_Project\\Backend\\Web\\Controllers\\System\\ZoneController.cs",
+              "RelativeToolTip": "Web\\Controllers\\System\\ZoneController.cs",
+              "ViewState": "AgIAAB0AAAAAAAAAAAAIwCYAAAAQAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-09-05T03:26:38.458Z"
+              "WhenOpened": "2025-09-07T05:04:07.866Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 10,
+              "DocumentIndex": 13,
+              "Title": "ZoneBusiness.cs",
+              "DocumentMoniker": "C:\\proyectos cSharp\\Codexy_Project\\Backend\\Business\\Repository\\Implementations\\Specific\\System\\ZoneBusiness.cs",
+              "RelativeDocumentMoniker": "Business\\Repository\\Implementations\\Specific\\System\\ZoneBusiness.cs",
+              "ToolTip": "C:\\proyectos cSharp\\Codexy_Project\\Backend\\Business\\Repository\\Implementations\\Specific\\System\\ZoneBusiness.cs",
+              "RelativeToolTip": "Business\\Repository\\Implementations\\Specific\\System\\ZoneBusiness.cs",
+              "ViewState": "AgIAABkAAAAAAAAAAAAQwCwAAAAtAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-07T21:44:28.508Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 15,
+              "Title": "IGetTotalGeneral.cs",
+              "DocumentMoniker": "C:\\proyectos cSharp\\Codexy_Project\\Backend\\Data\\Repository\\Interfaces\\General\\IGetTotalGeneral.cs",
+              "RelativeDocumentMoniker": "Data\\Repository\\Interfaces\\General\\IGetTotalGeneral.cs",
+              "ToolTip": "C:\\proyectos cSharp\\Codexy_Project\\Backend\\Data\\Repository\\Interfaces\\General\\IGetTotalGeneral.cs",
+              "RelativeToolTip": "Data\\Repository\\Interfaces\\General\\IGetTotalGeneral.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAuwAoAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-07T05:09:21.988Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "Item.cs",
+              "DocumentMoniker": "C:\\proyectos cSharp\\Codexy_Project\\Backend\\Entity\\Models\\System\\Item.cs",
+              "RelativeDocumentMoniker": "Entity\\Models\\System\\Item.cs",
+              "ToolTip": "C:\\proyectos cSharp\\Codexy_Project\\Backend\\Entity\\Models\\System\\Item.cs",
+              "RelativeToolTip": "Entity\\Models\\System\\Item.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAcAAAAYAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-09T12:27:04.706Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 14,
+              "Title": "General.cs",
+              "DocumentMoniker": "C:\\proyectos cSharp\\Codexy_Project\\Backend\\Data\\Repository\\Implementations\\General.cs",
+              "RelativeDocumentMoniker": "Data\\Repository\\Implementations\\General.cs",
+              "ToolTip": "C:\\proyectos cSharp\\Codexy_Project\\Backend\\Data\\Repository\\Implementations\\General.cs",
+              "RelativeToolTip": "Data\\Repository\\Implementations\\General.cs",
+              "ViewState": "AgIAACcAAAAAAAAAAAAYwC0AAAAJAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-07T05:07:47.99Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
               "Title": "appsettings.Production.json",
               "DocumentMoniker": "C:\\proyectos cSharp\\Codexy_Project\\Backend\\Web\\appsettings.Production.json",
               "RelativeDocumentMoniker": "Web\\appsettings.Production.json",
@@ -276,20 +354,187 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 7,
+              "DocumentIndex": 21,
+              "Title": "IZoneBusiness.cs",
+              "DocumentMoniker": "C:\\proyectos cSharp\\Codexy_Project\\Backend\\Business\\Repository\\Interfaces\\Specific\\System\\IZoneBusiness.cs",
+              "RelativeDocumentMoniker": "Business\\Repository\\Interfaces\\Specific\\System\\IZoneBusiness.cs",
+              "ToolTip": "C:\\proyectos cSharp\\Codexy_Project\\Backend\\Business\\Repository\\Interfaces\\Specific\\System\\IZoneBusiness.cs",
+              "RelativeToolTip": "Business\\Repository\\Interfaces\\Specific\\System\\IZoneBusiness.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAuwAgAAAApAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-07T21:44:39.721Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 9,
+              "Title": "AppDbContextModelSnapshot.cs",
+              "DocumentMoniker": "C:\\proyectos cSharp\\Codexy_Project\\Backend\\Entity\\Migrations\\AppDbContextModelSnapshot.cs",
+              "RelativeDocumentMoniker": "Entity\\Migrations\\AppDbContextModelSnapshot.cs",
+              "ToolTip": "C:\\proyectos cSharp\\Codexy_Project\\Backend\\Entity\\Migrations\\AppDbContextModelSnapshot.cs",
+              "RelativeToolTip": "Entity\\Migrations\\AppDbContextModelSnapshot.cs",
+              "ViewState": "AgIAAAwAAAAAAAAAAAAAABgAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-08T22:33:25.188Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 22,
+              "Title": "ZoneConsultDTO.cs",
+              "DocumentMoniker": "C:\\proyectos cSharp\\Codexy_Project\\Backend\\Entity\\DTOs\\System\\Zone\\ZoneConsultDTO.cs",
+              "RelativeDocumentMoniker": "Entity\\DTOs\\System\\Zone\\ZoneConsultDTO.cs",
+              "ToolTip": "C:\\proyectos cSharp\\Codexy_Project\\Backend\\Entity\\DTOs\\System\\Zone\\ZoneConsultDTO.cs",
+              "RelativeToolTip": "Entity\\DTOs\\System\\Zone\\ZoneConsultDTO.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAuwAQAAAARAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-08T21:29:37.084Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 11,
+              "Title": "ZoneData.cs",
+              "DocumentMoniker": "C:\\proyectos cSharp\\Codexy_Project\\Backend\\Data\\Repository\\Implementations\\Specific\\System\\ZoneData.cs",
+              "RelativeDocumentMoniker": "Data\\Repository\\Implementations\\Specific\\System\\ZoneData.cs",
+              "ToolTip": "C:\\proyectos cSharp\\Codexy_Project\\Backend\\Data\\Repository\\Implementations\\Specific\\System\\ZoneData.cs",
+              "RelativeToolTip": "Data\\Repository\\Implementations\\Specific\\System\\ZoneData.cs",
+              "ViewState": "AgIAAEkAAAAAAAAAAAAIwFcAAAA9AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-07T04:58:35.425Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 10,
               "Title": "appsettings.json",
               "DocumentMoniker": "C:\\proyectos cSharp\\Codexy_Project\\Backend\\Web\\appsettings.json",
               "RelativeDocumentMoniker": "Web\\appsettings.json",
               "ToolTip": "C:\\proyectos cSharp\\Codexy_Project\\Backend\\Web\\appsettings.json",
               "RelativeToolTip": "Web\\appsettings.json",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABYAAAADAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAACQAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
-              "WhenOpened": "2025-08-28T15:52:52.224Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-08-28T15:52:52.224Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 14,
+              "DocumentIndex": 20,
+              "Title": "IGenericData.cs",
+              "DocumentMoniker": "C:\\proyectos cSharp\\Codexy_Project\\Backend\\Data\\Repository\\Interfaces\\IGenericData.cs",
+              "RelativeDocumentMoniker": "Data\\Repository\\Interfaces\\IGenericData.cs",
+              "ToolTip": "C:\\proyectos cSharp\\Codexy_Project\\Backend\\Data\\Repository\\Interfaces\\IGenericData.cs",
+              "RelativeToolTip": "Data\\Repository\\Interfaces\\IGenericData.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-08T21:37:37.06Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 18,
+              "Title": "NotificationData.cs",
+              "DocumentMoniker": "C:\\proyectos cSharp\\Codexy_Project\\Backend\\Data\\Repository\\Implementations\\Specific\\ParametersModule\\NotificationData.cs",
+              "RelativeDocumentMoniker": "Data\\Repository\\Implementations\\Specific\\ParametersModule\\NotificationData.cs",
+              "ToolTip": "C:\\proyectos cSharp\\Codexy_Project\\Backend\\Data\\Repository\\Implementations\\Specific\\ParametersModule\\NotificationData.cs",
+              "RelativeToolTip": "Data\\Repository\\Implementations\\Specific\\ParametersModule\\NotificationData.cs",
+              "ViewState": "AgIAAGEAAAAAAAAAAAA/wAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-08T21:38:17.08Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 17,
+              "Title": "StateItemData.cs",
+              "DocumentMoniker": "C:\\proyectos cSharp\\Codexy_Project\\Backend\\Data\\Repository\\Implementations\\Specific\\ParametersModule\\StateItemData.cs",
+              "RelativeDocumentMoniker": "Data\\Repository\\Implementations\\Specific\\ParametersModule\\StateItemData.cs",
+              "ToolTip": "C:\\proyectos cSharp\\Codexy_Project\\Backend\\Data\\Repository\\Implementations\\Specific\\ParametersModule\\StateItemData.cs",
+              "RelativeToolTip": "Data\\Repository\\Implementations\\Specific\\ParametersModule\\StateItemData.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-08T21:38:29.309Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 16,
+              "Title": "ItemData.cs",
+              "DocumentMoniker": "C:\\proyectos cSharp\\Codexy_Project\\Backend\\Data\\Repository\\Implementations\\Specific\\System\\ItemData.cs",
+              "RelativeDocumentMoniker": "Data\\Repository\\Implementations\\Specific\\System\\ItemData.cs",
+              "ToolTip": "C:\\proyectos cSharp\\Codexy_Project\\Backend\\Data\\Repository\\Implementations\\Specific\\System\\ItemData.cs",
+              "RelativeToolTip": "Data\\Repository\\Implementations\\Specific\\System\\ItemData.cs",
+              "ViewState": "AgIAAGwAAAAAAAAAAAAowAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-08T21:38:32.631Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 19,
+              "Title": "CategoryItemData.cs",
+              "DocumentMoniker": "C:\\proyectos cSharp\\Codexy_Project\\Backend\\Data\\Repository\\Implementations\\Specific\\ParametersModule\\CategoryItemData.cs",
+              "RelativeDocumentMoniker": "Data\\Repository\\Implementations\\Specific\\ParametersModule\\CategoryItemData.cs",
+              "ToolTip": "C:\\proyectos cSharp\\Codexy_Project\\Backend\\Data\\Repository\\Implementations\\Specific\\ParametersModule\\CategoryItemData.cs",
+              "RelativeToolTip": "Data\\Repository\\Implementations\\Specific\\ParametersModule\\CategoryItemData.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAcAAABMAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-08T21:07:02.044Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 23,
+              "Title": "ZoneDTO.cs",
+              "DocumentMoniker": "C:\\proyectos cSharp\\Codexy_Project\\Backend\\Entity\\DTOs\\System\\Zone\\ZoneDTO.cs",
+              "RelativeDocumentMoniker": "Entity\\DTOs\\System\\Zone\\ZoneDTO.cs",
+              "ToolTip": "C:\\proyectos cSharp\\Codexy_Project\\Backend\\Entity\\DTOs\\System\\Zone\\ZoneDTO.cs",
+              "RelativeToolTip": "Entity\\DTOs\\System\\Zone\\ZoneDTO.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAQAAAARAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-08T21:19:28.734Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 24,
+              "Title": "IZone.cs",
+              "DocumentMoniker": "C:\\proyectos cSharp\\Codexy_Project\\Backend\\Data\\Repository\\Interfaces\\Specific\\System\\IZone.cs",
+              "RelativeDocumentMoniker": "Data\\Repository\\Interfaces\\Specific\\System\\IZone.cs",
+              "ToolTip": "C:\\proyectos cSharp\\Codexy_Project\\Backend\\Data\\Repository\\Interfaces\\Specific\\System\\IZone.cs",
+              "RelativeToolTip": "Data\\Repository\\Interfaces\\Specific\\System\\IZone.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAkAAAAyAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-08T21:23:13.512Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 25,
+              "Title": "ItemBusiness.cs",
+              "DocumentMoniker": "C:\\proyectos cSharp\\Codexy_Project\\Backend\\Business\\Repository\\Implementations\\Specific\\System\\ItemBusiness.cs",
+              "RelativeDocumentMoniker": "Business\\Repository\\Implementations\\Specific\\System\\ItemBusiness.cs",
+              "ToolTip": "C:\\proyectos cSharp\\Codexy_Project\\Backend\\Business\\Repository\\Implementations\\Specific\\System\\ItemBusiness.cs",
+              "RelativeToolTip": "Business\\Repository\\Implementations\\Specific\\System\\ItemBusiness.cs",
+              "ViewState": "AgIAABYAAAAAAAAAAIAwwCQAAAA3AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-08T19:35:33.84Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 27,
+              "Title": "AuthService.cs",
+              "DocumentMoniker": "C:\\proyectos cSharp\\Codexy_Project\\Backend\\Business\\Services\\Jwt\\AuthService.cs",
+              "RelativeDocumentMoniker": "Business\\Services\\Jwt\\AuthService.cs",
+              "ToolTip": "C:\\proyectos cSharp\\Codexy_Project\\Backend\\Business\\Services\\Jwt\\AuthService.cs",
+              "RelativeToolTip": "Business\\Services\\Jwt\\AuthService.cs",
+              "ViewState": "AgIAACwAAAAAAAAAAAAuwDwAAAAPAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-05T03:25:35.411Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 28,
+              "Title": "AuthController.cs",
+              "DocumentMoniker": "C:\\proyectos cSharp\\Codexy_Project\\Backend\\Web\\Controllers\\AuthController.cs",
+              "RelativeDocumentMoniker": "Web\\Controllers\\AuthController.cs",
+              "ToolTip": "C:\\proyectos cSharp\\Codexy_Project\\Backend\\Web\\Controllers\\AuthController.cs",
+              "RelativeToolTip": "Web\\Controllers\\AuthController.cs",
+              "ViewState": "AgIAADMAAAAAAAAAAAAYwDsAAAAIAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-05T03:26:38.458Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 30,
               "Title": "LoginResponseDTO.cs",
               "DocumentMoniker": "C:\\proyectos cSharp\\Codexy_Project\\Backend\\Entity\\DTOs\\Auth\\LoginResponseDTO.cs",
               "RelativeDocumentMoniker": "Entity\\DTOs\\Auth\\LoginResponseDTO.cs",
@@ -301,7 +546,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 9,
+              "DocumentIndex": 26,
               "Title": "secrets.json",
               "DocumentMoniker": "C:\\Users\\gutie\\AppData\\Roaming\\Microsoft\\UserSecrets\\658b2bbe-fa9c-4d34-892f-c27114ed343e\\secrets.json",
               "RelativeDocumentMoniker": "..\\..\\..\\Users\\gutie\\AppData\\Roaming\\Microsoft\\UserSecrets\\658b2bbe-fa9c-4d34-892f-c27114ed343e\\secrets.json",
@@ -313,7 +558,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 13,
+              "DocumentIndex": 29,
               "Title": "JwtService.cs",
               "DocumentMoniker": "C:\\proyectos cSharp\\Codexy_Project\\Backend\\Business\\Services\\Jwt\\JwtService.cs",
               "RelativeDocumentMoniker": "Business\\Services\\Jwt\\JwtService.cs",
@@ -325,7 +570,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 18,
+              "DocumentIndex": 33,
               "Title": "IJwtService.cs",
               "DocumentMoniker": "C:\\proyectos cSharp\\Codexy_Project\\Backend\\Business\\Services\\Jwt\\Interfaces\\IJwtService.cs",
               "RelativeDocumentMoniker": "Business\\Services\\Jwt\\Interfaces\\IJwtService.cs",
@@ -337,7 +582,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 15,
+              "DocumentIndex": 31,
               "Title": "ServiceCollectionExtensions.cs",
               "DocumentMoniker": "C:\\proyectos cSharp\\Codexy_Project\\Backend\\Web\\Extensions\\ServiceCollectionExtensions.cs",
               "RelativeDocumentMoniker": "Web\\Extensions\\ServiceCollectionExtensions.cs",
@@ -349,19 +594,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 17,
-              "Title": "EntitiesServiceExtensions.cs",
-              "DocumentMoniker": "C:\\proyectos cSharp\\Codexy_Project\\Backend\\Web\\Extensions\\EntitiesServiceExtensions.cs",
-              "RelativeDocumentMoniker": "Web\\Extensions\\EntitiesServiceExtensions.cs",
-              "ToolTip": "C:\\proyectos cSharp\\Codexy_Project\\Backend\\Web\\Extensions\\EntitiesServiceExtensions.cs",
-              "RelativeToolTip": "Web\\Extensions\\EntitiesServiceExtensions.cs",
-              "ViewState": "AgIAACcAAAAAAAAAAAAiwF8AAAA2AAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-08-28T05:40:03.557Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 16,
+              "DocumentIndex": 32,
               "Title": "CorsExtensions.cs",
               "DocumentMoniker": "C:\\proyectos cSharp\\Codexy_Project\\Backend\\Web\\Extensions\\CorsExtensions.cs",
               "RelativeDocumentMoniker": "Web\\Extensions\\CorsExtensions.cs",
@@ -373,19 +606,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 20,
-              "Title": "launchSettings.json",
-              "DocumentMoniker": "C:\\proyectos cSharp\\Codexy_Project\\Backend\\Web\\Properties\\launchSettings.json",
-              "RelativeDocumentMoniker": "Web\\Properties\\launchSettings.json",
-              "ToolTip": "C:\\proyectos cSharp\\Codexy_Project\\Backend\\Web\\Properties\\launchSettings.json",
-              "RelativeToolTip": "Web\\Properties\\launchSettings.json",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAkAAAAGAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
-              "WhenOpened": "2025-08-28T13:40:31.617Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 19,
+              "DocumentIndex": 34,
               "Title": "InventaryDetail.cs",
               "DocumentMoniker": "C:\\proyectos cSharp\\Codexy_Project\\Backend\\Entity\\Models\\System\\InventaryDetail.cs",
               "RelativeDocumentMoniker": "Entity\\Models\\System\\InventaryDetail.cs",
@@ -397,7 +618,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 21,
+              "DocumentIndex": 35,
               "Title": "StateItemBusiness.cs",
               "DocumentMoniker": "C:\\proyectos cSharp\\Codexy_Project\\Backend\\Business\\Repository\\Implementations\\Specific\\ParametersModule\\StateItemBusiness.cs",
               "RelativeDocumentMoniker": "Business\\Repository\\Implementations\\Specific\\ParametersModule\\StateItemBusiness.cs",
@@ -409,7 +630,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 22,
+              "DocumentIndex": 36,
               "Title": "StateItemDTO.cs",
               "DocumentMoniker": "C:\\proyectos cSharp\\Codexy_Project\\Backend\\Entity\\DTOs\\ParametersModels\\StateItem\\StateItemDTO.cs",
               "RelativeDocumentMoniker": "Entity\\DTOs\\ParametersModels\\StateItem\\StateItemDTO.cs",
@@ -421,19 +642,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 23,
-              "Title": "GeneralMapper.cs",
-              "DocumentMoniker": "C:\\proyectos cSharp\\Codexy_Project\\Backend\\Business\\AutoMapper\\GeneralMapper.cs",
-              "RelativeDocumentMoniker": "Business\\AutoMapper\\GeneralMapper.cs",
-              "ToolTip": "C:\\proyectos cSharp\\Codexy_Project\\Backend\\Business\\AutoMapper\\GeneralMapper.cs",
-              "RelativeToolTip": "Business\\AutoMapper\\GeneralMapper.cs",
-              "ViewState": "AgIAAEcAAAAAAAAAAAAiwD8AAAA/AAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-08-28T11:21:27.477Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 24,
+              "DocumentIndex": 37,
               "Title": "Verification.cs",
               "DocumentMoniker": "C:\\proyectos cSharp\\Codexy_Project\\Backend\\Entity\\Models\\System\\Verification.cs",
               "RelativeDocumentMoniker": "Entity\\Models\\System\\Verification.cs",
@@ -445,7 +654,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 25,
+              "DocumentIndex": 38,
               "Title": "Operating.cs",
               "DocumentMoniker": "C:\\proyectos cSharp\\Codexy_Project\\Backend\\Entity\\Models\\System\\Operating.cs",
               "RelativeDocumentMoniker": "Entity\\Models\\System\\Operating.cs",
@@ -457,7 +666,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 26,
+              "DocumentIndex": 39,
               "Title": "Inventary.cs",
               "DocumentMoniker": "C:\\proyectos cSharp\\Codexy_Project\\Backend\\Entity\\Models\\System\\Inventary.cs",
               "RelativeDocumentMoniker": "Entity\\Models\\System\\Inventary.cs",
@@ -469,7 +678,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 27,
+              "DocumentIndex": 40,
               "Title": "IStateItemBusiness.cs",
               "DocumentMoniker": "C:\\proyectos cSharp\\Codexy_Project\\Backend\\Business\\Repository\\Interfaces\\Specific\\ParametersModule\\IStateItemBusiness.cs",
               "RelativeDocumentMoniker": "Business\\Repository\\Interfaces\\Specific\\ParametersModule\\IStateItemBusiness.cs",
@@ -481,7 +690,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 29,
+              "DocumentIndex": 42,
               "Title": "BranchBusiness.cs",
               "DocumentMoniker": "C:\\proyectos cSharp\\Codexy_Project\\Backend\\Business\\Repository\\Implementations\\Specific\\System\\BranchBusiness.cs",
               "RelativeDocumentMoniker": "Business\\Repository\\Implementations\\Specific\\System\\BranchBusiness.cs",
@@ -493,7 +702,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 30,
+              "DocumentIndex": 43,
               "Title": "FormModuleBusiness.cs",
               "DocumentMoniker": "C:\\proyectos cSharp\\Codexy_Project\\Backend\\Business\\Repository\\Implementations\\Specific\\SecurityModule\\FormModuleBusiness.cs",
               "RelativeDocumentMoniker": "Business\\Repository\\Implementations\\Specific\\SecurityModule\\FormModuleBusiness.cs",
@@ -505,7 +714,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 28,
+              "DocumentIndex": 41,
               "Title": "Branch.cs",
               "DocumentMoniker": "C:\\proyectos cSharp\\Codexy_Project\\Backend\\Entity\\Models\\System\\Branch.cs",
               "RelativeDocumentMoniker": "Entity\\Models\\System\\Branch.cs",

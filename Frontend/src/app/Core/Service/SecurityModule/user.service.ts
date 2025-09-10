@@ -1,9 +1,9 @@
-import { Injectable } from '@angular/core';
-import { GenericService } from '../generic.service';
-import { UserMod, UserOptionsMod, UserPartialUpdate } from '../../Models/SecurityModule/UserMod.model';
 import { HttpClient } from '@angular/common/http';
-import { environment } from '../../../../environments/environment';
+import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { environment } from '../../../../environments/environment';
+import { UserHasCompanyMod, UserMod, UserOptionsMod, UserPartialUpdateMod } from '../../Models/SecurityModule/UserMod.model';
+import { GenericService } from '../generic.service';
 
 @Injectable({
 	providedIn: 'root'
@@ -19,11 +19,12 @@ export class UserService extends GenericService<UserOptionsMod, UserMod> {
 		return this.http.get<UserMod[]>(`${this.baseUrl}GetAllJWT/`);
 	}
 
-	hasCompany(): Observable<boolean> {
-		return this.http.get<boolean>(`${this.baseUrl}HasCompany/`);
+	// Ahora devuelve el DTO con hasCompany y companyId
+	hasCompany(): Observable<UserHasCompanyMod> {
+		return this.http.get<UserHasCompanyMod>(`${this.baseUrl}HasCompany/`);
 	}
 
-	partialUpdate(userData: UserPartialUpdate): Observable<UserMod> {
+	partialUpdate(userData: UserPartialUpdateMod): Observable<UserMod> {
 		return this.http.patch<UserMod>(`${this.baseUrl}PartialUpdate/`, userData);
 	}
 

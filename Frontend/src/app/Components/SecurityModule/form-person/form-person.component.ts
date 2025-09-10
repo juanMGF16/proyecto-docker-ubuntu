@@ -12,8 +12,8 @@ import { Router } from '@angular/router';
 import { PersonMod } from '../../../Core/Models/SecurityModule/PersonMod.model';
 import { AuthService } from '../../../Core/Service/Auth/auth.service';
 import { colombianPhoneValidator, emailValidator } from '../../../Core/Utils/input-validators.util';
-import { ColombianPhoneDirective } from '../../Shared/Directives/colombian-phone.directive';
-import { OnlyNumbersDirective } from '../../Shared/Directives/only-numbers.directive';
+import { ColombianPhoneDirective } from '../../../Core/Directives/colombian-phone.directive';
+import { OnlyNumbersDirective } from '../../../Core/Directives/only-numbers.directive';
 
 
 

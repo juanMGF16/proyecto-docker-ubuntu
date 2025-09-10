@@ -6,9 +6,11 @@ import { AccessDeniedComponent } from './Components/Shared/access-denied/access-
 import { PageNotFoundComponent } from './Components/Shared/page-not-found/page-not-found.component';
 import { roleGuard } from './Core/Guards/role.guard';
 import { LandingComponent } from './Views/System/Landing/landing.component';
+import { RecoveryPasswordComponent } from './Components/Shared/Forms/recovery-password/recovery-password.component';
 
 export const routes: Routes = [
   {path: '', component: LandingComponent},
+  {path: 'recovery-password', component: RecoveryPasswordComponent},
 
   // -----------------------
   // Auth

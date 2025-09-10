@@ -29,13 +29,17 @@ namespace Business.Repository.Implementations.Specific.SecurityModule
             _general = general;
         }
 
-        // General 
+        // General
         public async Task<IEnumerable<UserRoleDTO>> GetAllTotalUserRolesAsync()
         {
             var active = await _general.GetAllTotalAsync();
             return _mapper.Map<IEnumerable<UserRoleDTO>>(active);
         }
+         
+        //Specific
 
+
+        //Actions
         protected override Task BeforeCreateMap(UserRoleOptionsDTO dto, UserRole entity)
         {
             ValidationHelper.EnsureValidId(dto.UserId, "UserId");

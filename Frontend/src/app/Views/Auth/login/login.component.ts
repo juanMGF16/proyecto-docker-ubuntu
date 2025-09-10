@@ -8,7 +8,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { RouterLink } from '@angular/router';
 import Swal from 'sweetalert2';
-import { InitialHeaderComponent} from "../../../Components/System/Landing/initial-header/initial-navbar.component";
+import { InitialHeaderComponent } from "../../../Components/System/Landing/initial-header/initial-navbar.component";
 import { AuthService } from '../../../Core/Service/Auth/auth.service';
 import { RoleRedirectService } from '../../../Core/Service/Auth/role-redirect.service';
 
@@ -63,4 +63,53 @@ export class LoginComponent {
 		});
 	}
 
+	onForgotPassword(): void {
+		Swal.fire({
+			title: 'Recuperar contraseña',
+			text: 'Ingresa tu correo electrónico',
+			input: 'email',
+			inputPlaceholder: 'correo@ejemplo.com',
+			showCancelButton: true,
+			confirmButtonText: 'Enviar',
+			cancelButtonText: 'Cancelar',
+			inputValidator: (value) => {
+				if (!value) {
+					return 'Por favor ingresa tu correo';
+				}
+				return null;
+			}
+		}).then((result) => {
+			if (result.isConfirmed && result.value) {
+				const email = result.value;
+
+				Swal.fire({
+					title: 'Procesando...',
+					text: 'Por favor espera un momento ⏳',
+					allowOutsideClick: false,
+					didOpen: () => {
+						Swal.showLoading();
+					}
+				});
+
+				this.authService.forgotPassword(email).subscribe({
+					next: (res) => {
+						Swal.fire({
+							icon: 'success',
+							title: 'Solicitud enviada',
+							text: res.message || 'Si el email está registrado, recibirás instrucciones en tu bandeja de entrada 📩',
+							confirmButtonText: 'Aceptar'
+						});
+					},
+					error: (err) => {
+						Swal.fire({
+							icon: 'error',
+							title: 'Error',
+							text: err.error?.message || 'Ocurrió un error al procesar la solicitud',
+							confirmButtonText: 'Aceptar'
+						});
+					}
+				});
+			}
+		});
+	}
 }

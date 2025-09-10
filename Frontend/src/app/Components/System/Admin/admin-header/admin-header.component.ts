@@ -73,7 +73,7 @@ export class AdminHeaderComponent {
 	}
 
 	goToCompany(): void {
-		this.router.navigate(['/admin/empresa/configuracion']);
+		this.router.navigate(['/admin/company/']);
 	}
 
 	logout() {

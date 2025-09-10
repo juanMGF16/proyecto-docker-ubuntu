@@ -546,7 +546,8 @@ namespace Entity.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("PersonId");
+                    b.HasIndex("PersonId")
+                        .IsUnique();
 
                     b.HasIndex("Username")
                         .IsUnique();
@@ -1009,11 +1010,9 @@ namespace Entity.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("InventaryId")
-                        .IsUnique();
+                    b.HasIndex("InventaryId");
 
-                    b.HasIndex("UserId")
-                        .IsUnique();
+                    b.HasIndex("UserId");
 
                     b.ToTable("Verification", "System");
                 });
@@ -1135,8 +1134,8 @@ namespace Entity.Migrations
             modelBuilder.Entity("Entity.Models.SecurityModule.User", b =>
                 {
                     b.HasOne("Entity.Models.SecurityModule.Person", "Person")
-                        .WithMany("Users")
-                        .HasForeignKey("PersonId")
+                        .WithOne("User")
+                        .HasForeignKey("Entity.Models.SecurityModule.User", "PersonId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -1298,14 +1297,14 @@ namespace Entity.Migrations
             modelBuilder.Entity("Entity.Models.System.Verification", b =>
                 {
                     b.HasOne("Entity.Models.System.Inventary", "Inventary")
-                        .WithOne("Verification")
-                        .HasForeignKey("Entity.Models.System.Verification", "InventaryId")
+                        .WithMany("Verifications")
+                        .HasForeignKey("InventaryId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("Entity.Models.SecurityModule.User", "User")
-                        .WithOne("Verification")
-                        .HasForeignKey("Entity.Models.System.Verification", "UserId")
+                        .WithMany("Verifications")
+                        .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
@@ -1364,7 +1363,8 @@ namespace Entity.Migrations
 
             modelBuilder.Entity("Entity.Models.SecurityModule.Person", b =>
                 {
-                    b.Navigation("Users");
+                    b.Navigation("User")
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Entity.Models.SecurityModule.Role", b =>
@@ -1392,8 +1392,7 @@ namespace Entity.Migrations
 
                     b.Navigation("UserRoles");
 
-                    b.Navigation("Verification")
-                        .IsRequired();
+                    b.Navigation("Verifications");
 
                     b.Navigation("Zone")
                         .IsRequired();
@@ -1413,8 +1412,7 @@ namespace Entity.Migrations
                 {
                     b.Navigation("InventaryDetails");
 
-                    b.Navigation("Verification")
-                        .IsRequired();
+                    b.Navigation("Verifications");
                 });
 
             modelBuilder.Entity("Entity.Models.System.Item", b =>

@@ -39,6 +39,11 @@ namespace Business.Repository.Implementations.Specific.System
             var active = await _general.GetAllItemsSpecific(id);
             return _mapper.Map<IEnumerable<ItemConsultDTO>>(active);
         }
+
+        //Specific
+
+
+        //Actions
         protected override Task BeforeCreateMap(ItemDTO dto, Item entity)
         {
             ValidationHelper.ThrowIfEmpty(dto.Name, "Name");

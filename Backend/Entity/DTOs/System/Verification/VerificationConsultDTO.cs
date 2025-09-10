@@ -14,7 +14,7 @@ namespace Entity.DTOs.System.Verification
         public DateTime Date { get; set; }
         public string Observations { get; set; } = string.Empty;
         public int InventaryId { get; set; }
-        public string InventaryObservations { get; set; }
+        public string InventaryObservations { get; set; } = string.Empty;
         public int UserId { get; set; }
         public string UserName { get; set; } = null!;
     }

@@ -6,6 +6,6 @@ namespace Data.Repository.Interfaces.General
     {
         Task<IEnumerable<T>> GetAllTotalAsync();
         Task<IEnumerable<T>> GetAllItemsSpecific(int id);
-
+        Task<IEnumerable<T>> GetAvailableZonesByUserAsync(int id);
     }
 }

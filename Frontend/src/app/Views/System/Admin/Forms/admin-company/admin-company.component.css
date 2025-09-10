@@ -1,0 +1,14 @@
+.layout-container {
+	display: flex;
+	flex-direction: column;
+	min-height: 100vh;
+	background: linear-gradient(135deg, var(--color-blue-variante-2) 0%, var(--color-blue-1000) 100%);
+}
+
+.main-content {
+	flex: 1;
+	/* display: flex; */
+	/* justify-content: center; */
+	/* align-items: center; */
+	padding: 2rem 1rem;
+}

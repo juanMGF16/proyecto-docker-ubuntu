@@ -1,7 +1,5 @@
-﻿
-using Data.Repository.Interfaces.System;
+﻿using Data.Repository.Interfaces.System;
 using Entity.Context;
-using Entity.Models.SecurityModule;
 using Entity.Models.System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;

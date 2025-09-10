@@ -72,7 +72,7 @@ namespace Business.AutoMapper
             // -----------------------
             CreateMap<Item, ItemDTO>().ReverseMap();
             CreateMap<Item, ItemConsultDTO>()
-                .ForMember(dest => dest.StateName, opt => opt.MapFrom(src => src.StateItem.Name))
+                .ForMember(dest => dest.StateItemName, opt => opt.MapFrom(src => src.StateItem.Name))
                 .ForMember(dest => dest.CategoryName, opt => opt.MapFrom(src => src.CategoryItem.Name))
                 .ForMember(dest => dest.ZoneName, opt => opt.MapFrom(src => src.Zone.Name))
                 .ReverseMap();

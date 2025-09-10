@@ -36,6 +36,10 @@ namespace Business.Repository.Implementations.Specific.SecurityModule
             return _mapper.Map<IEnumerable<ModuleDTO>>(active);
         }
 
+        //Specific
+
+
+        //Actions
         protected override Task BeforeCreateMap(ModuleDTO dto, Module entity)
         {
             ValidationHelper.ThrowIfEmpty(dto.Name, "Name");

@@ -6,11 +6,11 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { Router, RouterLink } from '@angular/router';
 import Swal from 'sweetalert2';
-import { ColombianPhoneDirective } from '../../../Components/Shared/Directives/colombian-phone.directive';
-import { OnlyNumbersDirective } from '../../../Components/Shared/Directives/only-numbers.directive';
 import { InitialHeaderComponent } from "../../../Components/System/Landing/initial-header/initial-navbar.component";
 import { AuthService } from '../../../Core/Service/Auth/auth.service';
 import { colombianPhoneValidator, emailValidator, strongPassword } from '../../../Core/Utils/input-validators.util';
+import { ColombianPhoneDirective } from '../../../Core/Directives/colombian-phone.directive';
+import { OnlyNumbersDirective } from '../../../Core/Directives/only-numbers.directive';
 
 @Component({
   selector: 'app-register',
@@ -99,7 +99,7 @@ export class RegisterComponent {
         Swal.fire({
           icon: 'success',
           title: 'Registro Exitoso',
-          text: 'Tu cuenta ha sido creada correctamente'
+          text: 'Registro exitoso. Revisa tu correo electrónico 📩'
         });
 
         this.router.navigate(['/Login']);

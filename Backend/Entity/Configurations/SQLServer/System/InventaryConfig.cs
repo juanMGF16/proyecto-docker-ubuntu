@@ -36,10 +36,10 @@ namespace Entity.Configurations.SQLServer.System
                 .HasForeignKey(d => d.InventaryId)
                 .OnDelete(DeleteBehavior.Cascade);
 
-            builder.HasOne(inv => inv.Verification)
-                .WithOne(v => v.Inventary)
-                .HasForeignKey<Verification>(v => v.InventaryId)
-                .OnDelete(DeleteBehavior.Cascade);
+            builder.HasMany(inv => inv.Verifications)
+               .WithOne(v => v.Inventary)
+               .HasForeignKey(v => v.InventaryId)
+               .OnDelete(DeleteBehavior.Cascade);
 
             builder.Property(x => x.CreatedAt).HasColumnType("datetime2(3)").IsRequired();
             builder.Property(x => x.UpdatedAt).HasColumnType("datetime2(3)");

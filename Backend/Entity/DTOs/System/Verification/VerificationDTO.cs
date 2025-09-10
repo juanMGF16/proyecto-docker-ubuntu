@@ -12,7 +12,7 @@ namespace Entity.DTOs.System.Verification
         public int Id { get; set; }
         public bool Result { get; set; } = true;
         public DateTime Date { get; set; }
-        public string Observations { get; set; }
+        public string Observations { get; set; } = string.Empty;
         public int InventaryId { get; set; }
         public int UserId { get; set; }
     }

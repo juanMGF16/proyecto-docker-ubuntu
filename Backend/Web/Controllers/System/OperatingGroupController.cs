@@ -1,5 +1,4 @@
 ﻿using Business.Repository.Interfaces.Specific.System;
-using Entity.DTOs.System.Branch;
 using Entity.DTOs.System.OperatingGroup;
 using Microsoft.AspNetCore.Mvc;
 using Utilities.Enums;

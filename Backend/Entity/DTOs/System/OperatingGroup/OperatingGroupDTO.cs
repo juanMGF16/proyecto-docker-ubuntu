@@ -10,7 +10,7 @@ namespace Entity.DTOs.System.OperatingGroup
     public class OperatingGroupDTO
     {
         public int Id { get; set; }
-        public string Name { get; set; }
+        public string Name { get; set; } = string.Empty;
         public DateTime DateStart { get; set; }
         public DateTime? DateEnd { get; set; }
 

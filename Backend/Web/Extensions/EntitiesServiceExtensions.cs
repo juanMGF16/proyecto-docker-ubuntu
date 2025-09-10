@@ -15,6 +15,7 @@ using Data.Repository.Implementations.Specific.System;
 using Data.Repository.Implementations.System;
 using Data.Repository.Interfaces;
 using Data.Repository.Interfaces.General;
+using Data.Repository.Interfaces.Specific.SecurityModule;
 using Entity.Models.ParametersModule;
 using Entity.Models.SecurityModule;
 using Entity.Models.System;
@@ -33,6 +34,7 @@ namespace Web.Extensions
 
             services.AddScoped<IUserBusiness, UserBusiness>();
             services.AddScoped<IGeneral<User>, UserData>();
+            services.AddScoped<IUserData, UserData>();
 
             services.AddScoped<IRoleBusiness, RoleBusiness>();
             services.AddScoped<IGeneral<Role>, RoleData>();

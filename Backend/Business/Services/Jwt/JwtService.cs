@@ -26,11 +26,11 @@ namespace Business.Services.JWTService
             {
                 Subject = new ClaimsIdentity(new[]
                 {
-            new Claim(ClaimTypes.NameIdentifier, userId.ToString()),
-            new Claim("personId", personId.ToString()),
-            new Claim(ClaimTypes.Name, username),
-            new Claim(ClaimTypes.Role, role)
-        }),
+                    new Claim(ClaimTypes.NameIdentifier, userId.ToString()),
+                    new Claim("personId", personId.ToString()),
+                    new Claim(ClaimTypes.Name, username),
+                    new Claim(ClaimTypes.Role, role)
+                }),
                 Expires = DateTime.UtcNow.AddMinutes(expiresInMinutes),
                 Issuer = jwtSettings["Issuer"],
                 Audience = jwtSettings["Audience"],

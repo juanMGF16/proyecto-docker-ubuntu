@@ -1,14 +1,14 @@
-export interface CompanyCreateDTO {
+export interface CompanyOptionsMod {
 	name: string;
 	businessName: string;
 	nit: string;
-	industry: number;
+	industryId: number;
 	email: string;
 	website?: string;
 	userId: number;
 }
 
-export interface CompanyConsultDTO {
+export interface CompanyMod {
 	id: number;
 	name: string;
 	businessName: string;
@@ -18,7 +18,11 @@ export interface CompanyConsultDTO {
 	email: string;
 	website?: string;
 	userId: number;
-	createdAt?: Date;
-	updatedAt?: Date;
 	state?: boolean;
+}
+
+export interface CompanyPartialUpdateMod {
+	id: number;
+	email?: string;
+	website?: string;
 }

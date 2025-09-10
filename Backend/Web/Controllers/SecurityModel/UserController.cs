@@ -74,9 +74,8 @@ namespace Web.Controllers.SecurityModel
             if (!int.TryParse(userIdClaim, out var userId))
                 return BadRequest(new { message = "El ID del usuario no es válido." });
 
-            return await TryExecuteAsync(() => _service.HasCompanyAsync(userId), "HasCompany");
+            return await TryExecuteAsync(() => _service.HasCompanyAsync(userId), "HasCompnay");
         }
-
 
         [HttpPost("Create/")]
         [Authorize(Roles = "SM_ACTION")]

@@ -4,7 +4,8 @@
         {
             public int Id { get; set; }
             public string Name { get; set; } = string.Empty;
-
-            public int StateItemId { get; set; }
+            public string Description { get; set; }
+            public string StateItemName { get; set; }
+            //public int StateItemId { get; set; }
         }
     }
