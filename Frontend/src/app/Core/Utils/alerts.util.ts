@@ -14,3 +14,15 @@ export function confirmLogout(): Promise<SweetAlertResult<any>> {
 export function successMessage(title: string, text: string = "") {
   return Swal.fire(title, text, "success");
 }
+
+export function errorMessage(title: string, text: string = "") {
+  return Swal.fire(title, text, "error");
+}
+
+export function infoMessage(title: string, text: string = "") {
+  return Swal.fire(title, text, "info");
+}
+
+export function warningMessage(title: string, text: string = "") {
+  return Swal.fire(title, text, "warning");
+}

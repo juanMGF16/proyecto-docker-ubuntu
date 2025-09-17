@@ -1,15 +1,16 @@
-import { Component, OnInit, inject, signal } from '@angular/core';
+import { Component, Inject, OnInit, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatIconModule } from '@angular/material/icon';
-import { RouterModule } from '@angular/router';
+import { Router} from '@angular/router';
 import { AuthService } from '../../../../../Core/Service/Auth/auth.service';
 import { PersonService } from '../../../../../Core/Service/SecurityModule/person.service';
 import { AdminEditProfileModalComponent } from '../../../../../Components/System/Admin/Modal/admin-edit-profile/admin-edit-profile.component';
-import { AdminChangePasswordModalComponent } from '../../../../../Components/System/Admin/Modal/admin-change-password/admin-change-passwordcomponent';
+import { ChangePasswordModalComponent } from '../../../../../Components/Shared/Modals/change-password/change-passwordcomponent';
 import { catchError, of } from 'rxjs';
 import { PersonMod } from '../../../../../Core/Models/SecurityModule/PersonMod.model';
+import { UserService } from '../../../../../Core/Service/SecurityModule/user.service';
 
 @Component({
 	selector: 'app-admin-profile',
@@ -19,16 +20,17 @@ import { PersonMod } from '../../../../../Core/Models/SecurityModule/PersonMod.m
 		MatButtonModule,
 		MatIconModule,
 		MatTabsModule,
-		RouterModule,
 		AdminEditProfileModalComponent,
-		AdminChangePasswordModalComponent
+		ChangePasswordModalComponent
 	],
 	templateUrl: './admin-profile.component.html',
 	styleUrls: ['./admin-profile.component.css']
 })
 export class AdminProfileComponent implements OnInit {
+	private readonly router = inject(Router);
 	private readonly authService = inject(AuthService);
 	private readonly personService = inject(PersonService);
+	private readonly userService = inject(UserService);
 
 	// Signals
 	user = signal<PersonMod | null>(null);
@@ -38,17 +40,26 @@ export class AdminProfileComponent implements OnInit {
 	isLoading = signal(true);
 	error = signal<string | null>(null);
 
+	companyId: number | null = null;
+
 	// Diccionario de tipos de documento
 	private readonly documentTypes: Record<string, string> = {
 		RC: 'Registro Civil',
 		TI: 'Tarjeta de Identidad',
 		CC: 'Cédula de Ciudadanía',
 		CE: 'Cédula de Extranjería',
-		NIT: 'NIT',
 		PP: 'Pasaporte'
 	};
 
 	ngOnInit(): void {
+		this.userService.hasCompany().subscribe({
+			next: (res) => {
+				if (res.hasCompany && res.companyId) {
+					this.companyId = res.companyId;
+				}
+			},
+			error: (err) => console.error('Error obteniendo empresa del usuario:', err)
+		});
 		this.loadUserData();
 	}
 
@@ -144,5 +155,13 @@ export class AdminProfileComponent implements OnInit {
 	getDocumentLabel(code: string | null | undefined): string {
 		if (!code) return 'N/A';
 		return this.documentTypes[code] ?? code;
+	}
+
+	goToBack(){
+		if(this.companyId){
+			this.router.navigate(['/admin/dashboard'])
+		}else{
+			this.router.navigate(['/admin/welcome'])
+		}
 	}
 }

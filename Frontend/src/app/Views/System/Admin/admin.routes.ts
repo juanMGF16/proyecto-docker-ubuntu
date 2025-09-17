@@ -21,8 +21,8 @@ export const ADMIN_ROUTES: Routes = [
 			{ path: 'register-company', component: RegisterCompanyComponent },
 			{ path: 'profile', component: AdminProfileComponent },
 			{ path: 'company', component: AdminCompanyComponent },
-			{ path: 'branch/:id', component: AdminBranchComponent },
 			{ path: 'register-branch', component: RegisterBranchComponent },
+			{ path: 'branch/:id', component: AdminBranchComponent },
 			{ path: 'subadmins-list', component: AdminSubadminsComponent },
       { path: '', redirectTo: 'dashboard', pathMatch: 'full' }
     ]

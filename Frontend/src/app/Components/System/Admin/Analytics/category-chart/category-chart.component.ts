@@ -1,25 +1,55 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges } from '@angular/core';
+import { Component, Input, OnChanges, OnDestroy, SimpleChanges, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
 import { Chart, ChartConfiguration, registerables } from 'chart.js';
+import { MatIconModule } from "@angular/material/icon";
 
-// Registramos todos los elementos de Chart.js
 Chart.register(...registerables);
 
 @Component({
 	selector: 'app-category-chart',
 	standalone: true,
-	imports: [CommonModule],
+	imports: [CommonModule, MatIconModule],
 	templateUrl: './category-chart.component.html',
 	styleUrl: './category-chart.component.css'
 })
-export class CategoryChartComponent implements OnChanges, OnDestroy {
+export class CategoryChartComponent implements OnChanges, AfterViewInit, OnDestroy {
 	@Input() data!: { [category: string]: number };
+	@ViewChild('chartCanvas') chartCanvas!: ElementRef<HTMLCanvasElement>;
 
+	hasData = false;
 	private chart: Chart | null = null;
+	private viewInitialized = false;
+
+	ngAfterViewInit() {
+		this.viewInitialized = true;
+		this.evaluateData();
+	}
 
 	ngOnChanges(changes: SimpleChanges) {
-		if (changes['data'] && this.data) {
-			this.updateChart();
+		if (changes['data']) {
+			this.evaluateData();
+		}
+	}
+
+	private evaluateData() {
+		// Verificar si hay datos válidos
+		const validData = this.data &&
+			Object.keys(this.data).length > 0 &&
+			Object.values(this.data).some(v => v > 0);
+
+		this.hasData = !!validData;
+
+		// Solo intentar crear/actualizar el gráfico si la vista está inicializada
+		if (this.viewInitialized) {
+			if (this.hasData) {
+				// Usar setTimeout para asegurar que el DOM se actualice
+				setTimeout(() => {
+					this.updateChart();
+				}, 0);
+			} else if (this.chart) {
+				this.chart.destroy();
+				this.chart = null;
+			}
 		}
 	}
 
@@ -30,34 +60,43 @@ export class CategoryChartComponent implements OnChanges, OnDestroy {
 	}
 
 	private updateChart() {
-		// Destruir el gráfico existente si hay uno
 		if (this.chart) {
 			this.chart.destroy();
+			this.chart = null;
 		}
-
 		this.createChart();
 	}
 
 	private createChart() {
-		const ctx = document.getElementById('categoryChart') as HTMLCanvasElement;
+		if (!this.hasData) return;
 
-		if (!ctx) return;
+		const ctx = this.chartCanvas?.nativeElement;
+		if (!ctx) {
+			console.warn('Canvas element not found');
+			return;
+		}
 
-		const categories = Object.keys(this.data);
-		const counts = Object.values(this.data);
+		const filteredData = Object.entries(this.data)
+			.filter(([_, value]) => value > 0)
+			.map(([status, count]) => ({ status, count }));
+
+		if (filteredData.length === 0) return;
+
+		const finalCategories = filteredData.map(item => item.status);
+		const finalCounts = filteredData.map(item => item.count);
 
 		const config: ChartConfiguration = {
 			type: 'bar',
 			data: {
-				labels: categories,
+				labels: finalCategories,
 				datasets: [{
 					label: 'Ítems por Categoría',
-					data: counts,
-					backgroundColor: this.generateGradientColors(categories.length),
+					data: finalCounts,
+					backgroundColor: this.generateGradientColors(finalCategories.length),
 					borderColor: 'rgba(255, 255, 255, 0.1)',
 					borderWidth: 1,
 					borderRadius: 6,
-					hoverBackgroundColor: this.generateHoverColors(categories.length)
+					hoverBackgroundColor: this.generateHoverColors(finalCategories.length)
 				}]
 			},
 			options: {

@@ -43,9 +43,9 @@ export class BaseFormPivoteComponent implements OnInit, OnChanges {
   showReactivarToggle = false;
   reactivarUsuario = false;
 
-  private authService = inject(AuthService);
-  private fb = inject(FormBuilder);
-  private router = inject(Router);
+  private readonly authService = inject(AuthService);
+  private readonly fb = inject(FormBuilder);
+  private readonly router = inject(Router);
 
   ngOnInit(): void {
     this.buildForm();

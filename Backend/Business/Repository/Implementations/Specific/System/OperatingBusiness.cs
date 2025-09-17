@@ -42,14 +42,14 @@ namespace Business.Repository.Implementations.Specific.System
         //Actions
         protected override Task BeforeCreateMap(OperatingDTO dto, Operating entity)
         {
-            ValidationHelper.EnsureValidId(dto.UserId, "userId");
+            ValidationHelper.EnsureValidId(dto.OperatingId, "userId");
             ValidationHelper.EnsureValidId(dto.OperationalGroupId, "OperationalGroupId");
             return Task.CompletedTask;
         }
 
         protected override Task BeforeUpdateMap(OperatingDTO dto, Operating entity)
         {
-            ValidationHelper.EnsureValidId(dto.UserId, "UserId");
+            ValidationHelper.EnsureValidId(dto.OperatingId, "UserId");
             ValidationHelper.EnsureValidId(dto.OperationalGroupId, "OperationalGroupId");
             return Task.CompletedTask;
         }
@@ -57,16 +57,16 @@ namespace Business.Repository.Implementations.Specific.System
         protected override async Task ValidateBeforeCreateAsync(OperatingDTO dto)
         {
             var existing = await _data.GetAllAsync();
-            if (existing.Any(e => e.UserId == dto.UserId && e.OperationalGroupId == dto.OperationalGroupId))
+            if (existing.Any(e => e.UserId == dto.OperatingId && e.OperationalGroupId == dto.OperationalGroupId))
                 throw new ValidationException("Ya existe una relación con esos IDs.");
         }
 
         protected override async Task ValidateBeforeUpdateAsync(OperatingDTO dto, Operating existingEntity)
         {
-            if (dto.UserId != existingEntity.UserId || dto.OperationalGroupId != existingEntity.OperationalGroupId)
+            if (dto.OperatingId != existingEntity.UserId || dto.OperationalGroupId != existingEntity.OperationalGroupId)
             {
                 var existing = await _data.GetAllAsync();
-                if (existing.Any(e => e.UserId == dto.UserId && e.OperationalGroupId == dto.OperationalGroupId && e.Id != dto.Id))
+                if (existing.Any(e => e.UserId == dto.OperatingId && e.OperationalGroupId == dto.OperationalGroupId && e.Id != dto.Id))
                     throw new ValidationException("Ya existe una relación con esos IDs.");
             }
         }

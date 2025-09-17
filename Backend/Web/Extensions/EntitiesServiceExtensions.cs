@@ -16,6 +16,7 @@ using Data.Repository.Implementations.System;
 using Data.Repository.Interfaces;
 using Data.Repository.Interfaces.General;
 using Data.Repository.Interfaces.Specific.SecurityModule;
+using Data.Repository.Interfaces.System;
 using Entity.Models.ParametersModule;
 using Entity.Models.SecurityModule;
 using Entity.Models.System;
@@ -31,6 +32,7 @@ namespace Web.Extensions
             // -----------------------
             services.AddScoped<IPersonBusiness, PersonBusiness>();
             services.AddScoped<IGeneral<Person>, PersonData>();
+            services.AddScoped<IPersonData, PersonData>();
 
             services.AddScoped<IUserBusiness, UserBusiness>();
             services.AddScoped<IGeneral<User>, UserData>();
@@ -50,6 +52,8 @@ namespace Web.Extensions
 
             services.AddScoped<IUserRoleBusiness, UserRoleBusiness>();
             services.AddScoped<IGeneral<UserRole>, UserRoleData>();
+            services.AddScoped<IUserRoleData, UserRoleData>();
+
 
             services.AddScoped<IFormModuleBusiness, FormModuleBusiness>();
             services.AddScoped<IGeneral<FormModule>, FormModuleData>();
@@ -78,12 +82,16 @@ namespace Web.Extensions
 
             services.AddScoped<ICompanyBusiness, CompanyBusiness>();
             services.AddScoped<IGeneral<Company>, CompanyData>();
+            services.AddScoped<ICompany, CompanyData>();
 
             services.AddScoped<IBranchBusiness, BranchBusiness>();
             services.AddScoped<IGeneral<Branch>, BranchData>();
+            services.AddScoped<IBranch, BranchData>();
 
             services.AddScoped<IZoneBusiness, ZoneBusiness>();
             services.AddScoped<IGeneral<Zone>, ZoneData>();
+            services.AddScoped<IZone, ZoneData>();
+
 
             services.AddScoped<IInventaryBusiness, InventaryBusiness>();
             services.AddScoped<IGeneral<Inventary>, InventaryData>();

@@ -34,7 +34,8 @@
 
 					<!-- Email -->
 					<div class="custom-input-group">
-						<input id="email" type="email" formControlName="email" required placeholder="Ej:correo@dominio.com">
+						<input id="email" type="email" formControlName="email" required
+							placeholder="Ej:correo@dominio.com">
 						<label for="email">Email</label>
 						<div class="error-message"
 							*ngIf="registerForm.get('email')?.invalid && registerForm.get('email')?.touched">
@@ -63,26 +64,27 @@
 					<!-- Número de Documento -->
 					<div class="custom-input-group">
 						<input id="documentNumber" type="text" formControlName="documentNumber" required placeholder=" "
-							appOnlyNumbers minlength="6" maxlength="10">
+							appNumericInput [maxLength]="10">
 						<label for="documentNumber">Número de Documento</label>
 						<div class="error-message"
 							*ngIf="registerForm.get('documentNumber')?.invalid && registerForm.get('documentNumber')?.touched">
 							<span *ngIf="registerForm.get('documentNumber')?.hasError('required')">Este campo es
 								requerido</span>
-							<span *ngIf="registerForm.get('documentNumber')?.hasError('pattern')">Solo números (6-10
-								dígitos)</span>
+							<span *ngIf="registerForm.get('documentNumber')?.hasError('documentNumber')">{{
+								registerForm.get('documentNumber')?.getError('documentNumber') }}</span>
 						</div>
 					</div>
 
 					<!-- Teléfono Celular -->
 					<div class="custom-input-group">
-						<input id="phone" type="text" formControlName="phone" required placeholder="Ej:3123456789" appColombianPhone
-							[maxLength]="10" [mustStartWith]="'3'">
+						<input id="phone" type="text" formControlName="phone" required placeholder="Ej:3123456789"
+							appNumericInput [maxLength]="10">
 						<label for="phone">Teléfono Celular</label>
 						<div class="error-message"
 							*ngIf="registerForm.get('phone')?.invalid && registerForm.get('phone')?.touched">
 							<span *ngIf="registerForm.get('phone')?.hasError('required')">Este campo es requerido</span>
-							<span *ngIf="registerForm.get('phone')?.hasError('colombianPhone')">Formato inválido</span>
+							<span *ngIf="registerForm.get('phone')?.hasError('colombianPhone')">{{
+								registerForm.get('phone')?.getError('colombianPhone') }}</span>
 						</div>
 					</div>
 				</div>
@@ -127,8 +129,8 @@
 				</div>
 
 				<!-- Botón de registro -->
-				<button mat-raised-button type="submit" [disabled]="registerForm.invalid || isSubmit()">
-					{{ isSubmit() ? 'Registrando...' : 'Registrarse' }}
+				<button mat-raised-button type="submit" [disabled]="registerForm.invalid || isSubmitting()">
+					Registrarse
 				</button>
 
 				<!-- Enlace a login -->

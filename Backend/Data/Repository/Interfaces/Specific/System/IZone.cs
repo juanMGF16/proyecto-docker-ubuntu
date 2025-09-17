@@ -1,11 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Entity.Models.System;
+﻿using Entity.Models.System;
+using Microsoft.EntityFrameworkCore.Storage;
 
 namespace Data.Repository.Interfaces.System
 {
-    public interface IZone : IGenericData<Zone> { }
+    public interface IZone : IGenericData<Zone> {
+        //Contexto para transcciones
+        Task<IDbContextTransaction> BeginTransactionAsync();
+
+        //Specific
+        Task<IEnumerable<Zone>> GetZonesByBranchAsync(int branchId);
+        Task<Zone?> GetZoneDetailsAsync(int zoneId);
+        Task<IEnumerable<Zone>> GetInChargesAsync(int branchId);
+        Task<Zone?> GetZoneByAreaManagerAsync(int userId);
+    }
 }

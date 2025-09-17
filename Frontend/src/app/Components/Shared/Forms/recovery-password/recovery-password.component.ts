@@ -7,6 +7,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { InitialHeaderComponent } from '../../../System/Landing/initial-header/initial-navbar.component';
 import { AuthService } from '../../../../Core/Service/Auth/auth.service';
 import Swal from 'sweetalert2';
+import { performLogout } from '../../../../Core/Utils/auth.util';
 
 @Component({
 	selector: 'app-recovery-password',
@@ -189,7 +190,7 @@ export class RecoveryPasswordComponent implements OnInit {
 					text: 'Tu contraseña ha sido cambiada correctamente.',
 					confirmButtonText: 'Ir al login'
 				}).then(() => {
-					this.authService.logout();
+					performLogout(this.router);
 					this.router.navigate(['/Login']);
 				});
 			},

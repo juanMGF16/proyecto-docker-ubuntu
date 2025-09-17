@@ -3,7 +3,7 @@
 		<div class="profile-container">
 			<!-- Header -->
 			<header class="profile-header">
-				<button mat-icon-button class="back-button" [routerLink]="'/admin/dashboard'">
+				<button mat-icon-button class="back-button" (click)="goToBack()">
 					<mat-icon>arrow_back</mat-icon>
 				</button>
 				<div class="header-content">
@@ -96,13 +96,13 @@
 													<p>{{ user()?.documentNumber || 'No especificado' }}</p>
 												</div>
 											</div>
-											<div class="info-item">
+											<!-- <div class="info-item">
 												<mat-icon>calendar_today</mat-icon>
 												<div class="info-content">
 													<label>Último acceso</label>
 													<p>{{ lastLogin() | date:'medium' }}</p>
 												</div>
-											</div>
+											</div> -->
 										</div>
 									</section>
 								</mat-tab>
@@ -149,7 +149,7 @@
 }
 
 @if (isPasswordModalOpen()) {
-<app-admin-change-password-modal [isOpen]="isPasswordModalOpen()" (onClose)="closePasswordModal()"
+<app-change-password-modal [isOpen]="isPasswordModalOpen()" (onClose)="closePasswordModal()"
 	(onSuccess)="onPasswordChanged()">
-</app-admin-change-password-modal>
+</app-change-password-modal>
 }

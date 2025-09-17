@@ -33,4 +33,8 @@
     <ProjectReference Include="..\Utilities\Utilities.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="DTOs\System\Dashboard\DashBranch\" />
+  </ItemGroup>
+
 </Project>

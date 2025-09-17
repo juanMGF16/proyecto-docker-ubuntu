@@ -18,7 +18,7 @@ export interface CompanyMod {
 	email: string;
 	website?: string;
 	userId: number;
-	state?: boolean;
+	active?: boolean;
 }
 
 export interface CompanyPartialUpdateMod {

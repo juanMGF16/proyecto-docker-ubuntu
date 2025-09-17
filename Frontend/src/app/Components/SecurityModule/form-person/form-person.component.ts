@@ -11,9 +11,10 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { Router } from '@angular/router';
 import { PersonMod } from '../../../Core/Models/SecurityModule/PersonMod.model';
 import { AuthService } from '../../../Core/Service/Auth/auth.service';
-import { colombianPhoneValidator, emailValidator } from '../../../Core/Utils/input-validators.util';
-import { ColombianPhoneDirective } from '../../../Core/Directives/colombian-phone.directive';
-import { OnlyNumbersDirective } from '../../../Core/Directives/only-numbers.directive';
+import { colombianPhoneValidator, documentNumberValidator, emailValidator } from '../../../Core/Utils/input-validators.util';
+import { NumericInputDirective } from '../../../Core/Directives/numeric-input.directive';
+
+
 
 
 
@@ -30,8 +31,7 @@ import { OnlyNumbersDirective } from '../../../Core/Directives/only-numbers.dire
 		MatButtonModule,
 		MatIconModule,
 		MatTooltipModule,
-		OnlyNumbersDirective,
-		ColombianPhoneDirective,
+		NumericInputDirective
 	],
 	templateUrl: './form-person.component.html',
 	styleUrls: ['./form-person.component.css']
@@ -56,7 +56,6 @@ export class FormPersonComponent implements OnInit, OnChanges {
 		{ value: 'TI', label: 'Tarjeta de Identidad' },
 		{ value: 'CC', label: 'Cédula de Ciudadanía' },
 		{ value: 'CE', label: 'Cédula de Extranjería' },
-		{ value: 'NIT', label: 'N° Identificación Tributaria' },
 		{ value: 'PP', label: 'Pasaporte' }
 	];
 
@@ -88,16 +87,10 @@ export class FormPersonComponent implements OnInit, OnChanges {
 		this.formPerson = this.fb.group({
 			name: ['', [Validators.required, Validators.minLength(3)]],
 			lastName: ['', [Validators.required, Validators.minLength(3)]],
-			email: ['', [Validators.required, emailValidator()]], // ← Quité Validators.email
+			email: ['', [Validators.required, emailValidator()]],
 			documentType: ['', Validators.required],
-			documentNumber: ['', [
-				Validators.required,
-				Validators.pattern(/^[0-9]{6,10}$/),
-			]],
-			phone: ['', [
-				Validators.required,
-				colombianPhoneValidator()
-			]],
+			documentNumber: ['', [Validators.required, documentNumberValidator(6, 10)]],
+			phone: ['', [ Validators.required, colombianPhoneValidator()]],
 			active: [true]
 		});
 	}

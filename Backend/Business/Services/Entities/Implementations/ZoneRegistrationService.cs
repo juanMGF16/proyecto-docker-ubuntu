@@ -1,0 +1,191 @@
+﻿using Business.Repository.Interfaces.Specific.System;
+using Business.Services.CredentialGenerator.Interfaces;
+using Business.Services.Entities.Interfaces;
+using Business.Services.SendEmail.Interfaces;
+using Data.Repository.Interfaces.Specific.SecurityModule;
+using Data.Repository.Interfaces.System;
+using Entity.DTOs.System.Zone.NestedCreation;
+using Entity.Models.SecurityModule;
+using Entity.Models.System;
+using Microsoft.Extensions.Logging;
+using Utilities.Exceptions;
+using Utilities.Helpers;
+using Utilities.Templates;
+
+namespace Business.Services.Entities.Implementations
+{
+    public class ZoneRegistrationService : IZoneRegistrationService
+    {
+        private readonly IZone _zoneData;
+        private readonly IPersonData _personData;
+        private readonly IUserData _userData;
+        private readonly IBranch _branchData;
+        private readonly IBranchBusiness _branchBusiness;
+        private readonly IUserRoleData _userRoleData;
+        private readonly ICredentialGeneratorService _credentialGenerator;
+        private readonly IEmailService _emailService;
+        private readonly ILogger<ZoneRegistrationService> _logger;
+
+        public ZoneRegistrationService(
+            IZone zoneData,
+            IPersonData personData,
+            IUserData userData,
+            IBranch branchData,
+            IBranchBusiness branchBusiness,
+            IUserRoleData userRoleData,
+            ICredentialGeneratorService credentialGenerator,
+            IEmailService emailService,
+            ILogger<ZoneRegistrationService> logger)
+        {
+            _zoneData = zoneData;
+            _personData = personData;
+            _userData = userData;
+            _branchData = branchData;
+            _branchBusiness = branchBusiness;
+            _userRoleData = userRoleData;
+            _credentialGenerator = credentialGenerator;
+            _emailService = emailService;
+            _logger = logger;
+        }
+
+        public async Task<ZoneCreateResponseDTO> CreateZoneWithEncZoneAsync(ZoneCreateRequestDTO request)
+        {
+            // Validaciones iniciales
+            await ValidateRequestAsync(request);
+            using var transaction = await _zoneData.BeginTransactionAsync();
+
+            try
+            {
+                // 1. Verificar que la compañía existe
+                var branch = await _branchData.GetByIdAsync(request.BranchId);
+                if (branch == null)
+                    throw new ValidationException("BranchId", "La sucursal especificada no existe");
+
+                // 2. Crear Persona
+                var person = new Person
+                {
+                    Name = request.PersonName.Trim(),
+                    LastName = request.PersonLastName.Trim(),
+                    Email = request.PersonEmail.ToLower().Trim(),
+                    DocumentType = request.PersonDocumentType.Trim(),
+                    DocumentNumber = request.PersonDocumentNumber.Trim(),
+                    Phone = request.PersonPhone.Trim(),
+                    Active = true
+                };
+
+                var createdPerson = await _personData.CreateAsync(person);
+
+                // 3. Generar credenciales automáticas
+                var (username, password) = _credentialGenerator.GenerateCredentials(
+                    request.PersonName,
+                    request.PersonLastName,
+                    request.PersonEmail
+                );
+
+                // 4. Crear Usuario
+                var user = new User
+                {
+                    Username = username,
+                    Password = PasswordHelper.Hash(password),
+                    PersonId = createdPerson.Id,
+                    Active = true
+                };
+
+                var createdUser = await _userData.CreateAsync(user);
+
+                // 5. Crear UserRole 
+                var userRole = new UserRole
+                {
+                    UserId = createdUser.Id,
+                    RoleId = 4,
+                    Active = true
+                };
+
+                var createdUserRole = await _userRoleData.CreateAsync(userRole);
+
+                // 6. Crear Sucursal
+                var zone = new Zone
+                {
+                    Name = request.ZoneName.Trim(),
+                    Description = request.ZoneDescription.Trim(),
+                    StateZone = Utilities.Enums.Models.StateZone.Available,
+                    BranchId = request.BranchId,
+                    UserId = createdUser.Id,
+                    Active = true
+                };
+
+                var createdZone = await _zoneData.CreateAsync(zone);
+
+                var companyName = await _branchBusiness.GetByIdAsync(branch.Id);
+
+                // 7. Enviar email con credenciales
+                var emailSent = await SendWelcomeEmailAsync(
+                    request.PersonEmail,
+                    request.PersonName,
+                    username,
+                    password,
+                    request.ZoneName,
+                    companyName.CompanyName
+                );
+
+                // 8. Log de la operación
+                _logger.LogInformation("Branch created successfully: {ZoneName} with enc. zone {UserName}",
+                    request.ZoneName, username);
+
+                await transaction.CommitAsync();
+
+                return new ZoneCreateResponseDTO
+                {
+                    ZoneId = createdZone.Id,
+                    ZoneName = createdZone.Name,
+                    PersonId = createdPerson.Id,
+                    PersonFullName = $"{createdPerson.Name} {createdPerson.LastName}",
+                    UserId = createdUser.Id,
+                    Username = username,
+                    GeneratedPassword = "🤡",
+                    EmailSent = emailSent
+                };
+            }
+            catch (Exception ex)
+            {
+                await transaction.RollbackAsync();
+                _logger.LogError(ex, "Error creating zone with enc. zone");
+                throw;
+            }
+        }
+
+        private async Task ValidateRequestAsync(ZoneCreateRequestDTO request)
+        {
+            // Validar email único
+            var emailExists = await _personData.EmailExistsAsync(request.PersonEmail);
+            if (emailExists)
+                throw new ValidationException("PersonEmail", "El email ya está registrado en el sistema");
+
+            // Validar documento único
+            var docExists = await _personData.DocumentExistsAsync(request.PersonDocumentType, request.PersonDocumentNumber);
+            if (docExists)
+                throw new ValidationException("PersonDocumentNumber", "El número de documento ya está registrado");
+
+            // Validar teléfono único
+            var phoneExists = await _personData.PhoneExistsAsync(request.PersonPhone);
+            if (phoneExists)
+                throw new ValidationException("PersonPhone", "El teléfono ya está registrado");
+        }
+
+        private async Task<bool> SendWelcomeEmailAsync(string email, string name, string username, string password, string zoneName, string companyName)
+        {
+            try
+            {
+                var subject = $"🎉 Bienvenido a {zoneName} - Tus Credenciales";
+                var body = EmailTemplates.GetUserWelcomeTemplate(name, username, password, zoneName, "Encargado de Zona", companyName);
+
+                return await _emailService.SendEmailAsync(email, subject, body, true);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error sending welcome email to {Email}", email);
+                return false;
+            }
+        }
+    }
+}

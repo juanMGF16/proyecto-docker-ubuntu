@@ -1,8 +1,10 @@
 ﻿using Data.Repository.Interfaces.Specific.System.Others;
 using Entity.Context;
-using Entity.DTOs.System.Dashboard;
-using Entity.Models.SecurityModule;
+using Entity.DTOs.System.Dashboard.DashBranch;
+using Entity.DTOs.System.Dashboard.DashCompany;
+using Entity.Models.System;
 using Microsoft.EntityFrameworkCore;
+using Utilities.Exceptions;
 
 namespace Data.Repository.Implementations.Specific.System.Others
 {
@@ -15,6 +17,7 @@ namespace Data.Repository.Implementations.Specific.System.Others
             _context = context;
         }
 
+        //Dahsboard Company
         public async Task<DashboardDTO> GetDashboardAsync(DashboardFilterDTO filter)
         {
             // Base queries (AsNoTracking porque son lecturas)
@@ -50,7 +53,7 @@ namespace Data.Repository.Implementations.Specific.System.Others
                 TotalItems = await itemsQuery.CountAsync(),
                 TotalZones = await zonesQuery.CountAsync(),
                 TotalBranches = await branchesQuery.CountAsync(),
-                UsersByRole = await GetUsersByRoleAsync(filter.CompanyId, filter.BranchId, filter.ZoneId) 
+                UsersByRole = await GetUsersByRoleAsync(filter.CompanyId, filter.BranchId, filter.ZoneId)
 
             };
 
@@ -162,6 +165,144 @@ namespace Data.Repository.Implementations.Specific.System.Others
             return roleCounts;
         }
 
+        //Dashboard Branch
+        public async Task<BranchDashboardDTO> GetBranchDashboardAsync(int branchId)
+        {
+            // validar existencia básica
+            var branch = await _context.Branch
+                .AsNoTracking()
+                .FirstOrDefaultAsync(b => b.Id == branchId && b.Active);
+
+            if (branch == null)
+                throw new EntityNotFoundException(nameof(Branch), branchId);
+
+            var dto = new BranchDashboardDTO
+            {
+                BranchId = branch.Id,
+                BranchName = branch.Name,
+                Address = branch.Address,
+                Phone = branch.Phone
+            };
+
+            // KPIs básicos
+            dto.TotalZones = await _context.Zone
+                .AsNoTracking()
+                .CountAsync(z => z.Active && z.BranchId == branchId);
+
+            dto.TotalItems = await _context.Item
+                .AsNoTracking()
+                .CountAsync(i => i.Active && i.Zone.BranchId == branchId);
+
+            // Encargados de zona = usuarios asignados a zonas de la sucursal (distinct)
+            dto.TotalZoneManagers = await _context.Zone
+                .AsNoTracking()
+                .Where(z => z.Active && z.BranchId == branchId && z.UserId > 0)
+                .Select(z => z.UserId)
+                .Distinct()
+                .CountAsync();
+
+            // Operativos: distinct Operating.UserId asociados a inventarios (inventories) en esta branch
+            var operativosQuery = from o in _context.Operating.AsNoTracking()
+                                  join inv in _context.Inventary.AsNoTracking() on o.OperationalGroupId equals inv.OperatingGroupId
+                                  where inv.Active && inv.Zone.BranchId == branchId && o.Active
+                                  select o.UserId;
+
+            dto.TotalOperatives = await operativosQuery.Distinct().CountAsync();
+
+            // Inventarios en el mes actual (UTC). Ajusta zona horaria si usas local.
+            var now = DateTime.UtcNow;
+            var monthStart = new DateTime(now.Year, now.Month, 1);
+            var monthEnd = monthStart.AddMonths(1);
+            dto.InventoriesThisMonth = await _context.Inventary
+                .AsNoTracking()
+                .CountAsync(inv => inv.Active && inv.Zone.BranchId == branchId && inv.Date >= monthStart && inv.Date < monthEnd);
+
+            // Zones summary (items count + encargado info). EF traducirá las nav props en JOINs.
+            dto.Zones = await _context.Zone
+                .AsNoTracking()
+                .Where(z => z.Active && z.BranchId == branchId)
+                .Select(z => new ZoneSummaryDashDTO
+                {
+                    ZoneId = z.Id,
+                    ZoneName = z.Name,
+                    State = z.StateZone.ToString(),
+                    ItemsCount = _context.Item.Count(i => i.Active && i.ZoneId == z.Id),
+                    InChargeUserId = z.UserId,
+                    InChargeFullName = (z.User.Person != null ? (z.User.Person.Name + " " + z.User.Person.LastName) : string.Empty),
+                    InChargeEmail = (z.User.Person != null ? z.User.Person.Email : string.Empty)
+                })
+                .ToListAsync();
+
+            // Items by category
+            dto.ItemsByCategory = await _context.Item
+                .AsNoTracking()
+                .Where(i => i.Active && i.Zone.BranchId == branchId && i.CategoryItem != null)
+                .GroupBy(i => i.CategoryItem.Name)
+                .Select(g => new { Category = g.Key, Count = g.Count() })
+                .ToDictionaryAsync(x => x.Category ?? "Sin categoría", x => x.Count);
+
+            // Items by state
+            dto.ItemsByState = await _context.Item
+                .AsNoTracking()
+                .Where(i => i.Active && i.Zone.BranchId == branchId && i.StateItem != null)
+                .GroupBy(i => i.StateItem.Name)
+                .Select(g => new { State = g.Key, Count = g.Count() })
+                .ToDictionaryAsync(x => x.State ?? "Sin estado", x => x.Count);
+
+            // Recent inventories (últimos 5) + traer el resultado de verificación más reciente si existe
+            // Nota: si tu versión de EF no traduce la subconsulta, puedes hacer una segunda query para los verifications.
+            var recent = await _context.Inventary
+                .AsNoTracking()
+                .Where(inv => inv.Active && inv.Zone.BranchId == branchId)
+                .OrderByDescending(inv => inv.Date)
+                .Take(5)
+                .Select(inv => new
+                {
+                    inv.Id,
+                    inv.Date,
+                    ZoneName = inv.Zone.Name,
+                    GroupName = inv.OperatingGroup.Name,
+                    LatestVerificationResult = _context.Verification
+                        .Where(v => v.Active && v.InventaryId == inv.Id)
+                        .OrderByDescending(v => v.Date)
+                        .Select(v => (bool?)v.Result)
+                        .FirstOrDefault()
+                })
+                .ToListAsync();
+
+            dto.RecentInventories = recent.Select(r => new RecentInventoryDTO
+            {
+                InventaryId = r.Id,
+                Date = r.Date,
+                ZoneName = r.ZoneName,
+                OperatingGroupName = r.GroupName,
+                VerificationResult = r.LatestVerificationResult
+            }).ToList();
+
+            return dto;
+        }
+
+        //Dashboard Zone
+        public async Task<Zone?> GetZoneDashboardAsync(int zoneId)
+        {
+            return await _context.Zone
+                .Include(z => z.Items).ThenInclude(i => i.StateItem)
+                .Include(z => z.Items).ThenInclude(i => i.CategoryItem)
+                .Include(z => z.Inventories).ThenInclude(inv => inv.InventaryDetails).ThenInclude(d => d.StateItem)
+                .Include(z => z.Inventories).ThenInclude(inv => inv.OperatingGroup).ThenInclude(g => g.Operatings).ThenInclude(op => op.User).ThenInclude(u => u.Person)
+                .Include(z => z.Inventories).ThenInclude(inv => inv.OperatingGroup).ThenInclude(g => g.User).ThenInclude(u => u.Person)
+                .Include(z => z.User).ThenInclude(u => u.Person)
+                .FirstOrDefaultAsync(z => z.Id == zoneId);
+        }
+
+        public async Task<List<OperatingGroup>> GetOperatingGroupsByUserIdAsync(int userId)
+        {
+            return await _context.OperatingGroup
+                .Include(g => g.Operatings).ThenInclude(o => o.User).ThenInclude(u => u.Person)
+                .Include(g => g.User).ThenInclude(u => u.Person)
+                .Where(g => g.UserId == userId)
+                .ToListAsync();
+        }
     }
 }
 

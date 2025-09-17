@@ -81,7 +81,7 @@
 										<mat-icon>edit</mat-icon>
 										Actualizar Datos
 									</button>
-									<button mat-stroked-button class="delete-button" (click)="onDelete.emit()"
+									<button *ngIf="showDeleteButton" mat-stroked-button class="delete-button" (click)="onDelete.emit()"
 										[disabled]="!entityData">
 										<mat-icon>delete</mat-icon>
 										Eliminar {{ entityType }}

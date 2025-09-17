@@ -1,26 +1,38 @@
 import { CommonModule } from '@angular/common';
 import { Component, inject } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
-import { KpiCardComponent } from '../../../../Components/System/Admin/Analytics/kpi-card/kpi-card.component';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { catchError, delay, of } from 'rxjs';
+import { LoaderComponent } from "../../../../Components/Shared/app-loader/app-loader.component";
+import { KpiCardComponent } from '../../../../Components/Shared/kpi-card/kpi-card.component';
 import { CategoryChartComponent } from "../../../../Components/System/Admin/Analytics/category-chart/category-chart.component";
 import { StatusChartComponent } from "../../../../Components/System/Admin/Analytics/status-chart/status-chart.component";
-import { CompanyService } from '../../../../Core/Service/System/company.service';
 import { UserService } from '../../../../Core/Service/SecurityModule/user.service';
-import { DashboardModel } from '../../../../Core/Models/System/Others/Dashboard.model';
+import { DashboardService } from '../../../../Core/Service/System/Others/dashboard.service';
 
 type Rol = 'subadmins' | 'encargados' | 'verificadores' | 'operativos';
 
 @Component({
 	selector: 'app-admin-dashboard',
 	standalone: true,
-	imports: [CommonModule, MatIconModule, KpiCardComponent, CategoryChartComponent, StatusChartComponent],
+	imports: [
+		CommonModule,
+		MatIconModule,
+		MatProgressSpinnerModule,
+		KpiCardComponent,
+		CategoryChartComponent,
+		StatusChartComponent,
+		LoaderComponent
+	],
 	templateUrl: './admin-dashboard.component.html',
-	styleUrl: './admin-dashboard.component.css'
+	styleUrls: ['../../../../Components/Shared/Styles/dashboard-shared.css', './admin-dashboard.component.css']
 })
 export class AdminDashboardComponent {
 
 	userService = inject(UserService);
-	companyService = inject(CompanyService);
+	dashboardService = inject(DashboardService);
+
+	companyId: number | null = null;
 
 	// KPIs
 	totalSucursales = 0;
@@ -35,48 +47,71 @@ export class AdminDashboardComponent {
 		operativos: 0
 	};
 
-	// Graficas
+	// Gráficas
 	itemsPorCategoria: Record<string, number> = {};
 	itemsPorEstado: Record<string, number> = {};
+
+	// Estados UI
+	loading = true;
+	error = false;
+	errorMessage = '';
 
 	ngOnInit(): void {
 		this.userService.hasCompany().subscribe({
 			next: (res) => {
 				if (res.hasCompany && res.companyId) {
-					this.loadDashboard(res.companyId);
+					this.companyId = res.companyId;
+					this.loadDashboard(this.companyId);
+				} else {
+					this.loading = false;
 				}
 			},
-			error: (err) => console.error('Error obteniendo empresa del usuario:', err)
+			error: (err) => {
+				this.handleError('Error obteniendo empresa del usuario: ' + err.message);
+			}
 		});
 	}
 
-	private loadDashboard(companyId: number) {
-		this.companyService.getDashboard(companyId).subscribe({
-			next: (data: DashboardModel) => {
-				console.log(data)
-				this.totalSucursales = data.totalBranches;
-				this.totalZonas = data.totalZones;
-				this.totalItems = data.totalItems;
 
-				// Mapear roles de API → roles internos del frontend
-				this.usuariosPorRol = {
-					subadmins: data.usersByRole['SUBADMINISTRADOR'] ?? 0,
-					encargados: data.usersByRole['ENCARGADO_ZONA'] ?? 0,
-					verificadores: data.usersByRole['VERIFICADOR'] ?? 0,
-					operativos: data.usersByRole['OPERATIVO'] ?? 0
-				};
+	loadDashboard(companyId: number) {
+		this.loading = true;
+		this.error = false;
+		this.errorMessage = '';
 
-				this.itemsPorCategoria = data.itemsByCategory;
-				this.itemsPorEstado = data.itemsByState;
-			},
-			error: (err) => console.error('Error cargando dashboard:', err)
+		this.dashboardService.getDashboardCompany(companyId).pipe(
+			delay(1500), // Simula carga
+			catchError(err => {
+				this.handleError('Error cargando dashboard: ' + (err.message ?? err));
+				return of(null); // Devolvemos observable vacío para que el subscribe siga
+			})
+		).subscribe(data => {
+			if (!data) {
+				// Ya entro a handleError
+				return;
+			}
+
+			this.totalSucursales = data.totalBranches;
+			this.totalZonas = data.totalZones;
+			this.totalItems = data.totalItems;
+
+			this.usuariosPorRol = {
+				subadmins: data.usersByRole['SUBADMINISTRADOR'] ?? 0,
+				encargados: data.usersByRole['ENCARGADO_ZONA'] ?? 0,
+				verificadores: data.usersByRole['VERIFICADOR'] ?? 0,
+				operativos: data.usersByRole['OPERATIVO'] ?? 0
+			};
+
+			this.itemsPorCategoria = data.itemsByCategory;
+			this.itemsPorEstado = data.itemsByState;
+
+			this.loading = false;
 		});
 	}
+
 
 	get totalUsuarios(): number {
 		return Object.values(this.usuariosPorRol).reduce((a, b) => a + b, 0);
 	}
-
 
 	getRoleKeys(): Rol[] {
 		return Object.keys(this.usuariosPorRol) as Rol[];
@@ -101,4 +136,20 @@ export class AdminDashboardComponent {
 		};
 		return labels[role];
 	}
+
+	private handleError(message: string) {
+		this.error = true;
+		this.errorMessage = message;
+		this.loading = false;
+		console.error(message);
+	}
+
+	handleRetry() {
+		if (this.companyId !== null) {
+			this.loadDashboard(this.companyId);
+		} else {
+			this.handleError('No se encontró una empresa para reintentar');
+		}
+	}
+
 }

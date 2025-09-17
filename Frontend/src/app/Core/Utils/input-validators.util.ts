@@ -1,84 +1,66 @@
-import { AbstractControl, ValidatorFn } from '@angular/forms';
+import { AbstractControl, ValidationErrors, ValidatorFn } from '@angular/forms';
 
 /**
- * Bloquea cualquier intento de pegar texto no numérico en un input.
- * Ahora con soporte para formato colombiano
- */
-export function blockNonNumericPaste(event: ClipboardEvent, maxLength: number = 10, mustStartWith: string = ''): void {
-	const paste = event.clipboardData?.getData('text') || '';
-
-	// Validar que solo sean números
-	if (!/^\d+$/.test(paste)) {
-		event.preventDefault();
-		return;
-	}
-
-	// Validar longitud máxima
-	if (paste.length > maxLength) {
-		event.preventDefault();
-		return;
-	}
-
-	// Validar si debe empezar con un carácter específico
-	if (mustStartWith && !paste.startsWith(mustStartWith)) {
-		event.preventDefault();
-	}
-}
-
-/**
- * Solo permite ingreso de caracteres numéricos mediante teclado.
- * Ahora con soporte para formato colombiano
- */
-export function onlyNumberInput(event: KeyboardEvent, currentValue: string, maxLength: number = 10, mustStartWith: string = ''): void {
-	const charCode = event.key;
-
-	// Permitir teclas de control
-	if (['Backspace', 'Tab', 'Enter', 'Escape', 'ArrowLeft', 'ArrowRight', 'Delete', 'Home', 'End'].includes(charCode)) {
-		return;
-	}
-
-	// Solo permitir números
-	if (!/^\d$/.test(charCode)) {
-		event.preventDefault();
-		return;
-	}
-
-	// Validar longitud máxima
-	if (currentValue.length >= maxLength) {
-		event.preventDefault();
-		return;
-	}
-
-	// Validar si debe empezar con un carácter específico (para primer dígito)
-	if (currentValue.length === 0 && mustStartWith && charCode !== mustStartWith) {
-		event.preventDefault();
-	}
-}
-
-/**
- * Validador para números de celular colombiano
+ * Validadores para numeros
  */
 export function colombianPhoneValidator(): ValidatorFn {
-	return (control: AbstractControl): { [key: string]: any } | null => {
+  return (control: AbstractControl): ValidationErrors | null => {
+    const value = control.value as string;
+    if (!value) return null;
+
+    if (!/^\d+$/.test(value)) {
+      return { colombianPhone: 'Solo números permitidos' };
+    }
+
+    if (value.length !== 10) {
+      return { colombianPhone: 'Debe tener 10 dígitos' };
+    }
+
+    if (!value.startsWith('3')) {
+      return { colombianPhone: 'Debe comenzar con 3' };
+    }
+
+    return null;
+  };
+}
+
+export function documentNumberValidator(min: number, max: number): ValidatorFn {
+  return (control: AbstractControl): ValidationErrors | null => {
+    const value = control.value as string;
+    if (!value) return null;
+
+    if (!/^\d+$/.test(value)) {
+      return { documentNumber: 'Solo números permitidos' };
+    }
+    if (value.length < min || value.length > max) {
+      return { documentNumber: `Debe tener entre ${min} y ${max} dígitos` };
+    }
+    return null;
+  };
+}
+
+export function mixedPhoneValidator(): ValidatorFn {
+	return (control: AbstractControl): ValidationErrors | null => {
 		const value = control.value;
-		if (!value) return null;
 
-		// Validar que solo contenga números
-		if (!/^\d+$/.test(value)) {
-			return { colombianPhone: 'Solo se permiten números' };
+		if (!value) {
+			return null;
 		}
 
-		// Validar que empiece con 3
-		if (!value.startsWith('3')) {
-			return { colombianPhone: 'El número debe empezar con 3' };
+		// Eliminar cualquier carácter que no sea número
+		const numericValue = value.replace(/\D/g, '');
+
+		// Validar longitud (10 dígitos)
+		if (numericValue.length !== 10) {
+			return { mixedPhone: true };
 		}
 
-		// Validar longitud exacta de 10 dígitos
-		if (value.length !== 10) {
-			return { colombianPhone: 'Debe tener exactamente 10 dígitos' };
-		}
+		// Permitir celulares (empezando con 3) y fijos (empezando con 60, 4, 5, 6, 7, 8)
+		const isValid = /^3\d{9}$/.test(numericValue) ||
+			/^[4-8]\d{8}$/.test(numericValue) ||
+			/^60\d{8}$/.test(numericValue);
 
-		return null; // Válido
+		return isValid ? null : { mixedPhone: true };
 	};
 }
 

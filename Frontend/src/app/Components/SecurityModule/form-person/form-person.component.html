@@ -39,17 +39,19 @@
 		<!-- Phone -->
 		<mat-form-field appearance="outline">
 			<mat-label>Teléfono Celular</mat-label>
-			<input matInput formControlName="phone" placeholder="Ej: 3001234567" appColombianPhone [maxLength]="10"
-				[mustStartWith]="'3'">
+			<input matInput formControlName="phone" placeholder="Ej: 3001234567" appNumericInput  [maxLength]="10">
 
 			<mat-error *ngIf="formPerson.get('phone')?.hasError('required')">
 				Este campo es requerido
 			</mat-error>
 
 			<mat-error class="mat-error-campos" *ngIf="formPerson.get('phone')?.hasError('colombianPhone')">
-				<span matTooltip="El número debe empezar con 3 y tener exactamente 10 dígitos"
+				<!-- <span matTooltip="El número debe empezar con 3 y tener exactamente 10 dígitos"
 					matTooltipPosition="above">
 					Formato inválido
+				</span> -->
+				<span>
+					{{ formPerson.get('phone')?.getError('colombianPhone') }}
 				</span>
 			</mat-error>
 		</mat-form-field>
@@ -67,12 +69,11 @@
 		<!-- Document Number -->
 		<mat-form-field appearance="outline">
 			<mat-label>Número de Documento</mat-label>
-			<input matInput formControlName="documentNumber" minlength="6" maxlength="10"
-				placeholder="Número de Documento" appOnlyNumbers>
+			<input matInput formControlName="documentNumber" appNumericInput [maxLength]="10"
+				placeholder="Número de Documento">
 			<mat-error *ngIf="formPerson.get('documentNumber')?.hasError('required')">Este campo es
 				requerido</mat-error>
-			<mat-error *ngIf="formPerson.get('documentNumber')?.hasError('pattern')">Solo se permiten números. Mínimo 6,
-				Máximo 10 dígitos</mat-error>
+			<mat-error *ngIf="formPerson.get('documentNumber')?.hasError('documentNumber')">{{ formPerson.get('documentNumber')?.getError('documentNumber') }}</mat-error>
 		</mat-form-field>
 	</div>
 

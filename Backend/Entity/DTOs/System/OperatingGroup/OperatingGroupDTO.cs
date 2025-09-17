@@ -1,11 +1,4 @@
-﻿using Entity.Models.SecurityModule;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Entity.DTOs.System.OperatingGroup
+﻿namespace Entity.DTOs.System.OperatingGroup
 {
     public class OperatingGroupDTO
     {
@@ -15,6 +8,6 @@ namespace Entity.DTOs.System.OperatingGroup
         public DateTime? DateEnd { get; set; }
 
         // Claves Foraneas
-        public int UserId { get; set; }
+        public int AreaManagerId { get; set; }
     }
 }

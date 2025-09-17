@@ -1,32 +1,3 @@
-.dashboard-container {
-	padding: 2rem;
-	max-width: 1400px;
-	margin: 0 auto;
-	background: linear-gradient(135deg, var(--color-blue-variante-2) 0%, var(--color-blue-1000) 100%);
-	min-height: 100vh;
-}
-
-.dashboard-header {
-	margin-bottom: 3rem;
-	text-align: center;
-}
-
-.dashboard-header h1 {
-	font-size: 2.5rem;
-	font-weight: 700;
-	color: var(--color-white);
-	margin-bottom: 0.5rem;
-	background: linear-gradient(135deg, #ffffff 0%, #e0e7ff 100%);
-	-webkit-background-clip: text;
-	-webkit-text-fill-color: transparent;
-	background-clip: text;
-}
-
-.dashboard-header p {
-	font-size: 1.2rem;
-	color: rgba(255, 255, 255, 0.7);
-}
-
 .kpi-grid {
 	display: grid;
 	grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
@@ -38,51 +9,14 @@
 	display: grid;
 	grid-template-columns: 2fr 1fr;
 	grid-auto-rows: 1fr;
-	/* Misma altura para todas las filas */
 	gap: 1.5rem;
-	margin-bottom: 2rem;
 	align-items: stretch;
-	/* Asegura que los items se estiren */
 }
 
-.grid-item {
-	display: flex;
-	flex-direction: column;
-	gap: 1.5rem;
-}
-
-/* Contenedor para igualar alturas */
 .equal-height-container {
 	display: flex;
 	flex-direction: column;
 	height: 100%;
-	/* Ocupa toda la altura disponible */
-}
-
-.full-width {
-	grid-column: 1 / -1;
-}
-
-.section {
-	background: rgba(255, 255, 255, 0.02);
-	backdrop-filter: blur(10px);
-	border: 1px solid rgba(255, 255, 255, 0.1);
-	border-radius: 16px;
-	padding: 2rem;
-	margin-bottom: 0;
-	height: 100%;
-	/* Ocupa toda la altura del contenedor */
-	display: flex;
-	flex-direction: column;
-}
-
-.section h2 {
-	font-size: 1.5rem;
-	color: var(--color-white);
-	margin-bottom: 1.5rem;
-	font-weight: 600;
-	flex-shrink: 0;
-	/* Evita que el título se encoja */
 }
 
 .role-distribution {
@@ -90,9 +24,7 @@
 	flex-direction: column;
 	gap: 1rem;
 	flex: 1;
-	/* Ocupa el espacio restante */
 	justify-content: space-between;
-	/* Distribuye el espacio uniformemente */
 }
 
 .role-item {
@@ -132,14 +64,11 @@
 	color: var(--color-blue-300);
 }
 
-/* Ajustes específicos para el gráfico de estados */
 .status-chart-container {
 	flex: 1;
-	/* Ocupa todo el espacio disponible */
 	display: flex;
 	flex-direction: column;
 	min-height: 400px;
-	/* Altura mínima consistente */
 }
 
 .coming-soon {
@@ -150,7 +79,6 @@
 	min-height: 200px;
 	color: rgba(255, 255, 255, 0.5);
 	flex: 1;
-	/* Para mantener consistencia */
 }
 
 .coming-soon mat-icon {
@@ -164,7 +92,7 @@
 	font-size: 1.1rem;
 }
 
-/* Responsive */
+/* Responsive exclusivos */
 @media (max-width: 1200px) {
 	.dashboard-grid {
 		grid-template-columns: 1fr 1fr;
@@ -175,7 +103,6 @@
 	.dashboard-grid {
 		grid-template-columns: 1fr;
 		grid-auto-rows: auto;
-		/* Altura automática en móviles */
 	}
 
 	.full-width {
@@ -184,54 +111,10 @@
 
 	.status-chart-container {
 		min-height: 350px;
-		/* Altura menor en móviles */
-	}
-}
-
-@media (max-width: 768px) {
-	.dashboard-container {
-		padding: 1rem;
-	}
-
-	.dashboard-header h1 {
-		font-size: 2rem;
-	}
-
-	.kpi-grid {
-		grid-template-columns: 1fr 1fr;
-		gap: 1rem;
-	}
-
-	.dashboard-grid {
-		gap: 1rem;
-	}
-
-	.section {
-		padding: 1.5rem;
 	}
 }
 
 @media (max-width: 480px) {
-	.kpi-grid {
-		grid-template-columns: 1fr;
-	}
-
-	.dashboard-header h1 {
-		font-size: 1.8rem;
-	}
-
-	.dashboard-header p {
-		font-size: 1rem;
-	}
-
-	.section {
-		padding: 1rem;
-	}
-
-	.section h2 {
-		font-size: 1.3rem;
-	}
-
 	.role-item {
 		padding: 0.75rem;
 	}
@@ -242,34 +125,10 @@
 
 	.status-chart-container {
 		min-height: 300px;
-		/* Altura aún menor en móviles pequeños */
 	}
 }
 
-/* Animaciones suaves para las secciones */
-.section {
-	animation: fadeInUp 0.6s ease-out;
-}
-
-@keyframes fadeInUp {
-	from {
-		opacity: 0;
-		transform: translateY(20px);
-	}
-
-	to {
-		opacity: 1;
-		transform: translateY(0);
-	}
-}
-
-/* Efecto de hover para las secciones */
-.section:hover {
-	border-color: rgba(102, 126, 234, 0.2);
-	box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
-}
-
-/* Mejora visual para los títulos de sección */
+/* Mejora visual */
 .section h2 {
 	position: relative;
 	padding-bottom: 0.5rem;
@@ -286,18 +145,15 @@
 	border-radius: 2px;
 }
 
-/* Scroll suave para el contenido */
 .dashboard-container {
 	scroll-behavior: smooth;
 }
 
-/* Mejora de legibilidad para textos */
 .role-name,
 .role-count {
 	text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
 }
 
-/* Ajustes para dark mode específicos */
 @media (prefers-color-scheme: dark) {
 	.section {
 		background: rgba(255, 255, 255, 0.03);
@@ -308,7 +164,6 @@
 	}
 }
 
-/* Soporte para alto contraste */
 @media (prefers-contrast: high) {
 	.section {
 		border-color: rgba(255, 255, 255, 0.3);

@@ -45,13 +45,13 @@ namespace Web.Controllers.System
         public async Task<IActionResult> Update([FromBody] CompanyDTO dto) =>
             await TryExecuteAsync(() => _service.UpdateAsync(dto), "Updateitem");
 
-        [HttpPatch("PartialUpdate/")]
         [Authorize(Roles = "SM_ACTION, ADMINISTRADOR")]
+        [HttpPatch("PartialUpdate/")]
         [ProducesResponseType(typeof(CompanyDTO), 200)]
         [ProducesResponseType(400)]
         [ProducesResponseType(404)]
         public async Task<IActionResult> PartialUpdate([FromBody] CompanyPartialUpdateDTO dto) =>
-            await TryExecuteAsync(() => _service.PartialUpdateAsync(dto), "PartialUpdateCompany");
+            await TryExecuteAsync(() => _service.PartialUpdateAsync(dto), "PartialUpdate");
 
         [Authorize(Roles = "SM_ACTION, ADMINISTRADOR")]
         [HttpDelete("Delete/{id:int}")]

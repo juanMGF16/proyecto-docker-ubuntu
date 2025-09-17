@@ -7,8 +7,11 @@ export class RoleRedirectService {
 	constructor(private router: Router) { }
 
 	private roleRoutes: Record<string, string> = {
+		'SM_ACTION': '/securitymodule',
 		'ADMINISTRADOR': '/admin',
-		'SM_ACTION': '/securitymodule'
+		'SUBADMINISTRADOR': '/subadmin',
+		'ENCARGADO_ZONA': '/areaManager',
+
 	};
 
 	redirectUser(role: string | null) {

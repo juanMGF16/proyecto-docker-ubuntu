@@ -1,16 +1,20 @@
 import { CommonModule } from '@angular/common';
-import { Component, EventEmitter, HostListener, Input, Output, OnInit, OnDestroy, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, EventEmitter, HostListener, Input, Output, OnInit, OnDestroy, OnChanges, SimpleChanges, inject } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { Subscription } from 'rxjs';
 import { AdminNavService, NavigationItem, NavigationState } from '../../../../Core/Service/Navigation/admin-nav.service';
+import { BranchService } from '../../../../Core/Service/System/branch.service';
+import { UserService } from '../../../../Core/Service/SecurityModule/user.service';
+import { BranchByCompanyMod } from '../../../../Core/Models/System/BranchMod.model';
+import Swal from 'sweetalert2';
 
 @Component({
 	selector: 'app-admin-sidebar',
 	imports: [CommonModule, MatIconModule, MatButtonModule],
 	standalone: true,
 	templateUrl: './admin-sidebar.component.html',
-	styleUrl: './admin-sidebar.component.css'
+	styleUrls: ['../../../Shared/Styles/sidebar-shared.css','./admin-sidebar.component.css']
 })
 export class AdminSidebarComponent implements OnInit, OnDestroy, OnChanges {
 	@Input() hasCompany: boolean | null = true;
@@ -23,34 +27,71 @@ export class AdminSidebarComponent implements OnInit, OnDestroy, OnChanges {
 		expandedSections: {},
 		activeSection: undefined
 	};
+	companyId: number | null = null;
+
+	private userService = inject(UserService);
+	private branchService = inject(BranchService);
 
 	private navigationSubscription: Subscription = new Subscription();
 
 	// Datos dinámicos (ejemplo para sucursales)
-	sucursales = [
-		{ id: 1, nombre: 'Sucursal A' },
-		{ id: 2, nombre: 'Sucursal B' },
-		{ id: 3, nombre: 'Sucursal C' }
-	];
+	sucursales: BranchByCompanyMod[] = [];
 
 	constructor(private navigationService: AdminNavService) { }
 
 	ngOnInit(): void {
-		// Obtener configuración de navegación basada en hasCompany
-		this.updateNavigation();
-
 		// Suscribirse a cambios de estado de navegación
 		this.navigationSubscription = this.navigationService.navigationState$
 			.subscribe(state => {
 				this.navigationState = state;
 			});
+
+		// Suscribirse a la recarga de sucursales
+		this.navigationService.refreshBranches$
+			.subscribe(() => {
+				if (this.companyId) {
+					this.cargarSucursales();
+				}
+			});
+
+		this.userService.hasCompany().subscribe({
+			next: (res) => {
+				if (res.hasCompany && res.companyId) {
+					this.companyId = res.companyId;
+					this.cargarSucursales();
+				}
+			},
+			error: (err) => console.error('Error obteniendo empresa del usuario:', err)
+		});
 	}
 
+
 	ngOnChanges(changes: SimpleChanges): void {
-  if (changes['hasCompany']) {
-    this.updateNavigation();
-  }
-}
+		if (changes['hasCompany']) {
+			this.updateNavigation();
+		}
+	}
+
+	cargarSucursales(): void {
+		this.branchService.getByIdCompany(this.companyId).subscribe({
+			next: (data) => {
+				this.sucursales = data;
+				this.addDynamicSucursales();
+			},
+			error: (err) => {
+				console.log('Error al cargar los datos:', err);
+				const mensajeCompleto = err?.error?.message || 'Ocurrio un error inesperado.';
+				const mensaje = mensajeCompleto.split(':')[1]?.trim() || mensajeCompleto;
+				Swal.fire({
+					icon: 'error',
+					title: 'Error',
+					text: mensaje,
+					confirmButtonText: 'Aceptar'
+				});
+			}
+		});
+	}
+
 
 	private updateNavigation(): void {
 		// Obtener configuración basada en el estado de la empresa
@@ -71,7 +112,7 @@ export class AdminSidebarComponent implements OnInit, OnDestroy, OnChanges {
 	private addDynamicSucursales(): void {
 		const dynamicSucursales: NavigationItem[] = this.sucursales.map(sucursal => ({
 			id: `dynamic-sucursal-${sucursal.id}`,
-			label: sucursal.nombre,
+			label: sucursal.name,
 			icon: 'store',
 			route: `/admin/branch/${sucursal.id}`
 		}));

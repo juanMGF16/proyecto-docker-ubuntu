@@ -180,12 +180,6 @@
 	white-space: nowrap;
 }
 
-.modal-actions button mat-icon {
-	font-size: 1.125rem !important;
-	width: 1.125rem !important;
-	height: 1.125rem !important;
-}
-
 .modal-actions button[mat-stroked-button] {
 	color: var(--color-white) !important;
 	border-color: rgba(255, 255, 255, 0.3) !important;
@@ -196,19 +190,6 @@
 	border-color: rgba(255, 255, 255, 0.5) !important;
 }
 
-.spinning {
-	animation: spin 1s linear infinite;
-}
-
-@keyframes spin {
-	from {
-		transform: rotate(0deg);
-	}
-
-	to {
-		transform: rotate(360deg);
-	}
-}
 
 @media (max-width: 768px) {
 	.modal-container {

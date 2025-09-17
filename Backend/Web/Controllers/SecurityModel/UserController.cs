@@ -99,7 +99,7 @@ namespace Web.Controllers.SecurityModel
             await TryExecuteAsync(() => _service.UpdateAsync(dto), "UpdateUser");
 
         [HttpPatch("PartialUpdate/")]
-        [Authorize(Roles = "SM_ACTION, ADMINISTRADOR")]
+        [Authorize(Roles = "SM_ACTION, ADMINISTRADOR, SUBADMINISTRADOR, ENCARGADO_ZONA")]
         [ProducesResponseType(typeof(UserDTO), 200)]
         [ProducesResponseType(400)]
         [ProducesResponseType(404)]
@@ -107,7 +107,7 @@ namespace Web.Controllers.SecurityModel
             await TryExecuteAsync(() => _service.PartialUpdateAsync(dto), "PartialUpdateUser");
 
         [HttpPost("ChangePassword/")]
-        [Authorize(Roles = "SM_ACTION, ADMINISTRADOR")]
+        [Authorize(Roles = "SM_ACTION, ADMINISTRADOR, SUBADMINISTRADOR")]
         [ProducesResponseType(200)]
         [ProducesResponseType(400)]
         public async Task<IActionResult> ChangePassword([FromBody] ChangePasswordDTO dto)

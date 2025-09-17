@@ -53,7 +53,7 @@ namespace Web.Controllers.SecurityModel
             await TryExecuteAsync(() => _service.GetPersonAvailableAsync(), "GetAvailablePersons");
 
         [HttpGet("GetById/{id:int}")]
-        [Authorize(Roles = "SM_ACTION,ADMINISTRADOR")]
+        [Authorize(Roles = "SM_ACTION,ADMINISTRADOR, SUBADMINISTRADOR, ENCARGADO_ZONA")]
         [ProducesResponseType(typeof(PersonDTO), 200)]
         [ProducesResponseType(400)]
         [ProducesResponseType(404)]

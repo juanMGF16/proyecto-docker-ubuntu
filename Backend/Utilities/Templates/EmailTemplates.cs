@@ -297,7 +297,203 @@
                         </div>
                         
                         <div class='footer'>
-                            <p>© {DateTime.Now.Year} <strong>Codexy</strong>. Todos los derechos reservados.</p>
+                            <p>© {DateTime.Now.Year} <strong>Codexy</strong></p>
+                        </div>
+                    </div>
+                </body>
+                </html>
+            ";
+        }
+
+        public static string GetUserWelcomeTemplate(string name, string username, string password, string placeName, string roleName, string companyName)
+        {
+            return $@"
+                <!DOCTYPE html>
+                <html lang='es'>
+                <head>
+                    <meta charset='utf-8'>
+                    <meta name='viewport' content='width=device-width, initial-scale=1'>
+                    <title>Bienvenida {roleName}</title>
+                    <style>
+                        body {{
+                            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+                            line-height: 1.6;
+                            color: #333;
+                            margin: 0;
+                            padding: 0;
+                            background-color: #f4f4f4;
+                        }}
+                        .container {{
+                            max-width: 600px;
+                            margin: 20px auto;
+                            background-color: #ffffff;
+                            border-radius: 10px;
+                            overflow: hidden;
+                            box-shadow: 0 0 20px rgba(0,0,0,0.1);
+                        }}
+                        .header {{
+                            background: linear-gradient(135deg, rgb(26, 31, 54), rgb(30, 64, 175));
+                            color: white;
+                            padding: 30px 20px;
+                            text-align: center;
+                        }}
+                        .header h1 {{
+                            margin: 0;
+                            font-size: 28px;
+                            font-weight: 600;
+                        }}
+                        .content {{
+                            padding: 40px 30px;
+                            background-color: #f8f9fa;
+                        }}
+                        .greeting {{
+                            font-size: 18px;
+                            color: #2c3e50;
+                            margin-bottom: 20px;
+                        }}
+                        .message {{
+                            font-size: 16px;
+                            color: #34495e;
+                            margin-bottom: 25px;
+                            line-height: 1.8;
+                        }}
+                        .credentials {{
+                            background-color: #e8f5e8;
+                            border: 2px solid #28a745;
+                            border-radius: 12px;
+                            padding: 25px;
+                            margin: 25px 0;
+                            box-shadow: 0 4px 15px rgba(40, 167, 69, 0.15);
+                        }}
+                        .credentials h3 {{
+                            margin-top: 0;
+                            color: #155724;
+                            font-size: 20px;
+                            font-weight: 600;
+                            text-align: center;
+                            margin-bottom: 20px;
+                        }}
+                        .credential-item {{
+                            margin: 15px 0;
+                            font-size: 16px;
+                            padding: 12px;
+                            background-color: white;
+                            border-radius: 8px;
+                            border-left: 4px solid #28a745;
+                            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+                        }}
+                        .credential-item strong {{
+                            color: #155724;
+                        }}
+                        .warning {{
+                            background-color: #fff3cd;
+                            border: 2px solid #ffc107;
+                            border-radius: 12px;
+                            padding: 20px;
+                            margin: 25px 0;
+                            box-shadow: 0 4px 15px rgba(255, 193, 7, 0.15);
+                        }}
+                        .warning strong {{
+                            color: #856404;
+                        }}
+                        .button-container {{
+                            text-align: center;
+                            margin: 30px 0;
+                        }}
+                        .button {{
+                            background: linear-gradient(135deg, rgb(30, 64, 175), rgb(26, 31, 54));
+                            color: white;
+                            padding: 16px 32px;
+                            text-decoration: none;
+                            border-radius: 50px;
+                            display: inline-block;
+                            font-weight: 600;
+                            font-size: 16px;
+                            text-transform: uppercase;
+                            letter-spacing: 0.5px;
+                            box-shadow: 0 4px 15px rgba(30, 64, 175, 0.3);
+                            transition: all 0.3s ease;
+                        }}
+                        .button:hover {{
+                            background: linear-gradient(135deg, rgb(26, 31, 54), rgb(30, 64, 175));
+                            transform: translateY(-2px);
+                            box-shadow: 0 6px 20px rgba(30, 64, 175, 0.4);
+                        }}
+                        .footer {{
+                            text-align: center;
+                            padding: 25px;
+                            background-color: #2c3e50;
+                            color: #ecf0f1;
+                            font-size: 12px;
+                        }}
+                        .footer p {{
+                            margin: 5px 0;
+                        }}
+                        @media (max-width: 600px) {{
+                            .container {{
+                                margin: 10px;
+                                border-radius: 8px;
+                            }}
+                            .content {{
+                                padding: 20px 15px;
+                            }}
+                            .header {{
+                                padding: 20px 15px;
+                            }}
+                            .header h1 {{
+                                font-size: 24px;
+                            }}
+                            .credentials {{
+                                padding: 15px;
+                            }}
+                            .credential-item {{
+                                font-size: 14px;
+                                padding: 10px;
+                            }}
+                        }}
+                    </style>
+                </head>
+                <body>
+                    <div class='container'>
+                        <div class='header'>
+                            <img src='https://i.ibb.co/VcS9v8ZH/Logo.png' alt='Logo' style='max-width: 130px; margin-bottom: 15px;' />
+                            <h1>🎉 Bienvenido a {companyName}</h1>
+                            <p style='margin: 10px 0 0 0; font-size: 16px; opacity: 0.9;'>Has sido asignado como {roleName} de {placeName}</p>
+                        </div>
+                        
+                        <div class='content'>
+                            <div class='greeting'>
+                                Hola <strong>{name}</strong>,
+                            </div>
+                            
+                            <div class='message'>
+                                Te damos la bienvenida al sistema de gestión de sucursales. A continuación encontrarás tus credenciales de acceso:
+                            </div>
+                
+                            <div class='credentials'>
+                                <h3>🔐 Tus Credenciales de Acceso</h3>
+                                <div class='credential-item'><strong>👤 Usuario:</strong> {username}</div>
+                                <div class='credential-item'><strong>🔒 Contraseña:</strong> {password}</div>
+                                <div class='credential-item'><strong>🏢 Sucursal:</strong> {placeName}</div>
+                            </div>
+                
+                            <div class='warning'>
+                                ⚠️ <strong>Importante de Seguridad:</strong><br>
+                                • Cambia tu contraseña después del primer inicio de sesión<br>
+                                • No compartas tus credenciales con nadie<br>
+                            </div>
+
+                            <div class='button-container'>
+                                <a href='http://localhost:4200/Login' target='_blank'
+                                    class='button'
+                                    style='color: #ffffff !important; text-decoration: none; display: inline-block;'>
+                                    Iniciar Sesión
+                                </a>
+                            </div>
+                        </div>
+                        
+                        <div class='footer'>
+                            <p>© {DateTime.Now.Year} <strong>Codexy</strong>.</p>
                         </div>
                     </div>
                 </body>

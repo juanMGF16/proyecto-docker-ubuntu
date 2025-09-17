@@ -26,6 +26,9 @@ export class AdminNavService {
 	private closeSidebarSubject = new Subject<void>();
 	public closeSidebar$ = this.closeSidebarSubject.asObservable();
 
+	private refreshBranchesSubject = new Subject<void>();
+	public refreshBranches$ = this.refreshBranchesSubject.asObservable();
+
 	// Configuración de navegación
 	private readonly navigationConfig: NavigationItem[] = [
 		{
@@ -52,7 +55,7 @@ export class AdminNavService {
 		},
 		{
 			id: 'subAdmin',
-			label: 'Enc. Sucursal',
+			label: 'Encargados de Sucursal',
 			icon: 'supervisor_account',
 			route: '/admin/subadmins-list',
 			expandable: false,
@@ -115,8 +118,6 @@ export class AdminNavService {
 			activeSection
 		});
 	}
-
-
 
 	private findActiveSectionByRoute(route: string): string | undefined {
 		for (const item of this.navigationConfig) {
@@ -214,6 +215,10 @@ export class AdminNavService {
 			);
 			this.navigationConfig[parentIndex].children = [...staticItems, ...items];
 		}
+	}
+
+	triggerRefreshBranches(): void {
+		this.refreshBranchesSubject.next();
 	}
 
 	// Método para limpiar elementos dinámicos

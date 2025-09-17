@@ -33,6 +33,22 @@ namespace Data.Repository.Implementations.Specific.SecurityModule
             }
         }
 
+        public async Task<bool> EmailExistsAsync(string email)
+        {
+            return await _context.Person.AnyAsync(p => p.Email.ToLower() == email.ToLower() && p.Active);
+        }
 
+        public async Task<bool> DocumentExistsAsync(string documentType, string documentNumber)
+        {
+            return await _context.Person.AnyAsync(p =>
+                p.DocumentType == documentType &&
+                p.DocumentNumber == documentNumber &&
+                p.Active);
+        }
+
+        public async Task<bool> PhoneExistsAsync(string phone)
+        {
+            return await _context.Person.AnyAsync(p => p.Phone == phone && p.Active);
+        }
     }
 }

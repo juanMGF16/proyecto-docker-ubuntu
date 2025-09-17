@@ -13,15 +13,6 @@
 
 	<!-- Sección derecha: Información de usuario -->
 	<div class="right-section">
-		<!-- Notificaciones -->
-		<button mat-icon-button class="notification-btn" [matMenuTriggerFor]="notificationsMenu"
-			[attr.aria-label]="'Tienes ' + notificationCount + ' notificaciones nuevas'">
-			<mat-icon [matBadge]="notificationCount" matBadgeColor="warn" *ngIf="notificationCount > 0">
-				notifications
-			</mat-icon>
-			<mat-icon *ngIf="notificationCount === 0">notifications_none</mat-icon>
-		</button>
-
 		<!-- Perfil de usuario -->
 		<div class="user-profile" [matMenuTriggerFor]="userMenu">
 			<div class="user-info">
@@ -33,33 +24,6 @@
 			</div>
 		</div>
 	</div>
-
-	<!-- Menú de notificaciones -->
-	<mat-menu #notificationsMenu="matMenu">
-		<div class="notifications-header">
-			<h3>Notificaciones</h3>
-			<button mat-icon-button (click)="markAllAsRead($event)">
-				<mat-icon>done_all</mat-icon>
-			</button>
-		</div>
-		<mat-divider></mat-divider>
-		<div class="notification-item" [class.read]="notificationRead">
-			<div class="notification-icon">
-				<mat-icon>info</mat-icon>
-			</div>
-			<div class="notification-content">
-				<p>Bienvenido al panel de administración</p>
-				<span class="notification-time">Hace 5 min</span>
-			</div>
-			<button mat-icon-button class="mark-read-btn" (click)="markAsRead($event)">
-				<mat-icon>check_circle</mat-icon>
-			</button>
-		</div>
-		<mat-divider></mat-divider>
-		<div class="notifications-footer">
-			<button mat-button color="primary">Ver todas las notificaciones</button>
-		</div>
-	</mat-menu>
 
 	<!-- Menú de usuario -->
 	<mat-menu #userMenu="matMenu">
@@ -83,7 +47,7 @@
 			<span>Mi Empresa</span>
 		</button>
 		<mat-divider></mat-divider>
-		<button mat-menu-item (click)="logout()">
+		<button mat-menu-item appLogoutButton>
 			<mat-icon>logout</mat-icon>
 			<span>Cerrar Sesión</span>
 		</button>

@@ -45,10 +45,6 @@ export class AuthService {
 		return this.http.get<RoleMod[]>(`${this.baseUrl}GetAllRoles/`);
 	}
 
-	logout(): void {
-		localStorage.removeItem(this.tokenKey);
-		this.router.navigate(['']);
-	}
 
 	forgotPassword(email: string): Observable<any> {
 		return this.http.post<any>(`${this.baseUrl}forgot-password`, { email });

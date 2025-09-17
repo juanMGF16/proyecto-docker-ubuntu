@@ -1,0 +1,8 @@
+<app-show-staff
+	[data]="areaManagers"
+	[loading]="loading"
+	[config]="tableConfig"
+	searchPlaceholder="Buscar por nombre o documento..."
+	(rowClick)="onRowClick($event)"
+	(buttonAction)="navigateToZones()">
+</app-show-staff>

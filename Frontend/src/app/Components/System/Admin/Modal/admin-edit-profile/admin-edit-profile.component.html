@@ -30,7 +30,7 @@
 					<!-- Campo Teléfono -->
 					<div class="custom-input-group">
 						<input id="modalPhone" type="tel" formControlName="phone" placeholder=" "
-							[class.error]="phoneErrors.length > 0">
+							[class.error]="phoneErrors.length > 0" appNumericInput [maxLength]="10">
 						<label for="modalPhone">Teléfono</label>
 						@if (phoneErrors.length > 0) {
 						<div class="error-messages">

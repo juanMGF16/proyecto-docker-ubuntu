@@ -1,8 +1,8 @@
-import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
-import { MatTabsModule } from '@angular/material/tabs';
 import { MatIconModule } from '@angular/material/icon';
+import { MatTabsModule } from '@angular/material/tabs';
 import { RouterModule } from '@angular/router';
 
 export interface DataField {
@@ -24,13 +24,14 @@ export interface DataField {
 		RouterModule
 	],
 	templateUrl: './show-info-edification.component.html',
-	styleUrl: './show-info-edification.component.css'
+	styleUrls: ['../../Styles/show-info-shared.css', './show-info-edification.component.css']
 })
 export class ShowInfoEdificationComponent {
 	// Inputs principales
 	@Input() entityData: any = null;
 	@Input() entityType: string = 'Entidad';
 	@Input() dataFields: DataField[] = [];
+	@Input() showDeleteButton: boolean = true;
 	@Input() backRoute: string = '/';
 
 	// Configuración del header

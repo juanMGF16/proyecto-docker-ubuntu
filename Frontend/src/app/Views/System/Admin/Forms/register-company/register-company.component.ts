@@ -9,20 +9,20 @@ import Swal from 'sweetalert2';
 import { CompanyService } from '../../../../../Core/Service/System/company.service';
 import { emailValidator } from '../../../../../Core/Utils/input-validators.util';
 import { CompanyOptionsMod } from '../../../../../Core/Models/System/CompanyMod.model';
-import { OnlyNumbersDirective } from '../../../../../Core/Directives/only-numbers.directive';
+import { NumericInputDirective } from "../../../../../Core/Directives/numeric-input.directive";
 
 
 @Component({
 	selector: 'app-register-company',
 	standalone: true,
 	imports: [
-		CommonModule,
-		ReactiveFormsModule,
-		MatButtonModule,
-		MatIconModule,
-		RouterLink,
-		OnlyNumbersDirective
-	],
+    CommonModule,
+    ReactiveFormsModule,
+    MatButtonModule,
+    MatIconModule,
+    RouterLink,
+    NumericInputDirective
+],
 	templateUrl: './register-company.component.html',
 	styleUrls: ['./register-company.component.css']
 })
@@ -95,7 +95,7 @@ export class RegisterCompanyComponent implements OnInit {
 			userId: formData.userId
 		};
 
-		this.companyService.registerCompany(companyData).subscribe({
+		this.companyService.createCompany(companyData).subscribe({
 			next: (response) => {
 				this.isSubmit.set(false);
 
@@ -105,9 +105,7 @@ export class RegisterCompanyComponent implements OnInit {
 					confirmButtonText: 'Continuar',
 					confirmButtonColor: '#28a745'
 				}).then((result) => {
-					if (result.isConfirmed) {
-						this.router.navigate(['/admin/dashboard/']);
-					}
+					this.router.navigate(['/admin/dashboard/']);
 				});
 			},
 			error: (error) => {

@@ -9,22 +9,24 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatBadgeModule } from '@angular/material/badge';
 import { confirmLogout, successMessage } from '../../../../Core/Utils/alerts.util';
+import { LogoutButtonDirective } from "../../../../Core/Directives/logout-button.directive";
 
 @Component({
 	selector: 'app-admin-header',
 	imports: [
-		CommonModule,
-		MatToolbarModule,
-		MatIconModule,
-		MatMenuModule,
-		MatButtonModule,
-		MatDividerModule,
-		RouterLink,
-		MatBadgeModule
-	],
+    CommonModule,
+    MatToolbarModule,
+    MatIconModule,
+    MatMenuModule,
+    MatButtonModule,
+    MatDividerModule,
+    RouterLink,
+    MatBadgeModule,
+    LogoutButtonDirective
+],
 	standalone: true,
 	templateUrl: './admin-header.component.html',
-	styleUrl: './admin-header.component.css'
+	styleUrls: ['../../../Shared/Styles/header-shared.css','./admin-header.component.css']
 })
 export class AdminHeaderComponent {
 	@Input() redirectUrl: string = '';
@@ -48,18 +50,6 @@ export class AdminHeaderComponent {
 		this.toggleSidebar.emit();
 	}
 
-	markAsRead(event: Event): void {
-		event.stopPropagation();
-		this.notificationRead = true;
-		this.notificationCount = 0;
-	}
-
-	markAllAsRead(event: Event): void {
-		event.stopPropagation();
-		this.notificationRead = true;
-		this.notificationCount = 0;
-	}
-
 	get username(): string {
 		return this.authService.getUsername();
 	}
@@ -74,17 +64,5 @@ export class AdminHeaderComponent {
 
 	goToCompany(): void {
 		this.router.navigate(['/admin/company/']);
-	}
-
-	logout() {
-		confirmLogout().then((result) => {
-			if (result.isConfirmed) {
-				this.authService.logout();
-
-				successMessage("Sesión cerrada").then(() => {
-					this.router.navigate(['/']);
-				});
-			}
-		});
 	}
 }

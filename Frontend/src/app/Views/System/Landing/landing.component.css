@@ -46,8 +46,7 @@
 .hero-content {
 	display: grid;
 	grid-template-columns: 1fr 1fr;
-	gap: 4rem;
-	max-width: 1200px;
+	gap: 2.5rem;
 	width: 100%;
 	align-items: center;
 	z-index: 2;
@@ -209,7 +208,6 @@
 	display: grid;
 	grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
 	gap: 2rem;
-	max-width: 1200px;
 	margin: 0 auto;
 }
 
@@ -282,7 +280,6 @@
 	display: grid;
 	grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
 	gap: 2rem;
-	max-width: 1200px;
 	margin: 0 auto;
 }
 

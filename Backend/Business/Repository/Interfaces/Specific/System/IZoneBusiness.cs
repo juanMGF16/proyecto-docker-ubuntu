@@ -1,4 +1,5 @@
-﻿using Entity.DTOs.System.Zone;
+﻿using Entity.DTOs.System.Branch;
+using Entity.DTOs.System.Zone;
 
 namespace Business.Repository.Interfaces.Specific.System
 {
@@ -6,6 +7,12 @@ namespace Business.Repository.Interfaces.Specific.System
     {
         // General
         Task<IEnumerable<ZoneConsultDTO>> GetAllTotalAsync();
-        Task<IEnumerable<ZoneOperatingDTO>> GetAvailableZonesByUserAsync(int userId);
+
+        //Specific
+        Task<IEnumerable<ZoneSimpleDTO>> GetZonesByBranchAsync(int branchId);
+        Task<ZoneDetailsDTO?> GetZoneDetailsAsync(int zoneId);
+        Task<IEnumerable<ZoneInChargeListDTO>> GetInChargesAsync(int branchId);
+        Task<ZoneConsultDTO?> GetZoneByAreaManagerAsync(int userId);
+        Task<ZoneConsultDTO> PartialUpdateAsync(ZonePartialUpdateDTO dto);
     }
 }

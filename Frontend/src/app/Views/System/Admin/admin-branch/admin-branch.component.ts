@@ -1,5 +1,4 @@
-// admin-branch.component.ts
-import { Component } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
 import { MatCardModule } from '@angular/material/card';
@@ -7,71 +6,87 @@ import { MatButtonModule } from '@angular/material/button';
 import { FormsModule } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
 import { ZoneFilterPipe } from '../../../../Core/Pipes/zone-filter.pipe';
-
-export interface Zone {
-	id: number;
-	name: string;
-	encargado: string;
-	totalItems: number;
-}
-
-interface SubAdministrador {
-	nombre: string;
-	apellidos: string;
-	celular: string;
-	email?: string;
-}
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { ActivatedRoute, Router } from '@angular/router';
+import { BranchDetailsMod, BranchInChargeMod } from '../../../../Core/Models/System/BranchMod.model';
+import { BranchService } from '../../../../Core/Service/System/branch.service';
+import { delay, forkJoin } from 'rxjs';
+import { LoaderComponent } from "../../../../Components/Shared/app-loader/app-loader.component";
 
 @Component({
 	selector: 'app-admin-branch',
 	standalone: true,
 	imports: [
-		CommonModule,
-		MatIconModule,
-		MatCardModule,
-		MatButtonModule,
-		FormsModule,
-		MatInputModule,
-		ZoneFilterPipe
-	],
+    CommonModule,
+    MatIconModule,
+    MatCardModule,
+    MatButtonModule,
+    FormsModule,
+    MatInputModule,
+    ZoneFilterPipe,
+    MatProgressSpinnerModule,
+    LoaderComponent
+],
 	templateUrl: './admin-branch.component.html',
-	styleUrl: './admin-branch.component.css'
+	styleUrls: ['../../../../Components/Shared/Styles/edification-view-shared.css','./admin-branch.component.css']
 })
-export class AdminBranchComponent {
-	sucursal = {
-		id: 1,
-		nombre: 'Sucursal Central',
-		direccion: 'Av. Principal #123, Ciudad',
-		telefono: '+1 (555) 123-4567',
-		inventariosTotales: 42,
-		totalItems: 287
-	};
+export class AdminBranchComponent implements OnInit {
 
-	subAdministrador: SubAdministrador = {
-		nombre: 'María',
-		apellidos: 'González Rodríguez',
-		celular: '+1 (555) 987-6543',
-		email: 'maria.gonzalez@empresa.com'
-	};
+	private route = inject(ActivatedRoute);
+	private branchService = inject(BranchService);
 
-	// zonas: Zone[] = [];
-	zonas: Zone[] = [
-		{ id: 1, name: 'Zona de Almacén', encargado: 'Carlos López', totalItems: 89 },
-		{ id: 2, name: 'Zona de Exhibición', encargado: 'Ana Martínez', totalItems: 67 },
-		{ id: 3, name: 'Zona de Oficinas', encargado: 'Pedro Sánchez', totalItems: 45 },
-		{ id: 4, name: 'Zona de Servicios', encargado: 'Laura Díaz', totalItems: 56 },
-		{ id: 5, name: 'Zona Exterior', encargado: 'Jorge Ramírez', totalItems: 30 }
-	];
+
+	branchId: number = 0;
+	sucursal: BranchDetailsMod | null = null;
+	subAdministrador: BranchInChargeMod | null = null;
+
+	loading = true;
+	error: string | null = null;
 
 	searchText: string = '';
 
-	// Getter para verificar si hay zonas
-	get hasZones(): boolean {
-		return this.zonas.length > 0;
+	ngOnInit(): void {
+		this.route.paramMap.subscribe(params => {
+			this.branchId = Number(params.get('id'));
+			this.cargarDatos();
+		});
 	}
 
+	cargarDatos(): void {
+		this.loading = true;
+		this.error = null;
+
+		forkJoin({
+			sucursal: this.branchService.getByDetails(this.branchId).pipe(delay(1500)),
+			encargado: this.branchService.getInCharge(this.branchId).pipe(delay(1500))
+		}).subscribe({
+			next: (res) => {
+				this.sucursal = res.sucursal;
+				this.subAdministrador = res.encargado;
+				this.loading = false;
+			},
+			error: (err) => {
+				console.error('Error al cargar datos de sucursal:', err);
+				this.error = 'No se pudo cargar la información de la sucursal.';
+				this.loading = false;
+			}
+		});
+	}
+
+	// Getter para verificar si hay zonas
+	get hasZones(): boolean {
+		return (this.sucursal?.zones?.length ?? 0) > 0;
+	}
+
+	get totalItems(): number {
+		if (!this.sucursal?.zones) return 0;
+		return this.sucursal.zones.reduce((sum, zone) => sum + zone.itemsCount, 0);
+	}
+
+
 	onDeleteSucursal() {
-		console.log('Eliminar/Deshabilitar sucursal:', this.sucursal.id);
+		console.log('Eliminar/Deshabilitar sucursal:', this.sucursal?.id);
+		console.log(this.branchId);
 		// Lógica para eliminar/deshabilitar
 	}
 }

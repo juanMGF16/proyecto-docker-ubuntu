@@ -54,7 +54,7 @@
 							<!-- NIT -->
 							<div class="custom-input-group">
 								<input id="nit" type="text" formControlName="nit" required placeholder="123456789"
-								appOnlyNumbers	[maxLength]="9">
+									appNumericInput [maxLength]="9">
 								<label for="nit">NIT</label>
 								<div class="error-message" *ngIf="hasFieldError('nit')">
 									{{ getFieldError('nit') }}

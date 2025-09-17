@@ -51,20 +51,24 @@
 								<label for="branchName">Nombre de la Sucursal</label>
 								<div class="error-message"
 									*ngIf="branchForm.get('branchName')?.invalid && branchForm.get('branchName')?.touched">
-									<span *ngIf="branchForm.get('branchName')?.hasError('required')">El campo requerido</span>
-									<span *ngIf="branchForm.get('branchName')?.hasError('minlength')">Mínimo 3 caracteres</span>
+									<span *ngIf="branchForm.get('branchName')?.hasError('required')">El campo
+										requerido</span>
+									<span *ngIf="branchForm.get('branchName')?.hasError('minlength')">Mínimo 3
+										caracteres</span>
 								</div>
 							</div>
 
 							<!-- Teléfono de Sucursal -->
 							<div class="custom-input-group">
 								<input id="branchPhone" type="text" formControlName="branchPhone" required
-									placeholder="Ej:31... o 601...">
+									placeholder="Ej:31... o 601..." appNumericInput [maxLength]="10">
 								<label for="branchPhone">Teléfono de la Sucursal</label>
 								<div class="error-message"
 									*ngIf="branchForm.get('branchPhone')?.invalid && branchForm.get('branchPhone')?.touched">
-									<span *ngIf="branchForm.get('branchPhone')?.hasError('required')">El campo es requerido</span>
-									<span *ngIf="branchForm.get('branchPhone')?.hasError('mixedPhone')">Formato inválido. </span>
+									<span *ngIf="branchForm.get('branchPhone')?.hasError('required')">El campo es
+										requerido</span>
+									<span *ngIf="branchForm.get('branchPhone')?.hasError('mixedPhone')">Formato
+										inválido. </span>
 								</div>
 							</div>
 						</div>
@@ -73,12 +77,14 @@
 						<div class="form-row full-width">
 							<div class="custom-input-group">
 								<input id="branchAddress" type="text" formControlName="branchAddress" required
-									placeholder=" " >
+									placeholder=" ">
 								<label for="branchAddress">Dirección Completa</label>
 								<div class="error-message"
 									*ngIf="branchForm.get('branchAddress')?.invalid && branchForm.get('branchAddress')?.touched">
-									<span *ngIf="branchForm.get('branchAddress')?.hasError('required')">El campo es requerido</span>
-									<span *ngIf="branchForm.get('branchAddress')?.hasError('minlength')">Mínimo 5 caracteres</span>
+									<span *ngIf="branchForm.get('branchAddress')?.hasError('required')">El campo es
+										requerido</span>
+									<span *ngIf="branchForm.get('branchAddress')?.hasError('minlength')">Mínimo 5
+										caracteres</span>
 								</div>
 							</div>
 						</div>
@@ -115,8 +121,10 @@
 								<label for="adminName">Nombre</label>
 								<div class="error-message"
 									*ngIf="branchForm.get('adminName')?.invalid && branchForm.get('adminName')?.touched">
-									<span *ngIf="branchForm.get('adminName')?.hasError('required')">El campo es requerido</span>
-									<span *ngIf="branchForm.get('adminName')?.hasError('minlength')">Mínimo 3 caracteres</span>
+									<span *ngIf="branchForm.get('adminName')?.hasError('required')">El campo es
+										requerido</span>
+									<span *ngIf="branchForm.get('adminName')?.hasError('minlength')">Mínimo 3
+										caracteres</span>
 								</div>
 							</div>
 
@@ -151,13 +159,15 @@
 
 							<!-- Numero de documento-->
 							<div class="custom-input-group">
-								<input id="adminDocumentNumber" type="text" formControlName="adminDocumentNumber" required placeholder=" "
-									appOnlyNumbers minlength="6" maxlength="10">
+								<input id="adminDocumentNumber" type="text" formControlName="adminDocumentNumber"
+									required placeholder=" " appNumericInput [maxLength]="10">
 								<label for="adminDocumentNumber">Número de Documento</label>
 								<div class="error-message"
 									*ngIf="branchForm.get('adminDocumentNumber')?.invalid && branchForm.get('adminDocumentNumber')?.touched">
-									<span *ngIf="branchForm.get('adminDocumentNumber')?.hasError('required')">El campo es requerido</span>
-									<span *ngIf="branchForm.get('adminDocumentNumber')?.hasError('pattern')">Solo números (6-10 dígitos)</span>
+									<span *ngIf="branchForm.get('adminDocumentNumber')?.hasError('required')">El campo
+										es requerido</span>
+									<span *ngIf="branchForm.get('adminDocumentNumber')?.hasError('documentNumber')">
+										{{ branchForm.get('adminDocumentNumber')?.getError('documentNumber') }}</span>
 								</div>
 							</div>
 						</div>
@@ -166,17 +176,22 @@
 							<!-- Teléfono -->
 							<div class="custom-input-group">
 								<input id="adminPhone" type="text" formControlName="adminPhone" required
-									placeholder="Ej:3123456789" appOnlyNumbers appColombianPhone [maxLength]="10"
-									[mustStartWith]="'3'">
-								<label for="adminPhone">Teléfonor Celular</label>
+									placeholder="Ej: 3123456789" appNumericInput  [maxLength]="10">
+
+								<label for="adminPhone">Teléfono Celular</label>
+
 								<div class="error-message"
 									*ngIf="branchForm.get('adminPhone')?.invalid && branchForm.get('adminPhone')?.touched">
-									<span *ngIf="branchForm.get('adminPhone')?.hasError('required')">Este campo es
-										requerido</span>
-									<span *ngIf="branchForm.get('adminPhone')?.hasError('colombianPhone')">Formato
-										inválido</span>
+									<span *ngIf="branchForm.get('adminPhone')?.hasError('required')">
+										Este campo es requerido
+									</span>
+									<span *ngIf="branchForm.get('adminPhone')?.hasError('colombianPhone')">
+										{{ branchForm.get('adminPhone')?.getError('colombianPhone') }}
+									</span>
 								</div>
 							</div>
+
+
 
 							<!-- Email -->
 							<div class="custom-input-group">

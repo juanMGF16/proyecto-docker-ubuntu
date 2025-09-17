@@ -1,5 +1,7 @@
 ﻿using Business.Repository.Interfaces.Specific.System;
+using Entity.DTOs.System.Branch;
 using Entity.DTOs.System.Zone;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Utilities.Enums;
 using Web.Controllers.Base;
@@ -26,31 +28,35 @@ namespace Web.Controllers.System
         public async Task<IActionResult> GetById(int id) =>
             await TryExecuteAsync(() => _service.GetByIdAsync(id), "GetById");
 
+        [Authorize(Roles = "SM_ACTION, ADMINISTRADOR, SUBADMINISTRADOR")]
+        [HttpGet("GetByIdBranch/{id:int}")]
+        [ProducesResponseType(typeof(ZoneSimpleDTO), 200)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(404)]
+        public async Task<IActionResult> GetByIdBranch(int id) =>
+            await TryExecuteAsync(() => _service.GetZonesByBranchAsync(id), "GetByIdBranch");
 
-        /// <summary>
-        /// Obtiene todas las zonas disponibles para un usuario específico,
-        /// según el OperationalGroup asignado.
-        /// </summary>
-        [HttpGet("user/{userId}")]
-        public async Task<IActionResult> GetZonesByUser(int userId)
-        {
-            try
-            {
-                var zones = await _service.GetAvailableZonesByUserAsync(userId);
+        [Authorize(Roles = "SM_ACTION, ADMINISTRADOR, SUBADMINISTRADOR")]
+        [HttpGet("GetZoneDetailsById/{zoneId}")]
+        [ProducesResponseType(typeof(ZoneDetailsDTO), 200)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(404)]
+        public async Task<IActionResult> GetZoneDetails(int zoneId) =>
+                await TryExecuteAsync(() => _service.GetZoneDetailsAsync(zoneId), "GetZoneDetailsById");
 
-                if (zones == null || !zones.Any())
-                    return NotFound($"No se encontraron zonas para el usuario {userId}");
+        [Authorize(Roles = "SM_ACTION, ADMINISTRADOR, SUBADMINISTRADOR")]
+        [HttpGet("GetInCharges/{branchId:int}")]
+        [ProducesResponseType(typeof(IEnumerable<ZoneInChargeListDTO>), 200)]
+        [ProducesResponseType(400)]
+        public async Task<IActionResult> GetInChargesByCompany(int branchId) =>
+            await TryExecuteAsync(() => _service.GetInChargesAsync(branchId), "GetInCharges");
 
-                return Ok(zones);
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, $"Error al obtener las zonas para el usuario {userId}");
-                return StatusCode(StatusCodes.Status500InternalServerError,
-                    "Ocurrió un error en el servidor");
-            }
-        }
-
+        [Authorize(Roles = "SM_ACTION, ADMINISTRADOR, SUBADMINISTRADOR, ENCARGADO_ZONA")]
+        [HttpGet("GetZoneByAreaManager/{id:int}")]
+        [ProducesResponseType(typeof(ZoneConsultDTO), 200)]
+        [ProducesResponseType(404)]
+        public async Task<IActionResult> GetZoneByAreaManager(int id) =>
+            await TryExecuteAsync(() => _service.GetZoneByAreaManagerAsync(id), "GetZoneByAreaManager");
 
         [HttpPost("Create/")]
         [ProducesResponseType(typeof(ZoneDTO), 201)]
@@ -70,6 +76,14 @@ namespace Web.Controllers.System
         [ProducesResponseType(404)]
         public async Task<IActionResult> Update([FromBody] ZoneDTO dto) =>
             await TryExecuteAsync(() => _service.UpdateAsync(dto), "Updateitem");
+
+        [Authorize(Roles = "SM_ACTION, ADMINISTRADOR, SUBADMINISTRADOR, ENCARGADO_ZONA")]
+        [HttpPatch("PartialUpdate/")]
+        [ProducesResponseType(typeof(ZoneDTO), 200)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(404)]
+        public async Task<IActionResult> PartialUpdate([FromBody] ZonePartialUpdateDTO dto) =>
+            await TryExecuteAsync(() => _service.PartialUpdateAsync(dto), "PartialUpdate");
 
         [HttpDelete("Delete/{id:int}")]
         [ProducesResponseType(200)]

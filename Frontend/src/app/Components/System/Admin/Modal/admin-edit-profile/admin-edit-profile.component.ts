@@ -9,16 +9,18 @@ import { UserService } from '../../../../../Core/Service/SecurityModule/user.ser
 import { UserPartialUpdateMod } from '../../../../../Core/Models/SecurityModule/UserMod.model';
 import { AuthService } from '../../../../../Core/Service/Auth/auth.service';
 import { colombianPhoneValidator, emailValidator } from '../../../../../Core/Utils/input-validators.util';
+import { NumericInputDirective } from '../../../../../Core/Directives/numeric-input.directive';
 
 @Component({
 	selector: 'app-admin-edit-profile-modal',
 	standalone: true,
 	imports: [
-		CommonModule,
-		ReactiveFormsModule,
-		MatButtonModule,
-		MatIconModule
-	],
+    CommonModule,
+    ReactiveFormsModule,
+    MatButtonModule,
+    MatIconModule,
+    NumericInputDirective
+],
 	templateUrl: './admin-edit-profile.component.html',
 	styleUrls: ['../../../../Shared/Styles/modal-shared.css', './admin-edit-profile.component.css']
 })

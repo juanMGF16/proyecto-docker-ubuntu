@@ -2,8 +2,7 @@
 .layout-container {
 	display: flex;
 	flex-direction: column;
-	min-height: 100vh;
-	background: linear-gradient(135deg, var(--color-blue-variante-2) 0%, var(--color-blue-1000) 100%);
+	min-height: calc(100vh - var(--header-height));
 }
 
 .main-content {
@@ -292,6 +291,7 @@
 	transition: all 0.2s ease;
 	flex: 1;
 	justify-content: center;
+	color: var(--color-white) !important;
 }
 
 .edit-button {

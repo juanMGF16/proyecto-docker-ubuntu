@@ -1,14 +1,11 @@
 ﻿using Data.Repository.Interfaces.System;
 using Entity.Context;
+using Entity.DTOs.System.Zone;
 using Entity.Models.System;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Storage;
 using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Utilities.Enums.Models;
+using Utilities.Exceptions;
 
 namespace Data.Repository.Implementations.System
 {
@@ -20,6 +17,12 @@ namespace Data.Repository.Implementations.System
         {
             _context = context;
             _logger = logger;
+        }
+
+        //Contexto para Transacciones
+        public async Task<IDbContextTransaction> BeginTransactionAsync()
+        {
+            return await _context.Database.BeginTransactionAsync();
         }
 
         public override async Task<IEnumerable<Zone>> GetAllAsync()
@@ -55,6 +58,32 @@ namespace Data.Repository.Implementations.System
             }
         }
 
+        public override async Task<Zone> CreateAsync(Zone entity)
+        {
+            try
+            {
+                // Validar que el nombre no exista en la misma compañía
+                var nameExists = await ZoneNameExistsAsync(entity.Name, entity.BranchId);
+                if (nameExists)
+                {
+                    throw new ValidationException("Name", $"Ya existe una zona con el nombre {entity.Name} en esta sucursal");
+                }
+
+                await _context.Zone.AddAsync(entity);
+                await _context.SaveChangesAsync();
+                return entity;
+            }
+            catch (ValidationException)
+            {
+                throw;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error creating branch");
+                throw;
+            }
+        }
+
         // General
         public override async Task<IEnumerable<Zone>> GetAllTotalAsync()
         {
@@ -72,32 +101,84 @@ namespace Data.Repository.Implementations.System
             }
         }
 
-        public override async Task<IEnumerable<Zone>> GetAvailableZonesByUserAsync(int userId)
+        //Specific
+        private async Task<bool> ZoneNameExistsAsync(string name, int branchId)
         {
             try
             {
-                var now = DateTime.UtcNow;
-
-                var zones = await _context.Operating
-                    .Where(o => o.UserId == userId &&
-                                o.OperationalGroup.DateStart <= now &&
-                                (o.OperationalGroup.DateEnd == null || o.OperationalGroup.DateEnd >= now))
-                    .SelectMany(o => o.OperationalGroup.User.Branch.Zones)
-                    .Where(z => z.StateZone == StateZone.Available)
-                    .Include(z => z.Branch)                  
-                        .ThenInclude(b => b.Company)         
-                    .ToListAsync();
-
-                return zones;
+                return await _context.Zone
+                    .AnyAsync(b => b.Name.ToLower() == name.ToLower() &&
+                                 b.BranchId == branchId &&
+                                 b.Active);
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Error al obtener las zonas disponibles por usuario.");
+                _logger.LogError(ex, "Error checking if zone name exists: {Name}", name);
                 throw;
             }
         }
 
+        public async Task<IEnumerable<Zone>> GetZonesByBranchAsync(int branchId)
+        {
+            try
+            {
+                return await _context.Zone
+                    .Include(b => b.User)
+                    .ThenInclude(u => u.Person)
+                    .Where(b => b.BranchId == branchId && b.Active)
+                    .ToListAsync();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error obteniendo zones para branch: {BranchId}", branchId);
+                throw;
+            }
+        }
 
+        public async Task<Zone?> GetZoneDetailsAsync(int zoneId)
+        {
+            return await _context.Zone
+                .Include(z => z.User)
+                    .ThenInclude(u => u.Person)
+                .Include(z => z.Items)
+                    .ThenInclude(i => i.CategoryItem)
+                .Include(z => z.Items)
+                    .ThenInclude(i => i.StateItem)
+                .Include(z => z.Inventories)
+                .FirstOrDefaultAsync(z => z.Id == zoneId);
+        }
 
+        public async Task<IEnumerable<Zone>> GetInChargesAsync(int branchId)
+        {
+            try
+            {
+                return await _context.Zone
+                    .Include(b => b.User)
+                        .ThenInclude(u => u.Person)
+                    .Where(b => b.BranchId == branchId && b.Active)
+                    .ToListAsync();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error getting zone in-charges for branch: {BranchId}", branchId);
+                throw;
+            }
+        }
+
+        public async Task<Zone?> GetZoneByAreaManagerAsync(int userId)
+        {
+            try
+            {
+                return await _context.Zone
+                    .Include(b => b.User)
+                    .Include(b => b.Branch)
+                    .FirstOrDefaultAsync(b => b.UserId == userId && b.Active);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error obteniendo zone para user: {UserId}", userId);
+                throw;
+            }
+        }
     }
 }

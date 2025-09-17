@@ -1,8 +1,12 @@
 ﻿using AutoMapper;
 using Business.Repository.Interfaces.Specific.System;
+using CloudinaryDotNet.Core;
 using Data.Factory;
+using Data.Repository.Implementations.System;
 using Data.Repository.Interfaces.General;
 using Data.Repository.Interfaces.Strategy;
+using Data.Repository.Interfaces.System;
+using Entity.DTOs.System.Branch;
 using Entity.DTOs.System.Zone;
 using Entity.Models.System;
 using Microsoft.Extensions.Logging;
@@ -18,15 +22,18 @@ namespace Business.Repository.Implementations.Specific.System
     {
 
         private readonly IGeneral<Zone> _general;
+        private readonly IZone _zoneData;
         public ZoneBusiness(
             IDataFactoryGlobal factory,
             IGeneral<Zone> general,
+            IZone zoneData,
             IDeleteStrategyResolver<Zone> deleteStrategyResolver,
             ILogger<Zone> logger,
             IMapper mapper)
             : base(factory.CreateZoneData(), deleteStrategyResolver, logger, mapper)
         {
             _general = general;
+            _zoneData = zoneData;
         }
 
         //General 
@@ -36,25 +43,74 @@ namespace Business.Repository.Implementations.Specific.System
             return _mapper.Map<IEnumerable<ZoneConsultDTO>>(active);
         }
 
-        public async Task<IEnumerable<ZoneOperatingDTO>> GetAvailableZonesByUserAsync(int userId)
+        //Specific
+        public async Task<IEnumerable<ZoneSimpleDTO>> GetZonesByBranchAsync(int branchId)
         {
-            // 1️ Llamo al método de Data
-            var zones = await _general.GetAvailableZonesByUserAsync(userId);
-
-            // 2️ Transformo a DTO
-            var zoneDtos = zones.Select(z => new ZoneOperatingDTO
-            {
-                Id = z.Id,
-                Name = z.Name,
-                Description = z.Description,
-                BranchName = z.Branch.Name,
-                CompanyName = z.Branch.Company.Name
-            }).ToList();
-
-            return zoneDtos;
+            ValidationHelper.EnsureValidId(branchId, "Branch ID");
+            var branches = await _zoneData.GetZonesByBranchAsync(branchId);
+            return _mapper.Map<IEnumerable<ZoneSimpleDTO>>(branches);
         }
 
+        public async Task<ZoneDetailsDTO?> GetZoneDetailsAsync(int zoneId)
+        {
+            var zone = await _zoneData.GetZoneDetailsAsync(zoneId);
+            if (zone == null) return null;
 
+            return _mapper.Map<ZoneDetailsDTO>(zone);
+        }
+
+        public async Task<IEnumerable<ZoneInChargeListDTO>> GetInChargesAsync(int branchId)
+        {
+            ValidationHelper.EnsureValidId(branchId, "Branch ID");
+            var inCharges = await _zoneData.GetInChargesAsync(branchId);
+
+            return _mapper.Map<IEnumerable<ZoneInChargeListDTO>>(inCharges);
+        }
+
+        public async Task<ZoneConsultDTO?> GetZoneByAreaManagerAsync(int userId)
+        {
+            ValidationHelper.EnsureValidId(userId, "User ID");
+
+            var branch = await _zoneData.GetZoneByAreaManagerAsync(userId);
+
+            if (branch == null)
+                return null;
+
+            return _mapper.Map<ZoneConsultDTO>(branch);
+        }
+
+        public async Task<ZoneConsultDTO> PartialUpdateAsync(ZonePartialUpdateDTO dto)
+        {
+            ValidationHelper.EnsureValidId(dto.Id, "ZoneId");
+
+            var zone = await _data.GetByIdAsync(dto.Id);
+            if (zone == null)
+                throw new EntityNotFoundException(nameof(Zone), dto.Id);
+
+            var allZones = await _data.GetAllAsync();
+
+            // --- Name ---
+            if (!string.IsNullOrWhiteSpace(dto.Name) &&
+                !StringHelper.EqualsNormalized(zone.Name, dto.Name))
+            {
+                bool nameExists = allZones.Any(c =>
+                c.Id != dto.Id &&
+                    StringHelper.EqualsNormalized(c.Name, dto.Name));
+
+                if (nameExists)
+                    throw new ValidationException("Zone", $"El nombre '{dto.Name}' ya está en uso.");
+
+                zone.Name = dto.Name;
+            }
+
+            zone.Description = dto.Description;
+
+
+            await _data.UpdateAsync(zone);
+            return _mapper.Map<ZoneConsultDTO>(zone);
+        }
+
+        //Actions
         protected override Task BeforeCreateMap(ZoneDTO dto, Zone entity)
         {
             ValidationHelper.ThrowIfEmpty(dto.Name, "Name");

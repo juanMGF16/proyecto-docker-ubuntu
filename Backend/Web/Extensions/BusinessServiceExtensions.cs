@@ -1,14 +1,15 @@
 ﻿using Business.Repository.Implementations.Specific.System.Others;
 using Business.Repository.Interfaces.Specific.System.Others;
 using Business.Services;
-using Business.Services.Jwt.Interfaces;
 using Business.Services.Jwt;
+using Business.Services.Jwt.Interfaces;
 using Business.Services.JWTService;
 using Business.Services.JWTService.Interfaces;
 using Business.Services.NITValidation;
 using Business.Services.NITValidation.Interfaces;
 using Business.Services.PaswordRecovery;
 using Business.Services.PaswordRecovery.Interfaces;
+using Business.Services.ScanInventary;
 using Business.Services.SendEmail;
 using Business.Services.SendEmail.Interfaces;
 using Data.Factory;
@@ -18,6 +19,12 @@ using Data.Repository.Interfaces.General;
 using Data.Repository.Interfaces.Specific.System.Others;
 using Data.Repository.Interfaces.Strategy;
 using Entity.Models.ParametersModule;
+using Business.Factory;
+using DocumentFormat.OpenXml.Office2016.Drawing.ChartDrawing;
+using Business.Services.CredentialGenerator.Interfaces;
+using Business.Services.CredentialGenerator;
+using Business.Services.Entities.Implementations;
+using Business.Services.Entities.Interfaces;
 
 namespace Web.Extensions
 {
@@ -35,7 +42,12 @@ namespace Web.Extensions
             services.AddScoped<AuthService>();
 
             // =============== [ Factory ] ===============
-            services.AddScoped<IDataFactoryGlobal, GlobalFactory>();
+            services.AddScoped<IDataFactoryGlobal, GlobalFactory>(); // Data
+            services.AddScoped<IBusinessServiceFactory, BusinessServiceFactory>(); // Business
+
+            // =============== [ Factory Bussiness Service ] ===============
+            services.AddScoped<IBranchRegistrationService, BranchRegistrationService>();
+            services.AddScoped<IZoneRegistrationService, ZoneRegistrationService>();
 
             // =============== [ Strategy Services ] ===============
             services.AddScoped(typeof(LogicalDeleteStrategy<>));
@@ -48,11 +60,12 @@ namespace Web.Extensions
             services.AddScoped<IPasswordRecoveryService, PasswordRecoveryService>();
             services.AddHttpClient<INitValidationService, NitValidationService>();
             services.AddScoped<IRefreshTokenService, RefreshTokenService>();
+            services.AddScoped<ICredentialGeneratorService, CredentialGeneratorService>();
+            services.AddScoped<IInventoryService, InventoryService>();
 
             // =============== [ Others ] ===============
             services.AddScoped<IDashboardData, DashboardData>();
             services.AddScoped<IDashboardBusiness, DashboardBusiness>();
-
 
             return services;
         }

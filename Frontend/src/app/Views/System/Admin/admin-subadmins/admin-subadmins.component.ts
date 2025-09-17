@@ -1,92 +1,137 @@
-import { CommonModule } from '@angular/common';
-import { Component, inject, signal } from '@angular/core';
-import { MatButtonModule } from '@angular/material/button';
-import { MatIconModule } from '@angular/material/icon';
-import { MatTableModule } from '@angular/material/table';
+import { Component, inject, OnInit, signal } from '@angular/core';
 import { Router } from '@angular/router';
-import { SubadminFilterPipe } from '../../../../Core/Pipes/subadmins-filter.pipe';
-import { FormsModule } from '@angular/forms'; // Importar FormsModule
-
-export interface SubAdmin {
-	id: number;
-	name: string;
-	lastName: string;
-	phone: string;
-	email: string;
-	documentType: string;
-	documentNumber: string;
-	branch: string;
-	branchId: number;
-}
+import { ShowStaffComponent, TableConfig } from '../../../../Components/Shared/Tables/show-staff/show-staff.component';
+import { UserService } from '../../../../Core/Service/SecurityModule/user.service';
+import { BranchService } from '../../../../Core/Service/System/branch.service';
+import { BranchInChargesMod } from '../../../../Core/Models/System/BranchMod.model';
 
 @Component({
-	selector: 'app-admin-subadmins',
-	standalone: true,
-	imports: [CommonModule, MatButtonModule, MatIconModule, MatTableModule, SubadminFilterPipe, FormsModule ],
-	templateUrl: './admin-subadmins.component.html',
-	styleUrls: ['../../../../Components/Shared/Styles/modal-shared.css','./admin-subadmins.component.css']
+  selector: 'app-admin-subadmins',
+  standalone: true,
+  imports: [ShowStaffComponent],
+  templateUrl: './admin-subadmins.component.html'
 })
-export class AdminSubadminsComponent {
-	private router = inject(Router);
+export class AdminSubadminsComponent implements OnInit {
+  private router = inject(Router);
+  private userService = inject(UserService);
+  private branchService = inject(BranchService);
 
-	selectedSubAdmin = signal<SubAdmin | null>(null);
-	isModalOpen = signal(false);
-	searchText: string = '';
+  loading = true;
+  error: string | null = null;
+  subadmins: BranchInChargesMod[] = [];
 
-	// Datos hardcodeados
-	subadmins: SubAdmin[] = [
-		{
-			id: 1,
-			name: 'María',
-			lastName: 'González Rodríguez',
-			phone: '+57 312 345 6789',
-			email: 'maria.gonzalez@empresa.com',
-			documentType: 'Cédula de Ciudadanía',
-			documentNumber: '1234567890',
-			branch: 'Sucursal Central',
-			branchId: 1
-		},
-		{
-			id: 2,
-			name: 'Carlos',
-			lastName: 'López Martínez',
-			phone: '+57 315 987 6543',
-			email: 'carlos.lopez@empresa.com',
-			documentType: 'Cédula de Ciudadanía',
-			documentNumber: '0987654321',
-			branch: 'Sucursal Norte',
-			branchId: 2
-		},
-		{
-			id: 3,
-			name: 'Ana',
-			lastName: 'Martínez Silva',
-			phone: '+57 320 123 4567',
-			email: 'ana.martinez@empresa.com',
-			documentType: 'Cédula de Ciudadanía',
-			documentNumber: '1122334455',
-			branch: 'Sucursal Sur',
-			branchId: 3
-		}
-	];
+  // Configuración para la tabla genérica
+  tableConfig: TableConfig = {
+    title: 'Encargados de Sucursal',
+    subtitle: 'Gestión de usuarios con permisos de Encargado de Sucursal',
+    emptyState: {
+      icon: 'admin_panel_settings',
+      title: 'No hay encargados de Sucursal',
+      description: 'Para tener encargados de Sucursal, primero debes crear sucursales y asignarles usuarios.',
+      buttonText: 'Crear Sucursal',
+      buttonIcon: 'add_business',
+      buttonAction: () => this.navigateToBranches()
+    },
+    columns: [
+      {
+        key: 'fullName',
+        label: 'Nombre Completo',
+        type: 'text'
+      },
+      {
+        key: 'phone',
+        label: 'Teléfono Celular',
+        type: 'icon',
+        icon: 'phone',
+        formatter: (value) => value || 'No especificado'
+      },
+      {
+        key: 'branchName',
+        label: 'Sucursal Asignada',
+        type: 'icon',
+        icon: 'store',
+        formatter: (value) => value || 'Sin asignar'
+      }
+    ],
+    modalSections: [
+      {
+        title: 'Información Personal',
+        icon: 'person',
+        fields: [
+          { key: 'fullName', label: 'Nombre completo' },
+          { key: 'email', label: 'Email' },
+          { key: 'phone', label: 'Teléfono Celular' }
+        ]
+      },
+      {
+        title: 'Documentación',
+        icon: 'badge',
+        fields: [
+          {
+            key: 'documentType',
+            label: 'Tipo de documento',
+            formatter: (value) => this.getDocumentTypeName(value)
+          },
+          { key: 'documentNumber', label: 'Número de documento' }
+        ]
+      },
+      {
+        title: 'Sucursal Asignada',
+        icon: 'business',
+        fields: [
+          { key: 'branchName', label: 'Sucursal' }
+        ]
+      }
+    ]
+  };
 
-	displayedColumns: string[] = ['name', 'phone', 'branch', 'actions'];
+  documentTypeMap: { [key: string]: string } = {
+    "RC": 'Registro Civil',
+    "TI": 'Tarjeta de Identidad',
+    "CC": 'Cédula de Ciudadanía',
+    "CE": 'Cédula de Extranjería',
+    "PP": 'Pasaporte',
+  };
 
-	viewDetails(subadmin: SubAdmin): void {
-		this.selectedSubAdmin.set(subadmin);
-		this.isModalOpen.set(true);
-	}
+  ngOnInit(): void {
+    this.getInCharges();
+  }
 
-	closeModal(): void {
-		this.isModalOpen.set(false);
-		this.selectedSubAdmin.set(null);
-	}
+  getInCharges(): void {
+    this.loading = true;
+    this.userService.hasCompany().subscribe({
+      next: (data) => {
+        if (data.hasCompany && data.companyId) {
+          this.branchService.getInCharges(data.companyId).subscribe({
+            next: (subadmins) => {
+              this.subadmins = subadmins;
+              this.loading = false;
+            },
+            error: (error) => {
+              this.loading = false;
+              this.error = 'Error al cargar los encargados', error;
+            }
+          });
+        } else {
+          this.loading = false;
+        }
+      },
+      error: (error) => {
+        this.loading = false;
+        this.error = 'Error al verificar la compañía', error;
+      }
+    });
+  }
 
-	navigateToBranches(): void {
-		this.router.navigate(['/admin/register-branch']);
-	}
+  getDocumentTypeName(code: string | undefined | null): string {
+    return code ? (this.documentTypeMap[code] || code) : '';
+  }
 
-	get hasSubadmins(): boolean {
-		return this.subadmins.length > 0;
-	}
+  navigateToBranches(): void {
+    this.router.navigate(['/admin/register-branch']);
+  }
+
+  onRowClick(subadmin: any): void {
+    console.log('Subadmin seleccionado:', subadmin);
+  }
 }

@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
@@ -11,6 +11,8 @@ import Swal from 'sweetalert2';
 import { InitialHeaderComponent } from "../../../Components/System/Landing/initial-header/initial-navbar.component";
 import { AuthService } from '../../../Core/Service/Auth/auth.service';
 import { RoleRedirectService } from '../../../Core/Service/Auth/role-redirect.service';
+import { AlertService } from '../../../Core/Service/alert.service';
+import { lastValueFrom } from 'rxjs';
 
 @Component({
 	selector: 'app-login',
@@ -24,10 +26,12 @@ export class LoginComponent {
 	private formBuilder = inject(FormBuilder);
 	private authService = inject(AuthService);
 	private roleRedirect = inject(RoleRedirectService);
+	private alertService = inject(AlertService);
 
 	hidePassword = true;
 	usernameFocused = false;
 	passwordFocused = false;
+	isLoggingIn = signal(false); // Deshabilitar Boton Submit
 
 	loginForm = this.formBuilder.group({
 		username: ['', Validators.required],
@@ -36,31 +40,39 @@ export class LoginComponent {
 		]]
 	});
 
-	onSubmit(): void {
-		if (this.loginForm.invalid) {
+	async onSubmit(): Promise<void> {
+		if (this.loginForm.invalid || this.isLoggingIn()) {
 			this.loginForm.markAllAsTouched();
 			return;
 		}
 
 		const { username, password } = this.loginForm.value;
 
-		this.authService.login({ username: username!, password: password! }).subscribe({
-			next: (res) => {
-				this.authService.saveToken(res.token);
+		this.isLoggingIn.set(true); // Deshabilitar Boton Submit
+		this.alertService.showLoading('Procesando...', 'Iniciando sesión');
 
-				// Delega la decisión al servicio
-				const role = this.authService.getRole();
-				this.roleRedirect.redirectUser(role);
-			},
-			error: () => {
-				Swal.fire({
-					icon: 'error',
-					title: 'Oopss...',
-					text: 'Credenciales Incorrectas',
-					confirmButtonText: 'Aceptar'
-				});
-			}
-		});
+		try {
+			const loginResponse = await lastValueFrom(
+				this.authService.login({ username: username!, password: password! })
+			);
+
+			this.alertService.closeAlert();
+			this.authService.saveToken(loginResponse.token);
+			const role = this.authService.getRole();
+			this.roleRedirect.redirectUser(role);
+
+		} catch (error: any) {
+			this.alertService.closeAlert();
+
+			Swal.fire({
+				icon: 'error',
+				title: 'Oopss...',
+				text: 'Credenciales Incorrectas',
+				confirmButtonText: 'Aceptar'
+			});
+		} finally {
+			this.isLoggingIn.set(false); //  Rehabilitar botón
+		}
 	}
 
 	onForgotPassword(): void {
@@ -82,33 +94,15 @@ export class LoginComponent {
 			if (result.isConfirmed && result.value) {
 				const email = result.value;
 
-				Swal.fire({
-					title: 'Procesando...',
-					text: 'Por favor espera un momento ⏳',
-					allowOutsideClick: false,
-					didOpen: () => {
-						Swal.showLoading();
+				this.alertService.withLoading(
+					() => lastValueFrom(this.authService.forgotPassword(email)),
+					{
+						successTitle: 'Solicitud enviada',
+						successText: 'Si el email está registrado, recibirás instrucciones en tu bandeja de entrada 📩',
+						errorTitle: 'Error',
+						errorText: 'Ocurrió un error al procesar la solicitud'
 					}
-				});
-
-				this.authService.forgotPassword(email).subscribe({
-					next: (res) => {
-						Swal.fire({
-							icon: 'success',
-							title: 'Solicitud enviada',
-							text: res.message || 'Si el email está registrado, recibirás instrucciones en tu bandeja de entrada 📩',
-							confirmButtonText: 'Aceptar'
-						});
-					},
-					error: (err) => {
-						Swal.fire({
-							icon: 'error',
-							title: 'Error',
-							text: err.error?.message || 'Ocurrió un error al procesar la solicitud',
-							confirmButtonText: 'Aceptar'
-						});
-					}
-				});
+				);
 			}
 		});
 	}

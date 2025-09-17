@@ -3117,6 +3117,22 @@
     ]
   },
   {
+    "ContainingType": "Web.Controllers.System.Others.ScanItemController",
+    "Method": "ScanItem",
+    "RelativePath": "api/ScanItem/scan",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "request",
+        "Type": "Entity.DTOs.ScanItem.ScanItemRequestDTO",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
     "ContainingType": "Web.Controllers.Parameters.StateItemController",
     "Method": "Create",
     "RelativePath": "api/StateItem/Create",

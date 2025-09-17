@@ -83,7 +83,7 @@ export class TokenMonitorService {
   }
 
   private forceLogout(): void {
-    this.authService.logout();
+    // this.authService.logout();
     Swal.fire({
       title: 'Sesión cerrada',
       text: 'Tu sesión ha expirado por inactividad.',
