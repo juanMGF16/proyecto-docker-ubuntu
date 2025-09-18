@@ -31,10 +31,10 @@ namespace Business.Services.JWTService
 
             var role = user.UserRoles.FirstOrDefault()?.Role?.Name ?? "Usuario";
 
-            // Access Token 
-            var accessToken = _jwtService.GenerateToken(user.Id, user.PersonId, user.Username, role, 120);
+            // Access Token (corto, ej. 10 minutos)
+            var accessToken = _jwtService.GenerateToken(user.Id, user.PersonId, user.Username, role, 10);
 
-            // Refresh Token 
+            // Refresh Token (largo,1440 min = 1 día)
             var refreshToken = _jwtService.GenerateToken(user.Id, user.PersonId, user.Username, role, 1440);
 
             return new LoginResponseDTO
@@ -66,8 +66,8 @@ namespace Business.Services.JWTService
 
             var role = user.UserRoles.FirstOrDefault()?.Role?.Name ?? "OPERATIVO";
 
-            // Generar tokens
-            var accessToken = _jwtService.GenerateToken(user.Id, user.PersonId, user.Username, role, 120);
+            // 🎟️ Generar tokens
+            var accessToken = _jwtService.GenerateToken(user.Id, user.PersonId, user.Username, role, 10);
             var refreshToken = _jwtService.GenerateToken(user.Id, user.PersonId, user.Username, role, 1440);
 
             return new LoginResponseDTO

@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 ﻿using Data.Repository.Interfaces.System;
 using Entity.Context;
 using Entity.DTOs.System.Zone;
@@ -6,6 +7,18 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
 using Microsoft.Extensions.Logging;
 using Utilities.Exceptions;
+=======
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using Data.Repository.Interfaces.System;
+using Entity.Context;
+using Entity.Models.System;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
+>>>>>>> parent of 845d2803 (solucion de errores)
 
 namespace Data.Repository.Implementations.System
 {
@@ -101,12 +114,28 @@ namespace Data.Repository.Implementations.System
             }
         }
 
+<<<<<<< HEAD
         //Specific
         private async Task<bool> ZoneNameExistsAsync(string name, int branchId)
+=======
+        //public async Task<List<Zone>> GetZonesByUserAsync(int userId)
+        //{
+        //    var zones = await _context.Zone
+        //        .Where(z => z.Active &&
+        //            z.Inventories.Any(i =>
+        //                i.OperatingGroup.Operatings.Any(o =>
+        //                    o.UserId == userId && o.Active)))
+        //        .ToListAsync();
+
+        //    return zones;
+        //}
+        public override async Task<IEnumerable<Zone>> GetZonesByUserAsync(int userId)
+>>>>>>> parent of 845d2803 (solucion de errores)
         {
             try
             {
                 return await _context.Zone
+<<<<<<< HEAD
                     .AnyAsync(b => b.Name.ToLower() == name.ToLower() &&
                                  b.BranchId == branchId &&
                                  b.Active);
@@ -114,10 +143,24 @@ namespace Data.Repository.Implementations.System
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Error checking if zone name exists: {Name}", name);
+=======
+                    .Where(z => z.Active &&
+                        z.Inventories.Any(i =>
+                            i.OperatingGroup.Operatings.Any(o =>
+                                o.UserId == userId && o.Active)))
+                    .Include(z => z.Branch)   
+                    .Include(z => z.User)   
+                    .ToListAsync();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, $"No se pudieron obtener las zonas para el usuario {userId}");
+>>>>>>> parent of 845d2803 (solucion de errores)
                 throw;
             }
         }
 
+<<<<<<< HEAD
         public async Task<IEnumerable<Zone>> GetZonesByBranchAsync(int branchId)
         {
             try
@@ -180,5 +223,7 @@ namespace Data.Repository.Implementations.System
                 throw;
             }
         }
+=======
+>>>>>>> parent of 845d2803 (solucion de errores)
     }
 }

@@ -8,7 +8,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { RouterLink } from '@angular/router';
 import Swal from 'sweetalert2';
-import { InitialHeaderComponent } from "../../../Components/System/Landing/initial-header/initial-navbar.component";
+import { InitialHeaderComponent} from "../../../Components/System/Landing/initial-header/initial-navbar.component";
 import { AuthService } from '../../../Core/Service/Auth/auth.service';
 import { RoleRedirectService } from '../../../Core/Service/Auth/role-redirect.service';
 import { AlertService } from '../../../Core/Service/alert.service';
@@ -75,6 +75,7 @@ export class LoginComponent {
 		}
 	}
 
+<<<<<<< HEAD
 	onForgotPassword(): void {
 		Swal.fire({
 			title: 'Recuperar contraseña',
@@ -106,4 +107,6 @@ export class LoginComponent {
 			}
 		});
 	}
+=======
+>>>>>>> parent of 845d2803 (solucion de errores)
 }

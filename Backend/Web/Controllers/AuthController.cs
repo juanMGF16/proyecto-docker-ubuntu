@@ -1,10 +1,8 @@
-using Business.Repository.Interfaces.Specific.ParametersModule;
-using Business.Repository.Interfaces.Specific.SecurityModule;
+﻿using Business.Repository.Interfaces.Specific.SecurityModule;
+using Business.Services.Jwt;
 using Business.Services.Jwt.Interfaces;
 using Business.Services.JWTService;
 using Business.Services.JWTService.Interfaces;
-using Business.Services.PaswordRecovery.Interfaces;
-using Business.Services.SendEmail.Interfaces;
 using Entity.Context;
 using Entity.DTOs.Auth;
 using Entity.DTOs.SecurityModule.Person;
@@ -13,8 +11,8 @@ using Entity.Models.SecurityModule;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity.Data;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 using Utilities.Exceptions;
-using Utilities.Templates;
 
 namespace Web.Controllers
 {
@@ -27,35 +25,26 @@ namespace Web.Controllers
         private readonly IJwtService _jwtService;
         private readonly IRefreshTokenService _refreshTokenService;
         private readonly AppDbContext _context;
-        private readonly INotificationBusiness _notificationBusiness;
-        private readonly IEmailService _emailService;
         private readonly IRoleBusiness _roleBusiness;
         private readonly IUserBusiness _userBusiness;
         private readonly IPersonBusiness _personBusiness;
-        private readonly IPasswordRecoveryService _passwordRecoveryService;
 
         public AuthController(
             AuthService authService,
             IJwtService jwtService,
             IRefreshTokenService refreshTokenService,
             AppDbContext context,
-            INotificationBusiness notificationBusiness,
-            IEmailService emailService,
             IRoleBusiness roleBusines,
             IUserBusiness userBusiness,
-            IPersonBusiness personBusiness,
-            IPasswordRecoveryService passwordRecoveryService)
+            IPersonBusiness personBusiness)
         {
             _authService = authService;
             _jwtService = jwtService;
             _refreshTokenService = refreshTokenService;
             _context = context;
-            _notificationBusiness = notificationBusiness;
-            _emailService = emailService;
             _roleBusiness = roleBusines;
             _userBusiness = userBusiness;
             _personBusiness = personBusiness;
-            _passwordRecoveryService = passwordRecoveryService;
         }
 
         [HttpPost("Login")]
@@ -131,18 +120,7 @@ namespace Web.Controllers
                 await _context.SaveChangesAsync();
                 await transaction.CommitAsync();
 
-                // ================== [ EMAIL DE BIENVENIDA ] ==================
-                var loginLink = $"http://localhost:4200/Login";
-                var welcomeBody = EmailTemplates.GetWelcomeTemplate(createdUser.Username, loginLink);
-
-                await _emailService.SendEmailAsync(
-                    createdPerson.Email,
-                    "🎉 Bienvenido a Codexy",
-                    welcomeBody,
-                    true
-                );
-
-                return Ok(new { message = "Registro exitoso. Revisa tu correo electrónico 📩" });
+                return Ok(new { message = "Registro exitoso." });
             }
             catch (ValidationException ex)
             {
@@ -164,6 +142,7 @@ namespace Web.Controllers
             }
         }
 
+
         [HttpGet("GetAllRoles")]
         public async Task<IActionResult> GetAllRoles()
         {
@@ -171,155 +150,6 @@ namespace Web.Controllers
             return Ok(roles);
         }
 
-        // ================== [ RECUPERAR CONTRASEÑA ] ==================
-        [HttpPost("forgot-password")]
-        [AllowAnonymous]
-        public async Task<IActionResult> ForgotPassword([FromBody] PasswordRecoveryRequestDTO request)
-        {
-            try
-            {
-                var result = await _passwordRecoveryService.SendPasswordRecoveryEmailAsync(request.Email);
-
-                if (result)
-                {
-                    // Log de notificación exitosa
-                    await _notificationBusiness.LogNotificationAsync(
-                        1, // SecurityModule
-                        "Solicitud de Recuperación de Contraseña",
-                        $"Se envió un email de recuperación a: {request.Email}",
-                        "PasswordResetEmail"
-                    );
-
-                    return Ok(new
-                    {
-                        success = true,
-                        message = "Si el email está registrado, recibirás instrucciones para recuperar tu contraseña"
-                    });
-                }
-
-                return BadRequest(new
-                {
-                    success = false,
-                    message = "Error al procesar la solicitud de recuperación"
-                });
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, new
-                {
-                    success = false,
-                    message = "Error interno del servidor",
-                    error = ex.Message
-                });
-            }
-        }
-
-        [HttpGet("validate-recovery-token")]
-        [AllowAnonymous]
-        public async Task<IActionResult> ValidateRecoveryToken([FromQuery] string token)
-        {
-            try
-            {
-                var (isValid, email) = await _passwordRecoveryService.ValidateRecoveryTokenWithEmailAsync(token);
-
-                return Ok(new
-                {
-                    success = true,
-                    valid = isValid,
-                    email = isValid ? email : null,
-                    message = isValid ? "Token válido" : "Token inválido o expirado"
-                });
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, new
-                {
-                    success = false,
-                    valid = false,
-                    message = "Error validando el token",
-                    error = ex.Message
-                });
-            }
-        }
-
-        [HttpPost("reset-password")]
-        [AllowAnonymous]
-        public async Task<IActionResult> ResetPassword([FromBody] PasswordResetDTO request)
-        {
-            try
-            {
-                var result = await _passwordRecoveryService.ResetPasswordAsync(request);
-
-                if (result)
-                {
-                    return Ok(new
-                    {
-                        success = true,
-                        message = "Contraseña restablecida exitosamente"
-                    });
-                }
-
-                return BadRequest(new
-                {
-                    success = false,
-                    message = "Error al restablecer la contraseña"
-                });
-            }
-            catch (ValidationException ex)
-            {
-                return BadRequest(new
-                {
-                    success = false,
-                    message = ex.Message,
-                    field = ex.PropertyName
-                });
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, new
-                {
-                    success = false,
-                    message = "Error interno del servidor",
-                    error = ex.Message
-                });
-            }
-        }
-
-        [HttpPost("resend-recovery-email")]
-        [AllowAnonymous]
-        public async Task<IActionResult> ResendRecoveryEmail([FromBody] PasswordRecoveryRequestDTO request)
-        {
-            try
-            {
-                var result = await _passwordRecoveryService.SendPasswordRecoveryEmailAsync(request.Email);
-
-                if (result)
-                {
-                    return Ok(new
-                    {
-                        success = true,
-                        message = "Email de recuperación reenviado"
-                    });
-                }
-
-                return BadRequest(new
-                {
-                    success = false,
-                    message = "Error al reenviar el email de recuperación"
-                });
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, new
-                {
-                    success = false,
-                    message = "Error interno del servidor",
-                    error = ex.Message
-                });
-            }
-        }
-
-        //En desuso
         [HttpPost("Refresh")]
         public IActionResult Refresh([FromBody] RefreshRequest request)
         {

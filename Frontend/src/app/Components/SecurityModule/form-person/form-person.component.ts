@@ -11,10 +11,16 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { Router } from '@angular/router';
 import { PersonMod } from '../../../Core/Models/SecurityModule/PersonMod.model';
 import { AuthService } from '../../../Core/Service/Auth/auth.service';
+<<<<<<< HEAD
 import { colombianPhoneValidator, documentNumberValidator, emailValidator } from '../../../Core/Utils/input-validators.util';
 import { NumericInputDirective } from '../../../Core/Directives/numeric-input.directive';
 
 
+=======
+import { colombianPhoneValidator, emailValidator } from '../../../Core/Utils/input-validators.util';
+import { ColombianPhoneDirective } from '../../Shared/Directives/colombian-phone.directive';
+import { OnlyNumbersDirective } from '../../Shared/Directives/only-numbers.directive';
+>>>>>>> parent of 845d2803 (solucion de errores)
 
 
 

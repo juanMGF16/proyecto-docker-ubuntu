@@ -9,8 +9,12 @@ import { RegisterComponent } from './Views/Auth/register/register.component';
 import { LandingComponent } from './Views/System/Landing/landing.component';
 
 export const routes: Routes = [
+<<<<<<< HEAD
 	{ path: '', component: LandingComponent },
 	{ path: 'recovery-password', component: RecoveryPasswordComponent },
+=======
+  {path: '', component: LandingComponent},
+>>>>>>> parent of 845d2803 (solucion de errores)
 
 	// -----------------------
 	// Auth

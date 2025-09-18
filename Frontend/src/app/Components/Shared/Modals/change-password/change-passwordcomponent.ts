@@ -1,8 +1,9 @@
+import { Component, Input, Output, EventEmitter, OnInit, inject, signal, computed } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Component, EventEmitter, Input, OnInit, Output, computed, inject, signal } from '@angular/core';
-import { AbstractControl, FormBuilder, FormGroup, ReactiveFormsModule, ValidationErrors, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators, AbstractControl, ValidationErrors } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
+<<<<<<< HEAD:Frontend/src/app/Components/Shared/Modals/change-password/change-passwordcomponent.ts
 import { Router } from '@angular/router';
 import { lastValueFrom } from 'rxjs';
 import Swal from 'sweetalert2';
@@ -10,6 +11,14 @@ import { AlertService } from '../../../../Core/Service/alert.service';
 import { AuthService } from '../../../../Core/Service/Auth/auth.service';
 import { UserService } from '../../../../Core/Service/SecurityModule/user.service';
 import { performLogout } from '../../../../Core/Utils/auth.util';
+=======
+
+import Swal from 'sweetalert2';
+import { AuthService } from '../../../../../Core/Service/Auth/auth.service';
+import { Router, RouterLink } from '@angular/router';
+import { confirmLogout, successMessage } from '../../../../../Core/Utils/alerts.util';
+import { UserService } from '../../../../../Core/Service/SecurityModule/user.service';
+>>>>>>> parent of 845d2803 (solucion de errores):Frontend/src/app/Components/System/Admin/Modal/admin-change-password/admin-change-passwordcomponent.ts
 
 
 @Component({
@@ -20,6 +29,7 @@ import { performLogout } from '../../../../Core/Utils/auth.util';
 		ReactiveFormsModule,
 		MatButtonModule,
 		MatIconModule,
+		RouterLink
 	],
 	templateUrl: './change-password.component.html',
 	styleUrls: ['../../../Shared/Styles/modal-shared.css', './change-password.component.css']
@@ -88,6 +98,7 @@ export class ChangePasswordModalComponent implements OnInit {
 		return newPassword === confirmPassword ? null : { passwordMismatch: true };
 	}
 
+<<<<<<< HEAD:Frontend/src/app/Components/Shared/Modals/change-password/change-passwordcomponent.ts
 	onForgotPassword(): void {
 		Swal.fire({
 			title: 'Recuperar contraseña',
@@ -120,6 +131,8 @@ export class ChangePasswordModalComponent implements OnInit {
 		});
 	}
 
+=======
+>>>>>>> parent of 845d2803 (solucion de errores):Frontend/src/app/Components/System/Admin/Modal/admin-change-password/admin-change-passwordcomponent.ts
 	closeModal(): void {
 		if (this.isChangingPassword()) return;
 

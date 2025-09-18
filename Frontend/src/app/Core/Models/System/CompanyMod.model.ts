@@ -1,14 +1,14 @@
-export interface CompanyOptionsMod {
+export interface CompanyCreateDTO {
 	name: string;
 	businessName: string;
 	nit: string;
-	industryId: number;
+	industry: number;
 	email: string;
 	website?: string;
 	userId: number;
 }
 
-export interface CompanyMod {
+export interface CompanyConsultDTO {
 	id: number;
 	name: string;
 	businessName: string;
@@ -18,11 +18,11 @@ export interface CompanyMod {
 	email: string;
 	website?: string;
 	userId: number;
+<<<<<<< HEAD
 	active?: boolean;
-}
-
-export interface CompanyPartialUpdateMod {
-	id: number;
-	email?: string;
-	website?: string;
+=======
+	createdAt?: Date;
+	updatedAt?: Date;
+	state?: boolean;
+>>>>>>> parent of 845d2803 (solucion de errores)
 }

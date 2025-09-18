@@ -63,6 +63,6 @@ export class AdminHeaderComponent {
 	}
 
 	goToCompany(): void {
-		this.router.navigate(['/admin/company/']);
+		this.router.navigate(['/admin/empresa/configuracion']);
 	}
 }

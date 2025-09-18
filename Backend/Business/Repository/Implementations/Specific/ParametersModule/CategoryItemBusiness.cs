@@ -57,9 +57,7 @@ namespace Business.Repository.Implementations.Specific.Parameters
                     {
                         Id = i.Id,
                         Name = i.Name,
-                        Description = i.Description,
-                        //StateItemId = i.StateItemId   
-                        StateItemName = i.StateItemName
+                        StateItemId = i.StateItemId
                     })
                 })
                 .ToList();
@@ -67,7 +65,6 @@ namespace Business.Repository.Implementations.Specific.Parameters
             return grouped;
         }
 
-        //Actions
         protected override Task BeforeCreateMap(CategoryItemDTO dto, CategoryItem entity)
         {
             ValidationHelper.ThrowIfEmpty(dto.Name, "Name");

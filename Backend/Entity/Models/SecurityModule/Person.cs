@@ -12,6 +12,6 @@ namespace Entity.Models.SecurityModule
         public string Phone { get; set; } = string.Empty;
 
         // Propiedad de Navegacion Inversa
-        public User User { get; set; } = null!;
+        public List<User> Users { get; set; } = [];
     }
 }

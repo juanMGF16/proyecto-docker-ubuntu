@@ -35,10 +35,6 @@ namespace Business.Repository.Implementations.Specific.System
             return _mapper.Map<IEnumerable<StateItemDTO>>(active);
         }
 
-        //Specific
-
-
-        //Actions
         protected override Task BeforeCreateMap(StateItemDTO dto, StateItem entity)
         {
             ValidationHelper.ThrowIfEmpty(dto.Name, "Name");

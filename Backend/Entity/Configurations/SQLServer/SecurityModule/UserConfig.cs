@@ -31,14 +31,9 @@ namespace Entity.Configurations.SQLServer.SecurityModule
             builder.Property(u => u.PersonId).IsRequired();
 
             builder.HasOne(u => u.Person)
-                .WithOne(p => p.User)
-                .HasForeignKey<User>(u => u.PersonId)
+                .WithMany(p => p.Users)
+                .HasForeignKey(u => u.PersonId)
                 .OnDelete(DeleteBehavior.Cascade);
-
-            builder.HasMany(u => u.Verifications)
-                .WithOne(v => v.User)
-                .HasForeignKey(v => v.UserId)
-                .OnDelete(DeleteBehavior.Restrict);
 
             builder.Property(x => x.CreatedAt).HasColumnType("datetime2(3)").IsRequired();
             builder.Property(x => x.UpdatedAt).HasColumnType("datetime2(3)");

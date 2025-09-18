@@ -2,7 +2,7 @@
 using Business.Services.PaswordRecovery.Interfaces;
 using Business.Services.SendEmail.Interfaces;
 using Data.Repository.Interfaces.Specific.SecurityModule;
-using Entity.DTOs.Auth;
+using Entity.DTOs.SecurityModule;
 using Entity.Models.SecurityModule;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
@@ -53,9 +53,9 @@ namespace Business.Services.PaswordRecovery
                 }
 
                 // Generar token de recuperación
-                var token = await GenerateRecoveryTokenAsync(user.Id, user.Person.Email);
-                var baseUrl = _configuration["AppSettings:BaseUrl"] ?? "http://localhost:4200/recovery-password";
-                var recoveryLink = $"{baseUrl}?token={token}";
+                var token = await GenerateRecoveryTokenAsync(user.Id);
+                var baseUrl = _configuration["AppSettings:BaseUrl"] ?? "https://localhost:7051";
+                var recoveryLink = $"{baseUrl}/api/auth/reset-password?token={token}";
 
                 // Crear contenido del email
                 var subject = "Recuperación de Contraseña - Tu Sistema";
@@ -80,7 +80,7 @@ namespace Business.Services.PaswordRecovery
             }
         }
 
-        public Task<string> GenerateRecoveryTokenAsync(int userId, string email)
+        public Task<string> GenerateRecoveryTokenAsync(int userId)
         {
             var tokenBytes = new byte[32];
             using var rng = RandomNumberGenerator.Create();
@@ -93,7 +93,6 @@ namespace Business.Services.PaswordRecovery
             var tokenInfo = new RecoveryTokenInfo
             {
                 UserId = userId,
-                Email = email,
                 Expiration = DateTime.UtcNow.AddHours(24),
                 Used = false
             };
@@ -103,13 +102,14 @@ namespace Business.Services.PaswordRecovery
             return Task.FromResult(token);
         }
 
-        public Task<(bool isValid, string? email)> ValidateRecoveryTokenWithEmailAsync(string token)
+
+        public Task<bool> ValidateRecoveryTokenAsync(string token)
         {
             if (string.IsNullOrEmpty(token) || !_recoveryTokens.TryGetValue(token, out var tokenInfo))
-                return Task.FromResult((false, (string?)null));
+                return Task.FromResult(false);
 
             var isValid = !tokenInfo.Used && tokenInfo.Expiration > DateTime.UtcNow;
-            return Task.FromResult((isValid, isValid ? tokenInfo.Email : null));
+            return Task.FromResult(isValid);
         }
 
         public async Task<bool> ResetPasswordAsync(PasswordResetDTO resetDto)
@@ -154,7 +154,6 @@ namespace Business.Services.PaswordRecovery
         private class RecoveryTokenInfo
         {
             public int UserId { get; set; }
-            public string Email { get; set; } = string.Empty;
             public DateTime Expiration { get; set; }
             public bool Used { get; set; }
         }

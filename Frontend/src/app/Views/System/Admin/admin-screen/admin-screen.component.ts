@@ -62,11 +62,11 @@ export class AdminScreenComponent implements OnInit, OnDestroy {
 			.pipe(takeUntil(this.destroy$))
 			.subscribe({
 				next: (data) => {
-					this.hasCompany = data.hasCompany;
+					this.hasCompany = data;
 
 					const currentUrl = this.router.url;
 
-					if (!data.hasCompany) {
+					if (!data) {
 						if (!currentUrl.includes('/admin/welcome') && !currentUrl.includes('/admin/register-company')) {
 							this.router.navigate(['/admin/welcome']);
 						}
@@ -89,7 +89,6 @@ export class AdminScreenComponent implements OnInit, OnDestroy {
 				}
 			});
 	}
-
 
 	onToggleSidebar(): void {
 		this.isSidebarExpanded = !this.isSidebarExpanded;

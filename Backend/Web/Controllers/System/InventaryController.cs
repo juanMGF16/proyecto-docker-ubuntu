@@ -1,5 +1,7 @@
 ﻿using Business.Repository.Interfaces.Specific.System;
+using Entity.DTOs.System.Branch;
 using Entity.DTOs.System.Inventary;
+using Entity.Models.System;
 using Microsoft.AspNetCore.Mvc;
 using Utilities.Enums;
 using Web.Controllers.Base;

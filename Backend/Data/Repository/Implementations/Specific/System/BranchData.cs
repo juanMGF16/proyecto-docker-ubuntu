@@ -1,7 +1,11 @@
 ﻿
 using Data.Repository.Interfaces.System;
 using Entity.Context;
+<<<<<<< HEAD
 using Entity.DTOs.System.Branch;
+=======
+using Entity.Models.SecurityModule;
+>>>>>>> parent of 845d2803 (solucion de errores)
 using Entity.Models.System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;

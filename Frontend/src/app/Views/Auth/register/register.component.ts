@@ -5,12 +5,22 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { Router, RouterLink } from '@angular/router';
+<<<<<<< HEAD
 import { lastValueFrom } from 'rxjs';
+=======
+import Swal from 'sweetalert2';
+import { ColombianPhoneDirective } from '../../../Components/Shared/Directives/colombian-phone.directive';
+import { OnlyNumbersDirective } from '../../../Components/Shared/Directives/only-numbers.directive';
+>>>>>>> parent of 845d2803 (solucion de errores)
 import { InitialHeaderComponent } from "../../../Components/System/Landing/initial-header/initial-navbar.component";
 import { NumericInputDirective } from '../../../Core/Directives/numeric-input.directive';
 import { AlertService } from '../../../Core/Service/alert.service';
 import { AuthService } from '../../../Core/Service/Auth/auth.service';
+<<<<<<< HEAD
 import { colombianPhoneValidator, documentNumberValidator, emailValidator, strongPassword } from '../../../Core/Utils/input-validators.util';
+=======
+import { colombianPhoneValidator, emailValidator, strongPassword } from '../../../Core/Utils/input-validators.util';
+>>>>>>> parent of 845d2803 (solucion de errores)
 
 @Component({
 	selector: 'app-register',
@@ -84,6 +94,7 @@ export class RegisterComponent {
 			phone,
 		} = this.registerForm.getRawValue();
 
+<<<<<<< HEAD
 		try {
 			const result = await this.alertService.withLoading(
 				() => lastValueFrom(this.authService.register({
@@ -103,6 +114,24 @@ export class RegisterComponent {
 					errorText: 'Ocurrió un error inesperado'
 				}
 			);
+=======
+    this.authService.register({
+      username,
+      password,
+      name,
+      lastName,
+      email: email.trim().toLowerCase(),
+      documentType,
+      documentNumber,
+      phone,
+    }).subscribe({
+      next: () => {
+        Swal.fire({
+          icon: 'success',
+          title: 'Registro Exitoso',
+          text: 'Tu cuenta ha sido creada correctamente'
+        });
+>>>>>>> parent of 845d2803 (solucion de errores)
 
 			if (result.isConfirmed) {
 				this.router.navigate(['/Login']);

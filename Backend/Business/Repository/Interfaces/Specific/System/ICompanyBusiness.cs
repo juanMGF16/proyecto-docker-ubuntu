@@ -6,9 +6,5 @@ namespace Business.Repository.Interfaces.Specific.System
     {
         // General
         Task<IEnumerable<CompanyConsultDTO>> GetAllTotalAsync();
-
-        //Specific
-        Task<CompanyConsultDTO> PartialUpdateAsync(CompanyPartialUpdateDTO dto);
-        Task<bool> KillCompanyAsync(int companyId);
     }
 }

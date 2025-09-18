@@ -39,6 +39,26 @@ export class AdminNavService {
 			expandable: false
 		},
 		{
+			id: 'empresa',
+			label: 'Empresa',
+			icon: 'business',
+			expandable: true,
+			children: [
+				{
+					id: 'empresa-registro',
+					label: 'Registrar Empresa',
+					icon: 'app_registration',
+					route: '/admin/empresa/registro'
+				},
+				{
+					id: 'empresa-configuracion',
+					label: 'Configuración',
+					icon: 'settings',
+					route: '/admin/empresa/configuracion'
+				}
+			]
+		},
+		{
 			id: 'sucursales',
 			label: 'Sucursales',
 			icon: 'location_city',
@@ -48,17 +68,35 @@ export class AdminNavService {
 					id: 'sucursales-nueva',
 					label: 'Nueva Sucursal',
 					icon: 'add',
-					route: '/admin/register-branch'
+					route: '/admin/sucursales/nueva'
 				}
 				// Las sucursales dinámicas se agregarán aquí
 			]
 		},
 		{
+<<<<<<< HEAD
 			id: 'subAdmin',
 			label: 'Encargados de Sucursal',
+=======
+			id: 'administradores',
+			label: 'Administradores',
+>>>>>>> parent of 845d2803 (solucion de errores)
 			icon: 'supervisor_account',
-			route: '/admin/subadmins-list',
-			expandable: false,
+			expandable: true,
+			children: [
+				{
+					id: 'administradores-nuevo',
+					label: 'Nuevo Admin',
+					icon: 'person_add',
+					route: '/admin/administradores/nuevo'
+				},
+				{
+					id: 'administradores-lista',
+					label: 'Lista de Admins',
+					icon: 'list',
+					route: '/admin/administradores/lista'
+				}
+			]
 		}
 	];
 

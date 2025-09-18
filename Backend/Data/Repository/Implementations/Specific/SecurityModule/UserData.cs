@@ -1,6 +1,5 @@
 ﻿using Data.Repository.Interfaces.Specific.SecurityModule;
 using Entity.Context;
-using Entity.DTOs.SecurityModule.User;
 using Entity.Models.SecurityModule;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
@@ -81,27 +80,17 @@ namespace Data.Repository.Implementations.Specific.SecurityModule
             }
         }
 
-        public async Task<UserCompanyCheckDTO> HasCompanyAsync(int userId)
+        public async Task<bool> HasCompanyAsync(int userId)
         {
             try
             {
-                var company = await _context.Company
-                    .Where(c => c.UserId == userId)
-                    .Select(c => new { c.Id })
-                    .FirstOrDefaultAsync();
-
-                return new UserCompanyCheckDTO
-                {
-                    HasCompany = company != null,
-                    CompanyId = company?.Id
-                };
+                return await _context.Company.AnyAsync(c => c.UserId == userId);
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, $"Error obteniendo información de Company para el usuario {userId}");
+                _logger.LogError(ex, $"Error verificando si el usuario con id {userId} tiene Company asociada.");
                 throw;
             }
         }
-
     }
 }

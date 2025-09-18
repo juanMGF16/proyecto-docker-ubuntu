@@ -19,7 +19,6 @@ namespace Data.Repository.Implementations.Strategy
             {
                 DeleteType.Logical => _provider.GetRequiredService<LogicalDeleteStrategy<T>>(),
                 DeleteType.Permanent => _provider.GetRequiredService<PermanentDeleteStrategy<T>>(),
-                DeleteType.Cascade => _provider.GetRequiredService<CascadeDeleteStrategy<T>>(),
                 _ => throw new NotImplementedException($"DeleteType {type} no está implementado.")
             };
         }

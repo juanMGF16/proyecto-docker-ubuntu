@@ -1,12 +1,18 @@
-﻿using System.ComponentModel.DataAnnotations;
-using AutoMapper;
+﻿using AutoMapper;
 using Business.Repository.Interfaces.Specific.System;
 using Data.Factory;
 using Data.Repository.Interfaces.General;
 using Data.Repository.Interfaces.Strategy;
+using Entity.DTOs.System.Branch;
 using Entity.DTOs.System.Verification;
 using Entity.Models.System;
 using Microsoft.Extensions.Logging;
+using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 using Utilities.Helpers;
 
 namespace Business.Repository.Implementations.Specific.System
@@ -35,10 +41,6 @@ namespace Business.Repository.Implementations.Specific.System
             return _mapper.Map<IEnumerable<VerificationConsultDTO>>(active);
         }
 
-        //Specific
-
-
-        //Actions
         protected override Task BeforeCreateMap(VerificationDTO dto, Verification entity)
         {
             ValidationHelper.ThrowIfEmpty(dto.Observations, "Observations");

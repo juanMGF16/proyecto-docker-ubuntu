@@ -9,13 +9,11 @@ namespace Data.DataINIT.Generic
 {
     public class GenericSeeder<T> : IDataSeeder where T : class
     {
-        private readonly string _folderName;
         private readonly string _fileName;
         private readonly IConfiguration _configuration;
 
-        public GenericSeeder(string folderName, string fileName, IConfiguration configuration)
+        public GenericSeeder(string fileName, IConfiguration configuration)
         {
-            _folderName = folderName;
             _fileName = fileName;
             _configuration = configuration;
         }
@@ -25,7 +23,7 @@ namespace Data.DataINIT.Generic
             var basePath = _configuration["SeedDataPath"] ??
                            Path.Combine(AppContext.BaseDirectory, "DataINIT", "Specific", "SeedData");
 
-            var filePath = Path.Combine(basePath, _folderName, _fileName);
+            var filePath = Path.Combine(basePath, _fileName);
 
             if (!File.Exists(filePath))
             {
@@ -41,6 +39,7 @@ namespace Data.DataINIT.Generic
 
             if (data is { Count: > 0 })
             {
+                // Post-procesamiento si implementa IRequiresPasswordHashing
                 foreach (var item in data)
                 {
                     if (item is IRequiresPasswordHashing hashable)
@@ -59,4 +58,5 @@ namespace Data.DataINIT.Generic
             }
         }
     }
+
 }

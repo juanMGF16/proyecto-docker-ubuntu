@@ -23,8 +23,9 @@ namespace Data.Repository.Implementations.Specific.SecurityModule
             try
             {
                 return await _context.Person
-                    .Where(p => p.Active && p.User == null)
+                    .Where(p => p.Active && !p.Users.Any())
                     .ToListAsync();
+
             }
             catch (Exception ex)
             {
@@ -33,6 +34,7 @@ namespace Data.Repository.Implementations.Specific.SecurityModule
             }
         }
 
+<<<<<<< HEAD
         public async Task<bool> EmailExistsAsync(string email)
         {
             return await _context.Person.AnyAsync(p => p.Email.ToLower() == email.ToLower() && p.Active);
@@ -50,5 +52,7 @@ namespace Data.Repository.Implementations.Specific.SecurityModule
         {
             return await _context.Person.AnyAsync(p => p.Phone == phone && p.Active);
         }
+=======
+>>>>>>> parent of 845d2803 (solucion de errores)
     }
 }

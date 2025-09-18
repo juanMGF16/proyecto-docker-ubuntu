@@ -41,6 +41,7 @@ namespace Business.Repository.Implementations.Specific.System
             return _mapper.Map<IEnumerable<BranchConsultDTO>>(active);
         }
 
+<<<<<<< HEAD
         //Specific
         public async Task<IEnumerable<BranchSimpleDTO>> GetBranchesByCompanyAsync(int companyId)
         {
@@ -122,6 +123,8 @@ namespace Business.Repository.Implementations.Specific.System
         }
 
         //Actions
+=======
+>>>>>>> parent of 845d2803 (solucion de errores)
         protected override Task BeforeCreateMap(BranchDTO dto, Branch entity)
         {
             ValidationHelper.ThrowIfEmpty(dto.Name, "Name");

@@ -13,7 +13,7 @@
                     policy.WithOrigins(allowedOrigins)
                           .AllowAnyMethod()
                           .AllowAnyHeader()
-                          .AllowCredentials(); // ESTA LÍNEA ES FUNDAMENTAL
+                          .AllowCredentials(); // 👈 ESTA LÍNEA ES FUNDAMENTAL
                 });
             });
 

@@ -10,7 +10,6 @@ using Entity.DTOs.System.Branch;
 using Entity.DTOs.System.Zone;
 using Entity.Models.System;
 using Microsoft.Extensions.Logging;
-using Utilities.Enums.Models;
 using Utilities.Exceptions;
 using Utilities.Helpers;
 
@@ -42,6 +41,7 @@ namespace Business.Repository.Implementations.Specific.System
             var active = await _general.GetAllTotalAsync();
             return _mapper.Map<IEnumerable<ZoneConsultDTO>>(active);
         }
+<<<<<<< HEAD
 
         //Specific
         public async Task<IEnumerable<ZoneSimpleDTO>> GetZonesByBranchAsync(int branchId)
@@ -55,6 +55,9 @@ namespace Business.Repository.Implementations.Specific.System
         {
             var zone = await _zoneData.GetZoneDetailsAsync(zoneId);
             if (zone == null) return null;
+=======
+        
+>>>>>>> parent of 845d2803 (solucion de errores)
 
             return _mapper.Map<ZoneDetailsDTO>(zone);
         }
