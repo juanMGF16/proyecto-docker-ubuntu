@@ -18,11 +18,14 @@ import { BaseFormPivoteComponent } from '../../../../Components/SecurityModule/B
 })
 export class UpdateUserRoleComponent implements OnInit {
 
-  private userRoleService = inject(UserRoleService);
-  private userService = inject(UserService);
-  private roleService = inject(RoleService);
-  private route = inject(ActivatedRoute);
-  private router = inject(Router);
+	// Inyección de servicios propios del proyecto
+  private readonly userRoleService = inject(UserRoleService);
+  private readonly userService = inject(UserService);
+  private readonly roleService = inject(RoleService);
+
+	// Inyección de servicios nativos de Angular
+  private readonly route = inject(ActivatedRoute);
+  private readonly router = inject(Router);
 
   entity!: UserRoleMod;
   selectFields: any[] = [];

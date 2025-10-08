@@ -5,8 +5,11 @@ import { AuthService } from './auth.service';
 // SIN USO!!
 @Injectable({ providedIn: 'root' })
 export class TokenMonitorService {
+
+	// Inyección de servicios propios del proyecto
   private authService = inject(AuthService);
-  private warningThreshold = 30; // segundos antes de expirar
+
+  private warningThreshold = 30;
   private intervalId: any;
   private activityListenerAttached = false;
   private warned = false;

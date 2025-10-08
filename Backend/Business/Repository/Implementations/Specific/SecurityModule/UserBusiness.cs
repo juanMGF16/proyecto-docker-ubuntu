@@ -3,7 +3,7 @@ using Business.Repository.Interfaces.Specific.SecurityModule;
 using Data.Factory;
 using Data.Repository.Interfaces.General;
 using Data.Repository.Interfaces.Specific.SecurityModule;
-using Data.Repository.Interfaces.Strategy;
+using Data.Repository.Interfaces.Strategy.Delete;
 using Entity.DTOs.SecurityModule.User;
 using Entity.Models.SecurityModule;
 using Microsoft.Extensions.Logging;
@@ -12,6 +12,9 @@ using Utilities.Helpers;
 
 namespace Business.Repository.Implementations.Specific.SecurityModule
 {
+    /// <summary>
+    /// Implementación de la lógica de negocio para la gestión de usuarios y autenticación.
+    /// </summary>
     public class UserBusiness :
         GenericBusinessDualDTO<User, UserDTO, UserOptionsDTO>,
         IUserBusiness
@@ -33,20 +36,32 @@ namespace Business.Repository.Implementations.Specific.SecurityModule
         }
 
         // General 
+
+        /// <summary>
+        /// Obtiene todos los usuarios registrados en el sistema, incluyendo los inactivos.
+        /// </summary>
         public async Task<IEnumerable<UserDTO>> GetAllTotalUsersAsync()
         {
             var active = await _general.GetAllTotalAsync();
             return _mapper.Map<IEnumerable<UserDTO>>(active);
         }
 
+
         // Specific
+
+        /// <summary>
+        /// Obtiene un usuario por su nombre de usuario.
+        /// </summary>
         public async Task<UserDTO?> GetByUsernameAsync(string username)
         {
             var entity = await _userData.GetByUsernameAsync(username);
             return _mapper.Map<UserDTO>(entity);
         }
 
-        public async Task<bool> HasCompanyAsync(int userId)
+        /// <summary>
+        /// Verifica si un usuario está asociado a una compañía y devuelve la información pertinente.
+        /// </summary>
+        public async Task<UserCompanyCheckDTO> HasCompanyAsync(int userId)
         {
             ValidationHelper.EnsureValidId(userId, "UserId");
 
@@ -56,11 +71,14 @@ namespace Business.Repository.Implementations.Specific.SecurityModule
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, $"Error en Business al verificar Company para el usuario {userId}");
+                _logger.LogError(ex, $"Error en Business al obtener info de Company para el usuario {userId}");
                 throw;
             }
         }
 
+        /// <summary>
+        /// Realiza una actualización parcial de los datos de un usuario (Username, Email, Phone), aplicando validaciones de unicidad.
+        /// </summary>
         public async Task<UserDTO> PartialUpdateAsync(UserPartialUpdateDTO dto)
         {
             ValidationHelper.EnsureValidId(dto.Id, "UserId");
@@ -88,14 +106,6 @@ namespace Business.Repository.Implementations.Specific.SecurityModule
             // --- Person asociada ---
             if (user.Person != null)
             {
-                if (!string.IsNullOrWhiteSpace(dto.Name) &&
-                    !StringHelper.EqualsNormalized(user.Person.Name, dto.Name))
-                    user.Person.Name = dto.Name;
-
-                if (!string.IsNullOrWhiteSpace(dto.LastName) &&
-                    !StringHelper.EqualsNormalized(user.Person.LastName, dto.LastName))
-                    user.Person.LastName = dto.LastName;
-
                 if (!string.IsNullOrWhiteSpace(dto.Email) &&
                     !StringHelper.EqualsNormalized(user.Person.Email, dto.Email))
                 {
@@ -113,13 +123,27 @@ namespace Business.Repository.Implementations.Specific.SecurityModule
 
                 if (!string.IsNullOrWhiteSpace(dto.Phone) &&
                     !StringHelper.EqualsNormalized(user.Person.Phone, dto.Phone))
+                {
+                    // Validar duplicado de Phone
+                    bool emailExists = allUsers.Any(u =>
+                        u.Person != null &&
+                        u.Id != dto.Id &&
+                        StringHelper.EqualsNormalized(u.Person.Phone, dto.Phone));
+
+                    if (emailExists)
+                        throw new ValidationException("Phone", $"El Phone '{dto.Phone}' ya está en uso.");
+
                     user.Person.Phone = dto.Phone;
+                }
             }
 
             await _userData.UpdateAsync(user);
             return _mapper.Map<UserDTO>(user);
         }
 
+        /// <summary>
+        /// Permite a un usuario cambiar su contraseña, validando primero la contraseña actual.
+        /// </summary>
         public async Task ChangePasswordAsync(int userId, ChangePasswordDTO dto)
         {
             ValidationHelper.EnsureValidId(userId, "UserId");
@@ -138,6 +162,11 @@ namespace Business.Repository.Implementations.Specific.SecurityModule
         }
 
 
+        // Actions
+
+        /// <summary>
+        /// Hook para validar la obligatoriedad de Username y PersonId, y realizar el hash de la contraseña antes de la creación.
+        /// </summary>
         protected override Task BeforeCreateMap(UserOptionsDTO dto, User entity)
         {
             ValidationHelper.ThrowIfEmpty(dto.Username, "Username");
@@ -148,6 +177,9 @@ namespace Business.Repository.Implementations.Specific.SecurityModule
             return Task.CompletedTask;
         }
 
+        /// <summary>
+        /// Hook para validar la obligatoriedad de Username y PersonId. Si se proporciona una contraseña, realiza el hash antes de la actualización.
+        /// </summary>
         protected override Task BeforeUpdateMap(UserOptionsDTO dto, User entity)
         {
             ValidationHelper.ThrowIfEmpty(dto.Username, "Username");
@@ -159,6 +191,9 @@ namespace Business.Repository.Implementations.Specific.SecurityModule
             return Task.CompletedTask;
         }
 
+        /// <summary>
+        /// Realiza validaciones asíncronas para asegurar la unicidad del Username y que el PersonId no esté ya asignado a otro usuario.
+        /// </summary>
         protected override async Task ValidateBeforeCreateAsync(UserOptionsDTO dto)
         {
             var existing = await _data.GetAllAsync();
@@ -169,6 +204,9 @@ namespace Business.Repository.Implementations.Specific.SecurityModule
                 throw new ValidationException("Combinación", "Ya existe una un User con el ID asociado de Person");
         }
 
+        /// <summary>
+        /// Realiza validaciones asíncronas para asegurar la unicidad del Username y que el PersonId (si se cambia) no esté ya asignado a otro usuario.
+        /// </summary>
         protected override async Task ValidateBeforeUpdateAsync(UserOptionsDTO dto, User existingEntity)
         {
             var others = await _data.GetAllAsync();

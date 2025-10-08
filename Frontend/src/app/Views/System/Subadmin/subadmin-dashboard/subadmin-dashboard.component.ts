@@ -31,10 +31,10 @@ import { DashboardService } from './../../../../Core/Service/System/Others/dashb
 })
 export class SubadminDashboardComponent implements OnInit {
 
-	private authService = inject(AuthService)
-	private branchService = inject(BranchService);
-	private dashboardService = inject(DashboardService)
-
+	// Inyección de servicios propios del proyecto
+	private readonly authService = inject(AuthService)
+	private readonly branchService = inject(BranchService);
+	private readonly dashboardService = inject(DashboardService)
 
 	loading = true;
 	error = false;

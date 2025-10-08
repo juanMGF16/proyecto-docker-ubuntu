@@ -1,3 +1,9 @@
+// ==================================================
+// Pipe: InventoryBaseFilterPipe
+// ==================================================
+// Filtra una lista de ítems de inventario según texto de búsqueda, categoría y estado.
+// Aplica normalización de texto para mejorar la coincidencia de búsqueda.
+
 import { Pipe, PipeTransform } from '@angular/core';
 import { InventoryItemTable } from '../../Components/System/Area_Manager/Inventory/inventory-table/inventory-table.component';
 
@@ -12,7 +18,7 @@ export class InventoryBaseFilterPipe implements PipeTransform {
 
 		let filteredItems = items;
 
-		// Filtro por búsqueda de texto (nombre, código o descripción)
+		// Filtro por texto
 		if (searchText) {
 			const normalizedSearch = this.normalizeText(searchText.toLowerCase());
 			filteredItems = filteredItems.filter(item =>
@@ -35,7 +41,7 @@ export class InventoryBaseFilterPipe implements PipeTransform {
 		return filteredItems;
 	}
 
-	// Método para normalizar texto (quitar tildes)
+	// Elimina tildes para mejorar la búsqueda
 	private normalizeText(text: string): string {
 		return text.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
 	}

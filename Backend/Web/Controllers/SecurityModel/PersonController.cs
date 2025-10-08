@@ -10,6 +10,9 @@ using Web.Controllers.Base;
 
 namespace Web.Controllers.SecurityModel
 {
+    /// <summary>
+    /// Controller para gestión de Personas
+    /// </summary>
     [Route("api/[controller]/")]
     public class PersonController : BaseController<IPersonBusiness>
     {
@@ -17,12 +20,18 @@ namespace Web.Controllers.SecurityModel
         public PersonController(IPersonBusiness personBusiness, ILogger<PersonController> logger)
             : base(personBusiness, logger) { }
 
+        /// <summary>
+        /// Obtiene todos los registros activos
+        /// </summary>
         [HttpGet("GetAll/")]
         [Authorize(Roles = "SM_ACTION")]
         [ProducesResponseType(typeof(IEnumerable<PersonDTO>), 200)]
         public async Task<IActionResult> GetAll() =>
             await TryExecuteAsync(() => _service.GetAllAsync(), "GetAllPersons");
 
+        /// <summary>
+        /// Obtiene todos los registros 
+        /// </summary>
         [HttpGet("GetAllJWT/")]
         [Authorize(Roles = "SM_ACTION")]
         [ProducesResponseType(typeof(IEnumerable<PersonDTO>), 200)]
@@ -46,12 +55,21 @@ namespace Web.Controllers.SecurityModel
             return await TryExecuteAsync(() => _service.GetAllAsync(), "GetAllUsers");
         }
 
+
+        /// <summary>
+        /// Obtiene la lista de personas disponibles para ser asignadas como usuarios o encargados.
+        /// </summary>
+        /// <returns>Colección de objetos <see cref="PersonAvailableDTO"/> que representan las personas disponibles.</returns>
         [HttpGet("GetAvailable/")]
         [Authorize(Roles = "SM_ACTION")]
         [ProducesResponseType(typeof(IEnumerable<PersonDTO>), 200)]
         public async Task<IActionResult> GetAvailable() =>
             await TryExecuteAsync(() => _service.GetPersonAvailableAsync(), "GetAvailablePersons");
 
+
+        /// <summary>
+        /// Obtiene un registro por su identificador
+        /// </summary>
         [HttpGet("GetById/{id:int}")]
         [Authorize(Roles = "SM_ACTION,ADMINISTRADOR, SUBADMINISTRADOR, ENCARGADO_ZONA")]
         [ProducesResponseType(typeof(PersonDTO), 200)]
@@ -60,6 +78,9 @@ namespace Web.Controllers.SecurityModel
         public async Task<IActionResult> GetById(int id) =>
             await TryExecuteAsync(() => _service.GetByIdAsync(id), "GetById");
 
+        /// <summary>
+        /// Crea un nuevo registro
+        /// </summary>
         [HttpPost("Create/")]
         [Authorize(Roles = "SM_ACTION")]
         [ProducesResponseType(typeof(PersonDTO), 201)]
@@ -73,6 +94,9 @@ namespace Web.Controllers.SecurityModel
             }, "CreatePerson");
         }
 
+        /// <summary>
+        /// Actualiza un registro existente
+        /// </summary>
         [HttpPut("Update/")]
         [Authorize(Roles = "SM_ACTION")]
         [ProducesResponseType(typeof(PersonDTO), 200)]
@@ -81,6 +105,9 @@ namespace Web.Controllers.SecurityModel
         public async Task<IActionResult> Update([FromBody] PersonDTO dto) =>
             await TryExecuteAsync(() => _service.UpdateAsync(dto), "UpdatePerson");
 
+        /// <summary>
+        /// Elimina un registro usando la estrategia especificada
+        /// </summary>
         [HttpDelete("Delete/{id:int}")]
         [Authorize(Roles = "SM_ACTION")]
         [ProducesResponseType(200)]

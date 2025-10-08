@@ -22,15 +22,15 @@ namespace Entity.Configurations.SQLServer.System
 
             builder.Property(og => og.Active).HasColumnType("bit").HasDefaultValue(1).IsRequired();
 
-            builder.HasOne(og => og.User)
-                .WithOne(u => u.OperationalGroup)
-                .HasForeignKey<OperatingGroup>(og => og.UserId)
-                .OnDelete(DeleteBehavior.Restrict);
-
             builder.HasMany(og => og.Operatings)
-                .WithOne(o => o.OperationalGroup)
-                .HasForeignKey(o => o.OperationalGroupId)
-                .OnDelete(DeleteBehavior.Cascade);
+            .WithOne(o => o.OperationalGroup)
+            .HasForeignKey(o => o.OperationalGroupId)
+            .OnDelete(DeleteBehavior.SetNull);
+
+            builder.HasMany(og => og.Inventories)
+                .WithOne(i => i.OperatingGroup)
+                .HasForeignKey(i => i.OperatingGroupId)
+                .OnDelete(DeleteBehavior.Restrict);
 
             builder.Property(x => x.CreatedAt).HasColumnType("datetime2(3)").IsRequired();
             builder.Property(x => x.UpdatedAt).HasColumnType("datetime2(3)");

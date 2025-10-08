@@ -1,5 +1,4 @@
 ﻿using Entity.Models.Base;
-using Entity.Models.SecurityModule;
 
 namespace Entity.Models.System
 {
@@ -13,7 +12,7 @@ namespace Entity.Models.System
         public int InventaryId { get; set; }
         public Inventary Inventary { get; set; } = null!;
 
-        public int UserId { get; set; }
-        public User User { get; set; } = null!;
+        public int CheckerId { get; set; }
+        public Checker Checker { get; set; } = null!;
     }
 }

@@ -12,9 +12,14 @@ import { SubadminNavService } from '../../../../Core/Service/Navigation/subadmin
 	styleUrl: './subadmin-screen.component.css'
 })
 export class SubadminScreenComponent implements OnInit, OnDestroy {
-	private subadminNavService = inject(SubadminNavService);
-	private router = inject(Router);
-	private destroy$ = new Subject<void>();
+
+	// Inyección de servicios propios del proyecto
+	private readonly subadminNavService = inject(SubadminNavService);
+
+	// Inyección de servicios nativos de Angular
+	private readonly router = inject(Router);
+
+	private readonly destroy$ = new Subject<void>();
 
 	isSidebarExpanded: boolean = false;
 

@@ -2,7 +2,7 @@
 using Business.Services.Entities.Interfaces;
 using Business.Services.SendEmail.Interfaces;
 using Data.Repository.Interfaces.Specific.SecurityModule;
-using Data.Repository.Interfaces.System;
+using Data.Repository.Interfaces.Specific.System;
 using Entity.DTOs.System.Branch.NestedCreation;
 using Entity.Models.SecurityModule;
 using Entity.Models.System;
@@ -13,13 +13,18 @@ using Utilities.Templates;
 
 namespace Business.Services.Entities.Implementations
 {
+    /// <summary>
+    /// Implementación de <see cref="IBranchRegistrationService"/> para el manejo de la lógica de negocio
+    /// en la creación de una sucursal junto con su administrador.
+    /// Asegura la atomicidad de la operación utilizando transacciones.
+    /// </summary>
     public class BranchRegistrationService : IBranchRegistrationService
     {
         private readonly IBranch _branchData;
         private readonly IPersonData _personData;
         private readonly IUserData _userData;
         private readonly ICompany _companyData;
-        private readonly IUserRoleData _userRoleData; 
+        private readonly IUserRoleData _userRoleData;
         private readonly ICredentialGeneratorService _credentialGenerator;
         private readonly IEmailService _emailService;
         private readonly ILogger<BranchRegistrationService> _logger;
@@ -44,6 +49,13 @@ namespace Business.Services.Entities.Implementations
             _logger = logger;
         }
 
+        /// <summary>
+        /// Proceso transaccional que: 1. Valida la unicidad de datos del administrador. 2. Verifica la existencia de la Compañía.
+        /// 3. Crea Persona, Usuario y Rol. 4. Genera credenciales. 5. Crea la Sucursal asignando el Usuario.
+        /// 6. Envía correo de bienvenida con credenciales.
+        /// </summary>
+        /// <param name="request">DTO con la información de la nueva Sucursal y su Administrador.</param>
+        /// <returns>Los detalles de las entidades creadas.</returns>
         public async Task<BranchCreateResponseDTO> CreateBranchWithAdminAsync(BranchCreateRequestDTO request)
         {
             // Validaciones iniciales
@@ -149,6 +161,12 @@ namespace Business.Services.Entities.Implementations
             }
         }
 
+        /// <summary>
+        /// Realiza validaciones de unicidad de datos de la persona (email, documento, teléfono) antes de iniciar la transacción.
+        /// Lanza una <see cref="ValidationException"/> si se encuentra alguna duplicidad.
+        /// </summary>
+        /// <param name="request">El DTO de solicitud de creación.</param>
+        /// <returns>Una tarea que representa la operación asíncrona de validación.</returns>
         private async Task ValidateRequestAsync(BranchCreateRequestDTO request)
         {
             // Validar email único
@@ -167,6 +185,16 @@ namespace Business.Services.Entities.Implementations
                 throw new ValidationException("PersonPhone", "El teléfono ya está registrado");
         }
 
+        /// <summary>
+        /// Envía un correo electrónico de bienvenida al nuevo administrador de la sucursal con sus credenciales generadas.
+        /// </summary>
+        /// <param name="email">El email del destinatario.</param>
+        /// <param name="name">El nombre del destinatario.</param>
+        /// <param name="username">El nombre de usuario generado.</param>
+        /// <param name="password">La contraseña generada.</param>
+        /// <param name="branchName">El nombre de la sucursal.</param>
+        /// <param name="companyName">El nombre de la compañía.</param>
+        /// <returns>Una tarea que retorna <c>true</c> si el correo fue enviado exitosamente; de lo contrario, <c>false</c>.</returns>
         private async Task<bool> SendWelcomeEmailAsync(string email, string name, string username, string password, string branchName, string companyName)
         {
             try

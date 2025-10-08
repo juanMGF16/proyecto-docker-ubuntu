@@ -10,18 +10,27 @@ using Web.Controllers.Base;
 
 namespace Web.Controllers.SecurityModel
 {
+    /// <summary>
+    /// Controller para gestión de Usuarios
+    /// </summary>
     [Route("api/[controller]")]
     public class UserController : BaseController<IUserBusiness>
     {
         public UserController(IUserBusiness userBusiness, ILogger<UserController> logger)
             : base(userBusiness, logger) { }
 
+        /// <summary>
+        /// Obtiene todos los registros activos
+        /// </summary>
         [HttpGet("GetAll/")]
         [Authorize(Roles = "SM_ACTION")]
         [ProducesResponseType(typeof(IEnumerable<UserDTO>), 200)]
         public async Task<IActionResult> GetAll() =>
             await TryExecuteAsync(() => _service.GetAllAsync(), "GetAllUsers");
 
+        /// <summary>
+        /// Obtiene todos los registros 
+        /// </summary>
         [HttpGet("GetAllJWT/")]
         [Authorize(Roles = "SM_ACTION")]
         [ProducesResponseType(typeof(IEnumerable<UserDTO>), 200)]
@@ -45,13 +54,21 @@ namespace Web.Controllers.SecurityModel
             return await TryExecuteAsync(() => _service.GetAllAsync(), "GetAllUsers");
         }
 
+        /// <summary>
+        /// Obtiene la información de un usuario específico utilizando su nombre de usuario.
+        /// </summary>
+        /// <param name="username">Nombre de usuario para la búsqueda.</param>
+        /// <returns>Objeto <see cref="UserDTO"/> si el usuario existe; 404 si no se encuentra.</returns>
         [HttpGet("GetByUsername/{username}")]
         [Authorize(Roles = "SM_ACTION")]
         [ProducesResponseType(typeof(UserDTO), 200)]
         [ProducesResponseType(404)]
         public async Task<IActionResult> GetByUsername(string username) =>
-         await TryExecuteAsync(() => _service.GetByUsernameAsync(username), "GetByUsername");
+            await TryExecuteAsync(() => _service.GetByUsernameAsync(username), "GetByUsername");
 
+        /// <summary>
+        /// Obtiene un registro por su identificador
+        /// </summary>
         [HttpGet("GetById/{id:int}")]
         [Authorize(Roles = "SM_ACTION")]
         [ProducesResponseType(typeof(UserDTO), 200)]
@@ -60,6 +77,13 @@ namespace Web.Controllers.SecurityModel
         public async Task<IActionResult> GetById(int id) =>
             await TryExecuteAsync(() => _service.GetByIdAsync(id), "GetById");
 
+        /// <summary>
+        /// Verifica si el usuario autenticado tiene una empresa asignada.
+        /// </summary>
+        /// <returns>
+        /// Retorna <c>true</c> si el usuario tiene empresa asignada, <c>false</c> en caso contrario.
+        /// 400 si el ID de usuario no es válido, 404 si el usuario no existe.
+        /// </returns>
         [HttpGet("HasCompany/")]
         [Authorize(Roles = "SM_ACTION, ADMINISTRADOR")]
         [ProducesResponseType(typeof(bool), 200)]
@@ -74,10 +98,12 @@ namespace Web.Controllers.SecurityModel
             if (!int.TryParse(userIdClaim, out var userId))
                 return BadRequest(new { message = "El ID del usuario no es válido." });
 
-            return await TryExecuteAsync(() => _service.HasCompanyAsync(userId), "HasCompany");
+            return await TryExecuteAsync(() => _service.HasCompanyAsync(userId), "HasCompnay");
         }
 
-
+        /// <summary>
+        /// Crea un nuevo registro
+        /// </summary>
         [HttpPost("Create/")]
         [Authorize(Roles = "SM_ACTION")]
         [ProducesResponseType(typeof(UserOptionsDTO), 201)]
@@ -91,6 +117,9 @@ namespace Web.Controllers.SecurityModel
             }, "CreateUser");
         }
 
+        /// <summary>
+        /// Actualiza un registro existente
+        /// </summary>
         [HttpPut("Update/")]
         [Authorize(Roles = "SM_ACTION")]
         [ProducesResponseType(typeof(UserOptionsDTO), 200)]
@@ -106,6 +135,7 @@ namespace Web.Controllers.SecurityModel
         [ProducesResponseType(404)]
         public async Task<IActionResult> PartialUpdate([FromBody] UserPartialUpdateDTO dto) =>
             await TryExecuteAsync(() => _service.PartialUpdateAsync(dto), "PartialUpdateUser");
+
 
         [HttpPost("ChangePassword/")]
         [Authorize(Roles = "SM_ACTION, ADMINISTRADOR, SUBADMINISTRADOR")]
@@ -127,6 +157,9 @@ namespace Web.Controllers.SecurityModel
             }, "ChangePassword");
         }
 
+        /// <summary>
+        /// Elimina un registro usando la estrategia especificada
+        /// </summary>
         [HttpDelete("Delete/{id:int}")]
         [Authorize(Roles = "SM_ACTION")]
         [ProducesResponseType(200)]

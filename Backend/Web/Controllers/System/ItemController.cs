@@ -1,44 +1,57 @@
 using Business.Repository.Interfaces.Specific.System;
-using Business.Services.CargaMasiva;
-using Entity.DTOs.CargaMasiva;
-using Entity.DTOs.ParametersModels;
 using Entity.DTOs.System.Item;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Utilities.Enums;
 using Web.Controllers.Base;
 
 namespace Web.Controllers.System
 {
+    /// <summary>
+    /// Controller para gestión de Items
+    /// </summary>
     [Route("api/[controller]/")]
     public class ItemController : BaseController<IItemBusiness>
     {
-        private readonly IItemBulkService _bulkService;
-        public ItemController(IItemBulkService bulkService, IItemBusiness itemBusiness, ILogger<ItemController> logger)
+        public ItemController(IItemBusiness itemBusiness, ILogger<ItemController> logger)
             : base(itemBusiness, logger)
         {
-            _bulkService = bulkService;
+            
         }
 
+        /// <summary>
+        /// Obtiene todos los registros activos
+        /// </summary>
         [HttpGet("GetAll/")]
-        [ProducesResponseType(typeof(IEnumerable<ItemDTO>), 200)]
+        [ProducesResponseType(typeof(IEnumerable<ItemConsultDTO>), 200)]
         public async Task<IActionResult> GetAll() =>
             await TryExecuteAsync(() => _service.GetAllAsync(), "GetAll");
 
-
+        /// <summary>
+        /// Obtiene un registro por su identificador
+        /// </summary>
+        [Authorize(Roles = "SM_ACTION, ADMINISTRADOR, SUBADMINISTRADOR, ENCARGADO_ZONA")]
         [HttpGet("GetById/{id:int}")]
-        [ProducesResponseType(typeof(ItemDTO), 200)]
+        [ProducesResponseType(typeof(ItemConsultDTO), 200)]
         [ProducesResponseType(400)]
         [ProducesResponseType(404)]
         public async Task<IActionResult> GetById(int id) =>
             await TryExecuteAsync(() => _service.GetByIdAsync(id), "GetById");
 
+        /// <summary>
+        /// Obtiene todos los ítems registrados, incluyendo los inactivos.
+        /// </summary>
         [HttpGet("GetItemsSpecific/{id:int}")]
-        [ProducesResponseType(typeof(ItemDTO), 200)]
+        [ProducesResponseType(typeof(ItemConsultDTO), 200)]
         [ProducesResponseType(400)]
         [ProducesResponseType(404)]
         public async Task<IActionResult> GetAllItemsSpecific(int id) =>
-            await TryExecuteAsync(() => _service.GetAllItemsSpecificAsync(id), "GetById");
+            await TryExecuteAsync(() => _service.GetAllItemsSpecificAsync(id), "GetItemsSpecific");
 
+        /// <summary>
+        /// Crea un nuevo registro
+        /// </summary>
+        [Authorize(Roles = "SM_ACTION, ADMINISTRADOR, SUBADMINISTRADOR, ENCARGADO_ZONA")]
         [HttpPost("Create/")]
         [ProducesResponseType(typeof(ItemDTO), 201)]
         [ProducesResponseType(400)]
@@ -51,6 +64,10 @@ namespace Web.Controllers.System
             }, "Createitem");
         }
 
+        /// <summary>
+        /// Actualiza un registro existente
+        /// </summary>
+        [Authorize(Roles = "SM_ACTION, ADMINISTRADOR, SUBADMINISTRADOR, ENCARGADO_ZONA")]
         [HttpPut("Update/")]
         [ProducesResponseType(typeof(ItemDTO), 200)]
         [ProducesResponseType(400)]
@@ -58,6 +75,10 @@ namespace Web.Controllers.System
         public async Task<IActionResult> Update([FromBody] ItemDTO dto) =>
             await TryExecuteAsync(() => _service.UpdateAsync(dto), "Updateitem");
 
+        /// <summary>
+        /// Elimina un registro usando la estrategia especificada
+        /// </summary>
+        [Authorize(Roles = "SM_ACTION, ADMINISTRADOR, SUBADMINISTRADOR, ENCARGADO_ZONA")]
         [HttpDelete("Delete/{id:int}")]
         [ProducesResponseType(200)]
         [ProducesResponseType(400)]
@@ -66,18 +87,5 @@ namespace Web.Controllers.System
         {
             return await TryExecuteAsync(() => _service.DeleteAsync(id, strategy), "DeleteItem");
         }
-
-        [HttpPost("upload-excel")]
-        [Consumes("multipart/form-data")]
-        public async Task<IActionResult> UploadExcel([FromForm] UploadExcelDTO dto)
-        {
-            if (dto.File == null || dto.File.Length == 0)
-                return BadRequest("Debe subir un archivo Excel vÃ¡lido.");
-
-            var result = await _bulkService.UploadExcelAsync(dto.File, dto.ZoneId);
-
-            return Ok(result);
-        }
-
     }
 }

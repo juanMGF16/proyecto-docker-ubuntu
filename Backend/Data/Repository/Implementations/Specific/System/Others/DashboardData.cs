@@ -8,6 +8,9 @@ using Utilities.Exceptions;
 
 namespace Data.Repository.Implementations.Specific.System.Others
 {
+    /// <summary>
+    /// Repositorio para generación de datos de dashboards y estadísticas
+    /// </summary>
     public class DashboardData : IDashboardData
     {
         private readonly AppDbContext _context;
@@ -17,7 +20,12 @@ namespace Data.Repository.Implementations.Specific.System.Others
             _context = context;
         }
 
-        //Dahsboard Company
+        // Dahsboard Company
+
+        /// <summary>
+        /// Obtiene datos del dashboard general aplicando filtros por alcance
+        /// </summary>
+        /// <param name="filter">Filtros de alcance (empresa, sucursal o zona)</param>
         public async Task<DashboardDTO> GetDashboardAsync(DashboardFilterDTO filter)
         {
             // Base queries (AsNoTracking porque son lecturas)
@@ -74,6 +82,12 @@ namespace Data.Repository.Implementations.Specific.System.Others
             return dto;
         }
 
+        /// <summary>
+        /// Obtiene distribución de usuarios agrupados por rol
+        /// </summary>
+        /// <param name="companyId">ID de la empresa (opcional)</param>
+        /// <param name="branchId">ID de la sucursal (opcional)</param>
+        /// <param name="zoneId">ID de la zona (opcional)</param>
         public async Task<Dictionary<string, int>> GetUsersByRoleAsync(int? companyId = null, int? branchId = null, int? zoneId = null)
         {
             // Roles normales (UserRole)
@@ -113,24 +127,24 @@ namespace Data.Repository.Implementations.Specific.System.Others
             // ---- OPERATIVOS ----
             var operativosQuery = _context.Operating
                 .Include(o => o.OperationalGroup)
-                    .ThenInclude(og => og.User)
+                    .ThenInclude(og => og!.User)
                         .ThenInclude(u => u.Zone)
-                .Include(o => o.OperationalGroup.User.Branch)
-                .Include(o => o.OperationalGroup.User.Company)
+                .Include(o => o.OperationalGroup!.User.Branch)
+                .Include(o => o.OperationalGroup!.User.Company)
                 .AsQueryable();
 
             if (zoneId.HasValue)
             {
-                operativosQuery = operativosQuery.Where(o => o.OperationalGroup.User.Zone != null && o.OperationalGroup.User.Zone.Id == zoneId.Value);
+                operativosQuery = operativosQuery.Where(o => o.OperationalGroup!.User.Zone != null && o.OperationalGroup.User.Zone.Id == zoneId.Value);
             }
             else if (branchId.HasValue)
             {
-                operativosQuery = operativosQuery.Where(o => o.OperationalGroup.User.Branch != null && o.OperationalGroup.User.Branch.Id == branchId.Value);
+                operativosQuery = operativosQuery.Where(o => o.OperationalGroup!.User.Branch != null && o.OperationalGroup.User.Branch.Id == branchId.Value);
             }
             else if (companyId.HasValue)
             {
                 operativosQuery = operativosQuery.Where(o =>
-                    (o.OperationalGroup.User.Branch != null && o.OperationalGroup.User.Branch.CompanyId == companyId) ||
+                    (o.OperationalGroup!.User.Branch != null && o.OperationalGroup.User.Branch.CompanyId == companyId) ||
                     (o.OperationalGroup.User.Zone != null && o.OperationalGroup.User.Zone.Branch.CompanyId == companyId) ||
                     (o.OperationalGroup.User.Company != null && o.OperationalGroup.User.Company.Id == companyId)
                 );
@@ -159,13 +173,19 @@ namespace Data.Repository.Implementations.Specific.System.Others
                 verificadoresQuery = verificadoresQuery.Where(v => v.Inventary.Zone.Branch.CompanyId == companyId);
             }
 
-            var verificadores = await verificadoresQuery.Select(v => v.UserId).Distinct().CountAsync();
+            var verificadores = await verificadoresQuery.Select(v => v.CheckerId).Distinct().CountAsync();
             roleCounts["VERIFICADOR"] = verificadores;
 
             return roleCounts;
         }
 
-        //Dashboard Branch
+
+        // Dashboard Branch
+
+        /// <summary>
+        /// Obtiene dashboard completo de una sucursal con estadísticas y zonas
+        /// </summary>
+        /// <param name="branchId">ID de la sucursal</param>
         public async Task<BranchDashboardDTO> GetBranchDashboardAsync(int branchId)
         {
             // validar existencia básica
@@ -282,7 +302,13 @@ namespace Data.Repository.Implementations.Specific.System.Others
             return dto;
         }
 
-        //Dashboard Zone
+
+        // Dashboard Zone
+
+        /// <summary>
+        /// Obtiene datos completos de una zona para su dashboard
+        /// </summary>
+        /// <param name="zoneId">ID de la zona</param>
         public async Task<Zone?> GetZoneDashboardAsync(int zoneId)
         {
             return await _context.Zone
@@ -295,6 +321,10 @@ namespace Data.Repository.Implementations.Specific.System.Others
                 .FirstOrDefaultAsync(z => z.Id == zoneId);
         }
 
+        /// <summary>
+        /// Obtiene grupos operativos asignados a un usuario
+        /// </summary>
+        /// <param name="userId">ID del usuario</param>
         public async Task<List<OperatingGroup>> GetOperatingGroupsByUserIdAsync(int userId)
         {
             return await _context.OperatingGroup

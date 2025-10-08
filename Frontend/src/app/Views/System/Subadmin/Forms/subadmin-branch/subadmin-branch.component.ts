@@ -1,15 +1,13 @@
 import { CommonModule } from '@angular/common';
 import { Component, inject, OnInit, signal } from '@angular/core';
 import { Validators } from '@angular/forms';
-import { Router } from '@angular/router';
-import Swal from 'sweetalert2';
 import { DataField, ShowInfoEdificationComponent } from '../../../../../Components/Shared/Forms/show-info-edification/show-info-edification.component';
 import { EditField, UpdateInfoEdificationComponent } from "../../../../../Components/Shared/Modals/update-info-edification/update-info-edification.component";
 import { BranchMod, BranchPartialUpdateMod } from '../../../../../Core/Models/System/BranchMod.model';
+import { AlertTotalService } from '../../../../../Core/Service/alert-total.service';
 import { AuthService } from '../../../../../Core/Service/Auth/auth.service';
-import { UserService } from '../../../../../Core/Service/SecurityModule/user.service';
 import { BranchService } from '../../../../../Core/Service/System/branch.service';
-import { mixedPhoneValidator } from '../../../../../Core/Utils/input-validators.util';
+import { mixedPhoneValidator } from '../../../../../Core/Utils/input-validators.utils';
 
 @Component({
 	selector: 'app-subadmin-branch',
@@ -19,8 +17,16 @@ import { mixedPhoneValidator } from '../../../../../Core/Utils/input-validators.
 	styleUrl: './subadmin-branch.component.css'
 })
 export class SubadminBranchComponent implements OnInit {
+
+	// Inyección de servicios propios del proyecto
+	private readonly authService = inject(AuthService)
+	private readonly branchService = inject(BranchService)
+	private readonly alertService = inject(AlertTotalService);
+
+	// Signals para datos de sucursal y control del modal
 	branchData = signal<BranchMod | null>(null);
 	isEditModalOpen = signal(false);
+
 	idUser: number = 0;
 
 	// Campos configurables para el componente genérico a mostrar
@@ -40,9 +46,6 @@ export class SubadminBranchComponent implements OnInit {
 			validators: [Validators.required, mixedPhoneValidator()]
 		},
 	];
-
-	private branchService = inject(BranchService)
-	private authService = inject(AuthService)
 
 	ngOnInit(): void {
 		this.loadBranchData();
@@ -92,28 +95,23 @@ export class SubadminBranchComponent implements OnInit {
 
 	// Métodos para manejar la eliminación
 	openDeleteModal(): void {
-		Swal.fire({
+		this.alertService.custom({
 			title: '¿Estás seguro?',
 			html: `
-				<p style="font-size: 16px; margin: 15px 0;">
-					Esta acción <strong>eliminará permanentemente</strong> la sucurusal:<br>
-					<strong>"${this.branchData?.name}"</strong>
-				</p>
-				<p style="color: #e53e3e; font-size: 14px;">
-					⚠️ <strong>Advertencia:</strong> Esta acción no se puede deshacer.
-				</p>
-			`,
+		    <p style="font-size: 16px; margin: 15px 0;">
+		      Esta acción <strong>eliminará permanentemente</strong> la sucursal:<br>
+		      <strong>"${this.branchData?.name}"</strong>
+		    </p>
+		    <p style="color: #e53e3e; font-size: 14px;">
+		      ⚠️ <strong>Advertencia:</strong> Esta acción no se puede deshacer.
+		    </p>
+		  `,
 			icon: 'warning',
 			showCancelButton: true,
 			confirmButtonColor: '#d33',
 			cancelButtonColor: '#6b7280',
-			confirmButtonText: 'Sí, eliminar empresa',
+			confirmButtonText: 'Sí, eliminar sucursal',
 			cancelButtonText: 'Cancelar',
-			reverseButtons: true,
-			customClass: {
-				confirmButton: 'swal2-confirm-delete',
-				cancelButton: 'swal2-cancel-custom'
-			}
 		}).then((result) => {
 			if (result.isConfirmed) {
 				this.deleteBranch();
@@ -121,24 +119,27 @@ export class SubadminBranchComponent implements OnInit {
 		});
 	}
 
+
 	private deleteBranch(): void {
 		// this.branchService.delete(this.branchData.companyId, 2).subscribe({
-		// 	next: () => {
-		// 		Swal.fire({
-		// 			title: '¡Empresa eliminada!',
-		// 			text: 'La empresa ha sido eliminada exitosamente',
-		// 			icon: 'success',
-		// 			confirmButtonColor: '#28a745',
-		// 			confirmButtonText: 'Aceptar',
-		// 		}).then(() => {
-		// 			// Redirigir al dashboard o recargar
-		// 			this.router.navigate(['/admin/dashboard']);
-		// 		});
-		// 	},
-		// 	error: (error) => {
-		// 		console.error('Error eliminando empresa:', error);
-		// 	}
+		//   next: () => {
+		//     this.alertService.success(
+		//       '¡Sucursal eliminada!',
+		//       'La sucursal ha sido eliminada exitosamente'
+		//     ).then(() => {
+		//       this.router.navigate(['/admin/dashboard']);
+		//     });
+		//   },
+		//   error: (error) => {
+		//     console.error('Error eliminando sucursal:', error);
+		//     this.alertService.error(
+		//       'Error',
+		//       'Ocurrió un problema al eliminar la sucursal'
+		//     );
+		//   }
 		// });
-		console.log("Por implementar")
+
+		console.log("Por implementar");
 	}
+
 }

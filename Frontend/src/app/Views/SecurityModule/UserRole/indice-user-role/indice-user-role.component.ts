@@ -17,8 +17,11 @@ import { BaseTableComponent } from '../../../../Components/SecurityModule/Base/b
 })
 export class IndiceUserRoleComponent implements OnInit {
 
-  userRoleService = inject(UserRoleService);
-  router = inject(Router)
+	// Inyección de servicios propios del proyecto
+  private readonly userRoleService = inject(UserRoleService);
+
+	// Inyección de servicios nativos de Angular
+  private readonly router = inject(Router)
 
   userRoleData : UserRoleMod[] = [];
   columnasMostrar : string[] = [

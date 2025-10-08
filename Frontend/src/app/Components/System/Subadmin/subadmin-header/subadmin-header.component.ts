@@ -1,15 +1,14 @@
 import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { MatBadgeModule } from '@angular/material/badge';
 import { MatButtonModule } from '@angular/material/button';
+import { MatDividerModule } from '@angular/material/divider';
 import { MatIconModule } from '@angular/material/icon';
+import { MatMenuModule } from '@angular/material/menu';
 import { MatToolbarModule } from "@angular/material/toolbar";
 import { Router, RouterLink } from '@angular/router';
-import { AuthService } from '../../../../Core/Service/Auth/auth.service';
-import { MatMenuModule } from '@angular/material/menu';
-import { MatDividerModule } from '@angular/material/divider';
-import { MatBadgeModule } from '@angular/material/badge';
-import { confirmLogout, successMessage } from '../../../../Core/Utils/alerts.util';
 import { LogoutButtonDirective } from "../../../../Core/Directives/logout-button.directive";
+import { AuthService } from '../../../../Core/Service/Auth/auth.service';
 
 @Component({
 	selector: 'app-subadmin-header',
@@ -30,8 +29,12 @@ import { LogoutButtonDirective } from "../../../../Core/Directives/logout-button
 
 })
 export class SubadminHeaderComponent {
+
+	// Inputs principales del componente
 	@Input() redirectUrl: string = '';
 	@Input() isFixed: boolean = true;
+
+	// Outputs de eventos emitidos al componente padre
 	@Output() toggleSidebar = new EventEmitter<void>();
 
 	notificationCount = 1;

@@ -1,28 +1,34 @@
-export interface CompanyCreateDTO {
+// ==================================================
+// Modelos: Compañías (Company)
+// ==================================================
+// Estructuras que representan a las empresas dentro del sistema, sus datos
+// principales y las opciones de actualización parcial.
+
+export interface CompanyOptionsMod {
 	name: string;
 	businessName: string;
 	nit: string;
-	industry: number;
+	industryId: number;
 	email: string;
 	website?: string;
 	userId: number;
 }
 
-export interface CompanyConsultDTO {
+export interface CompanyMod {
 	id: number;
 	name: string;
 	businessName: string;
 	nit: string;
 	industryId: string;
-	industryName: string,
+	industryName: string;
 	email: string;
 	website?: string;
 	userId: number;
-<<<<<<< HEAD
 	active?: boolean;
-=======
-	createdAt?: Date;
-	updatedAt?: Date;
-	state?: boolean;
->>>>>>> parent of 845d2803 (solucion de errores)
+}
+
+export interface CompanyPartialUpdateMod {
+	id: number;
+	email?: string;
+	website?: string;
 }

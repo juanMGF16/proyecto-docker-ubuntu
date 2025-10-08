@@ -5,6 +5,10 @@ using Microsoft.Extensions.Logging;
 
 namespace Data.Repository.Implementations
 {
+    /// <summary>
+    /// Implementación base para consultas generales del sistema
+    /// </summary>
+    /// <typeparam name="T">Tipo de entidad</typeparam>
     public class General<T> : IGeneral<T> where T : class
     {
         private readonly AppDbContext _context;
@@ -16,6 +20,9 @@ namespace Data.Repository.Implementations
             _logger = logger;
         }
 
+        /// <summary>
+        /// Obtiene todos los registros sin filtrar por estado
+        /// </summary>
         public virtual async Task<IEnumerable<T>> GetAllTotalAsync()
         {
             try
@@ -29,6 +36,11 @@ namespace Data.Repository.Implementations
             }   
         }
 
+
+        /// <summary>
+        /// Obtiene items específicos de una zona
+        /// </summary>
+        /// <param name="zonaId">ID de la zona</param>
         public virtual async Task<IEnumerable<T>> GetAllItemsSpecific(int zonaId)
         {
             try
@@ -42,6 +54,23 @@ namespace Data.Repository.Implementations
             }
         }
 
+
+        /// <summary>
+        /// Obtiene zonas disponibles asignadas a un usuario
+        /// </summary>
+        /// <param name="id">ID del usuario</param>
+        public virtual async Task<IEnumerable<T>> GetAvailableZonesByUserAsync(int id)
+        {
+            try
+            {
+                return await _context.Set<T>().ToListAsync();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogInformation(ex, "Error al obtener las zonas disponibles por usuario.");
+                throw;
+            }
+        }
 
     }
 }

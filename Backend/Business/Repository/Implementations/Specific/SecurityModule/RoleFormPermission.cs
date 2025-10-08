@@ -2,7 +2,7 @@
 using Business.Repository.Interfaces.Specific.SecurityModule;
 using Data.Factory;
 using Data.Repository.Interfaces.General;
-using Data.Repository.Interfaces.Strategy;
+using Data.Repository.Interfaces.Strategy.Delete;
 using Entity.DTOs.SecurityModule.RoleFormPermission;
 using Entity.Models.SecurityModule;
 using Microsoft.Extensions.Logging;
@@ -11,6 +11,9 @@ using Utilities.Helpers;
 
 namespace Business.Repository.Implementations.Specific.SecurityModule
 {
+    /// <summary>
+    /// Implementación de la lógica de negocio para gestionar las asignaciones de Permisos (acciones) a un Rol dentro de un Formulario específico.
+    /// </summary>
     public class RoleFormPermissionBusiness :
         GenericBusinessDualDTO<RoleFormPermission, RoleFormPermissionDTO, RoleFormPermissionOptionsDTO>,
         IRoleFormPermissionBusiness
@@ -29,13 +32,26 @@ namespace Business.Repository.Implementations.Specific.SecurityModule
             _general = general;
         }
 
-        // General 
+        // General
+
+        /// <summary>
+        /// Obtiene todas las asignaciones de Permisos a Roles en Formularios, incluyendo las inactivas.
+        /// </summary>
         public async Task<IEnumerable<RoleFormPermissionDTO>> GetAllTotalRoleFormPermissionsAsync()
         {
             var active = await _general.GetAllTotalAsync();
             return _mapper.Map<IEnumerable<RoleFormPermissionDTO>>(active);
         }
 
+
+        // Specific
+
+
+        // Actions
+
+        /// <summary>
+        /// Hook para validar que los IDs de Rol, Formulario y Permiso sean válidos antes de la creación de la asignación.
+        /// </summary>
         protected override Task BeforeCreateMap(RoleFormPermissionOptionsDTO dto, RoleFormPermission entity)
         {
             ValidationHelper.EnsureValidId(dto.RoleId, "RolId");
@@ -44,6 +60,9 @@ namespace Business.Repository.Implementations.Specific.SecurityModule
             return Task.CompletedTask;
         }
 
+        /// <summary>
+        /// Hook para validar que los IDs de Rol, Formulario y Permiso sean válidos antes de la actualización de la asignación.
+        /// </summary>
         protected override Task BeforeUpdateMap(RoleFormPermissionOptionsDTO dto, RoleFormPermission entity)
         {
             ValidationHelper.EnsureValidId(dto.FormId, "FormId");
@@ -52,6 +71,9 @@ namespace Business.Repository.Implementations.Specific.SecurityModule
             return Task.CompletedTask;
         }
 
+        /// <summary>
+        /// Realiza validaciones asíncronas para asegurar la unicidad de la combinación Rol-Formulario-Permiso antes de la creación.
+        /// </summary>
         protected override async Task ValidateBeforeCreateAsync(RoleFormPermissionOptionsDTO dto)
         {
             var existing = await _data.GetAllAsync();
@@ -59,6 +81,9 @@ namespace Business.Repository.Implementations.Specific.SecurityModule
                 throw new ValidationException("Combinación", "Ya existe una relación Role-Form-Permission con esos IDs.");
         }
 
+        /// <summary>
+        /// Realiza validaciones asíncronas para asegurar la unicidad de la combinación Rol-Formulario-Permiso antes de la actualización.
+        /// </summary>
         protected override async Task ValidateBeforeUpdateAsync(RoleFormPermissionOptionsDTO dto, RoleFormPermission existingEntity)
         {
             if (dto.RoleId != existingEntity.RoleId || dto.FormId != existingEntity.FormId || dto.PermissionId != existingEntity.PermissionId)

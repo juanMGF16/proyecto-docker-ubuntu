@@ -3,8 +3,8 @@ import { Component, EventEmitter, HostListener, inject, Input, OnDestroy, OnInit
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { catchError, of, Subscription } from 'rxjs';
-import Swal from 'sweetalert2';
 import { ZoneByBranchMod } from '../../../../Core/Models/System/ZoneMod.model';
+import { AlertTotalService } from '../../../../Core/Service/alert-total.service';
 import { AuthService } from '../../../../Core/Service/Auth/auth.service';
 import { NavigationItem, NavigationState, SubadminNavService } from '../../../../Core/Service/Navigation/subadmin-nav.service';
 import { ZoneService } from '../../../../Core/Service/System/zone.service';
@@ -18,6 +18,14 @@ import { BranchService } from './../../../../Core/Service/System/branch.service'
 	styleUrls: ['../../../Shared/Styles/sidebar-shared.css', './subadmin-sidebar.component.css']
 })
 export class SubadminSidebarComponent implements OnInit, OnDestroy {
+
+	// Inyección de servicios propios del proyecto
+	private readonly authService = inject(AuthService);
+	private readonly branchService = inject(BranchService);
+	private readonly zoneService = inject(ZoneService);
+	private readonly alertService = inject(AlertTotalService);
+
+
 	@Input() isExpanded: boolean = false;
 	@Output() toggleSidebar = new EventEmitter<void>();
 
@@ -27,12 +35,8 @@ export class SubadminSidebarComponent implements OnInit, OnDestroy {
 		expandedSections: {},
 		activeSection: undefined
 	};
+
 	branchId: number | null = null;
-
-	private authService = inject(AuthService);
-	private branchService = inject(BranchService);
-	private zoneService = inject(ZoneService);
-
 	private navigationSubscription: Subscription = new Subscription();
 
 	// Datos dinámicos
@@ -78,6 +82,13 @@ export class SubadminSidebarComponent implements OnInit, OnDestroy {
 		});
 	}
 
+	// Métodos del ciclo de vida del componente
+	ngOnDestroy(): void {
+		if (this.navigationSubscription) {
+			this.navigationSubscription.unsubscribe();
+		}
+	}
+
 	cargarZonas(): void {
 		this.zoneService.getByIdBranch(this.branchId).subscribe({
 			next: (data) => {
@@ -88,12 +99,7 @@ export class SubadminSidebarComponent implements OnInit, OnDestroy {
 				console.log('Error al cargar los datos:', err);
 				const mensajeCompleto = err?.error?.message || 'Ocurrió un error inesperado.';
 				const mensaje = mensajeCompleto.split(':')[1]?.trim() || mensajeCompleto;
-				Swal.fire({
-					icon: 'error',
-					title: 'Error',
-					text: mensaje,
-					confirmButtonText: 'Aceptar'
-				});
+				this.alertService.error('Error', mensaje);
 			}
 		});
 	}
@@ -104,12 +110,6 @@ export class SubadminSidebarComponent implements OnInit, OnDestroy {
 
 		// Agregar items dinámicos (zonas)
 		this.addDynamicZonas();
-	}
-
-	ngOnDestroy(): void {
-		if (this.navigationSubscription) {
-			this.navigationSubscription.unsubscribe();
-		}
 	}
 
 	private addDynamicZonas(): void {

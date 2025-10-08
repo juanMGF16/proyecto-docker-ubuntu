@@ -56,7 +56,7 @@
 											<mat-icon>{{ field.icon }}</mat-icon>
 											<div class="info-content">
 												<label>{{ field.label }}</label>
-												<p>{{ getFieldValue(field.key) || 'No especificado' }}</p>
+												<p [matTooltip]="getFieldValue(field.key)">{{ getFieldValue(field.key) || 'No especificado' }}</p>
 											</div>
 										</div>
 									</ng-container>

@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit, computed, signal } from '@angular/core';
+import { Component, OnInit, computed, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatChipsModule } from '@angular/material/chips';
@@ -13,10 +13,17 @@ import { MatTableModule } from '@angular/material/table';
 import { LoaderComponent } from '../../../../../Components/Shared/app-loader/app-loader.component';
 import { InventoryItemTable, InventoryTableComponent } from '../../../../../Components/System/Area_Manager/Inventory/inventory-table/inventory-table.component';
 import { ImportExcelComponent } from '../../../../../Components/System/Area_Manager/Modals/import-excel/import-excel.component';
-import { infoMessage, successMessage } from '../../../../../Core/Utils/alerts.util';
-import { InventoryBaseFilterPipe } from '../../../../../Core/Pipes/inventory-base-filter.pipe';
-import { StateInventoryBasePipe } from "../../../../../Core/Pipes/state-inventory-base.pipe";
+import { ItemDetailsModalComponent } from "../../../../../Components/System/Area_Manager/Modals/item-details/item-details.component";
+import { ItemMod } from '../../../../../Core/Models/System/ItemMod.model';
 import { CategoryInventoryBasePipe } from "../../../../../Core/Pipes/category-inventory-base.pipe";
+import { StateInventoryBasePipe } from "../../../../../Core/Pipes/state-inventory-base.pipe";
+import { BulkImportManagerService } from '../../../../../Core/Service/System/Others/InventoryBase/bulk-import-manager.service';
+import { InventoryFilterService } from '../../../../../Core/Service/System/Others/InventoryBase/inventory-filter.service';
+import { InventoryManagerService } from '../../../../../Core/Service/System/Others/InventoryBase/inventory-manager.service';
+import { ItemService } from '../../../../../Core/Service/System/item.service';
+import { ExportBridgeService } from '../../../../../Core/Service/System/Others/InventoryBase/Export/export-bridge.service';
+import { Router } from '@angular/router';
+import { AlertTotalService } from '../../../../../Core/Service/alert-total.service';
 
 @Component({
 	selector: 'app-inventory-base',
@@ -24,7 +31,6 @@ import { CategoryInventoryBasePipe } from "../../../../../Core/Pipes/category-in
 	imports: [
 		CommonModule,
 		FormsModule,
-		// Angular Material
 		MatTableModule,
 		MatIconModule,
 		MatMenuModule,
@@ -34,144 +40,77 @@ import { CategoryInventoryBasePipe } from "../../../../../Core/Pipes/category-in
 		MatInputModule,
 		MatPaginatorModule,
 		MatDivider,
-		// Componentes personalizados
 		LoaderComponent,
 		ImportExcelComponent,
 		InventoryTableComponent,
-		// Pipes
 		StateInventoryBasePipe,
-		CategoryInventoryBasePipe
+		CategoryInventoryBasePipe,
+		ItemDetailsModalComponent
 	],
 	templateUrl: './inventory-base.component.html',
-	styleUrls: ['./inventory-base.component.css']
+	styleUrls: ['../../../../../Components/Shared/Styles/area-manager-import-data-shared.css', './inventory-base.component.css']
 })
 export class InventoryBaseComponent implements OnInit {
-	// Señales para el estado del componente
-	readonly loading = signal(true);
-	readonly error = signal(false);
-	readonly errorMessage = signal('');
-	readonly hasInventoryData = signal(false);
+
+	// Inyección de servicios propios del proyecto
+	readonly inventoryManager = inject(InventoryManagerService);
+	readonly filterService = inject(InventoryFilterService);
+	private readonly importManager = inject(BulkImportManagerService);
+	private readonly itemService = inject(ItemService);
+	private readonly exportBridge = inject(ExportBridgeService);
+	private readonly alertService = inject(AlertTotalService);
+
+	// Inyección de servicios nativos de Angular
+	private readonly router = inject(Router)
+
+	// Signals locales del componente
 	readonly showImportModal = signal(false);
+	readonly showDetailsModal = signal(false);
+	readonly selectedItem = signal<ItemMod | null>(null);
+	readonly loadingDetails = signal(false);
 
-	// Señales para filtros y paginación
-	readonly searchText = signal('');
-	readonly categoryFilter = signal('all');
-	readonly statusFilter = signal('all');
-	readonly pageIndex = signal(0);
-	readonly pageSize = signal(10);
-
-	// Datos
-	readonly zoneName = signal('Tu Zona');
-	readonly allItems = signal<InventoryItemTable[]>([]);
-
-	// Datos de ejemplo
-	private readonly mockInventoryData = {
-		items: [
-			{ id: '1', code: 'TECH-001', name: 'Monitor LED 24"', description: 'Monitor LED de 24 pulgadas', category: 'technology', state: 'En orden' },
-			{ id: '2', code: 'TECH-002', name: 'Monitor LED 27"', description: 'Monitor LED de 27 pulgadas', category: 'technology', state: 'En orden' },
-			{ id: '3', code: 'FURN-045', name: 'Silla Ejecutiva', description: 'Silla ergonómica', category: 'furniture', state: 'Perdido' },
-			{ id: '4', code: 'SUPP-112', name: 'Resma A4', description: 'Papel tamaño A4', category: 'supplies', state: 'Dañado' },
-			{ id: '5', code: 'TECH-003', name: 'Teclado Mecánico', description: 'Teclado RGB', category: 'technology', state: 'Reparación' },
-		],
-		zoneName: 'Zona Norte',
-		totalCount: 0
-	} as const;
-
-	// Valores computados
-
-
-	readonly paginatedItems = computed(() => {
-		const startIndex = this.pageIndex() * this.pageSize();
-		const endIndex = startIndex + this.pageSize();
-		// Usamos el pipe para filtrar los datos
-		const filteredData = new InventoryBaseFilterPipe().transform(
-			this.allItems(),
-			this.searchText(),
-			this.categoryFilter(),
-			this.statusFilter()
-		);
-		return filteredData.slice(startIndex, endIndex);
-	});
-
-	readonly totalItems = computed(() => {
-		// Aplicamos el mismo filtro para obtener el total
-		return new InventoryBaseFilterPipe().transform(
-			this.allItems(),
-			this.searchText(),
-			this.categoryFilter(),
-			this.statusFilter()
-		).length;
-	});
-
-	// Opciones para filtros
+	// Computed para filtrado, paginación y categorías
+	readonly paginatedItems = computed(() =>
+		this.filterService.getFilteredAndPaginatedItems(this.inventoryManager.allItems())
+	);
+	readonly totalItems = computed(() =>
+		this.filterService.getFilteredItemsCount(this.inventoryManager.allItems())
+	);
 	readonly categories = computed(() =>
-		['all', ...new Set(this.allItems().map(item => item.category))]
+		this.filterService.getAvailableCategories(this.inventoryManager.allItems())
 	);
-
 	readonly statuses = computed(() =>
-		['all', ...new Set(this.allItems().map(item => item.state))]
+		this.filterService.getAvailableStatuses(this.inventoryManager.allItems())
 	);
 
-	ngOnInit(): void {
-		this.loadInventoryData();
+	async ngOnInit(): Promise<void> {
+		await this.inventoryManager.initializeInventory();
 	}
 
-	loadInventoryData(): void {
-		this.loading.set(true);
-		this.error.set(false);
-
-		// Simular carga asíncrona
-		setTimeout(() => {
-			try {
-				this.zoneName.set(this.mockInventoryData.zoneName);
-				this.allItems.set([...this.mockInventoryData.items]);
-				this.hasInventoryData.set(this.allItems().length > 0);
-				this.loading.set(false);
-			} catch (error) {
-				this.handleError('Error al cargar el inventario base');
-			}
-		}, 1500);
-	}
-
-	// Métodos de filtrado
+	// Métodos de filtrado (delegados al servicio)
 	filterByCategory(category: string): void {
-		this.categoryFilter.set(category);
-		this.resetPagination();
+		this.filterService.filterByCategory(category);
 	}
 
 	filterByStatus(status: string): void {
-		this.statusFilter.set(status);
-		this.resetPagination();
+		this.filterService.filterByStatus(status);
 	}
 
 	clearFilters(): void {
-		this.searchText.set('');
-		this.categoryFilter.set('all');
-		this.statusFilter.set('all');
-		this.resetPagination();
+		this.filterService.clearFilters();
 	}
 
 	onSearchChange(): void {
-		this.resetPagination();
+		this.filterService.onSearchChange();
 	}
 
-	// Paginación
+	// Paginación (delegada al servicio)
 	onPageChange(event: PageEvent): void {
-		this.pageIndex.set(event.pageIndex);
-		this.pageSize.set(event.pageSize);
+		this.filterService.onPageChange(event);
 	}
 
 	getDisplayedRange(): string {
-		const total = this.totalItems();
-		if (total === 0) return "0 - 0";
-
-		const start = this.pageIndex() * this.pageSize() + 1;
-		const end = Math.min((this.pageIndex() + 1) * this.pageSize(), total);
-		return `${start} - ${end}`;
-	}
-
-	private resetPagination(): void {
-		this.pageIndex.set(0);
+		return this.filterService.getDisplayedRange(this.totalItems());
 	}
 
 	// Gestión de modales
@@ -183,53 +122,126 @@ export class InventoryBaseComponent implements OnInit {
 		this.showImportModal.set(false);
 	}
 
-	// Procesamiento de archivos
-	processExcelImport(file: File): void {
-		this.loading.set(true);
+	// Procesamiento de archivos (delegado al servicio)
+	async processExcelImport(file: File): Promise<void> {
 		this.closeImportModal();
 
-		// Simular procesamiento
-		setTimeout(() => {
-			this.loading.set(false);
-			successMessage('Importación exitosa', 'Inventario base importado correctamente');
-			this.hasInventoryData.set(true);
-		}, 2000);
+		const success = await this.importManager.processExcelImport(
+			file,
+			this.inventoryManager.zoneId()
+		);
+
+		// Si fue exitoso, recargar inventario
+		if (success) {
+			await this.inventoryManager.reloadInventory();
+		}
 	}
 
+	// Funciones utilitarias
 	downloadTemplate(): void {
-		infoMessage('Descargando...', 'Se está descargando la plantilla de Excel');
+		// 🔄 CAMBIO: Usar toast del servicio unificado
+		this.alertService.toast('Descargando plantilla...', 'info');
 
 		setTimeout(() => {
 			const link = document.createElement('a');
-			link.href = '/assets/templates/inventory-template.xlsx';
-			link.download = 'plantilla-inventario-base.xlsx';
+			link.href = '/Templates/Plantilla_Inventario_Base.xlsx';
+			link.download = 'Plantilla_Inventario_Base.xlsx';
 			document.body.appendChild(link);
 			link.click();
 			document.body.removeChild(link);
-			successMessage('Descarga completa', 'Plantilla descargada correctamente');
+
+			// 🔄 CAMBIO: Usar toast del servicio unificado
+			this.alertService.toast('Plantilla descargada correctamente', 'success');
 		}, 1000);
+	}
+
+	navigateToCreateItem(): void {
+		this.router.navigate(['/areaManager/inventory-create-item']);
+	}
+
+	navigateToEditItem(itemId: number): void {
+		this.router.navigate(['/areaManager/inventory-update-item', itemId]);
 	}
 
 	// Acciones de la tabla
 	onEditItem(item: InventoryItemTable): void {
-		console.log('Edit item:', item);
-		// TODO: Implementar lógica de edición
+		this.navigateToEditItem(Number(item.id));
 	}
 
 	onDeleteItem(item: InventoryItemTable): void {
-		console.log('Delete item:', item);
-		// TODO: Implementar lógica de eliminación con confirmación
+		const itemIdAsNumber = parseInt(item.id, 10);
+
+		this.alertService.confirmDestroyWithLoading(
+			async () => {
+				const result = await this.itemService.delete(itemIdAsNumber, 0).toPromise();
+				this.inventoryManager.initializeInventory();
+				return result;
+			},
+			{
+				destroyTitle: '¿Eliminar item?',
+				destroyText: `Se eliminará permanentemente: ${item.name}`,
+				destroyConfirmText: 'Sí, eliminar',
+				loadingTitle: 'Eliminando...',
+				loadingText: 'Eliminando item del inventario',
+				successTitle: 'Item eliminado',
+				successText: 'El item ha sido eliminado correctamente'
+			}
+		).catch(() => {
+			// Error ya manejado por confirmDestroyWithLoading
+		});
+	}
+
+	onViewDetails(item: InventoryItemTable): void {
+		this.loadingDetails.set(true);
+
+		// 🔄 CAMBIO: Usar withLoading del servicio unificado
+		this.alertService.withLoading(
+			async () => {
+				return await this.itemService.getById(Number(item.id)).toPromise();
+			},
+			{
+				loadingTitle: 'Cargando detalles...',
+				loadingText: 'Obteniendo información del item',
+				showSuccessAlert: false, // No mostrar alerta de éxito
+				errorTitle: 'Error',
+				errorText: 'Error al cargar detalles del item'
+			}
+		).then((itemDetails: ItemMod | undefined) => {
+			if (itemDetails) {
+				this.selectedItem.set(itemDetails);
+				this.showDetailsModal.set(true);
+			}
+			this.loadingDetails.set(false);
+		}).catch(error => {
+			console.error('Error al cargar detalles del item:', error);
+			this.loadingDetails.set(false);
+		});
+	}
+
+	closeDetailsModal(): void {
+		this.showDetailsModal.set(false);
+		this.selectedItem.set(null);
 	}
 
 	exportToExcel(): void {
-		successMessage('Exportación', 'Datos exportados correctamente');
-		// TODO: Implementar lógica de exportación real
-	}
-
-	private handleError(message: string): void {
-		this.error.set(true);
-		this.errorMessage.set(message);
-		this.loading.set(false);
-		console.error(message);
+		// 🔄 CAMBIO: Usar withLoading del servicio unificado
+		this.alertService.withLoading(
+			async () => {
+				return await this.exportBridge.exportInventoryForPrint();
+			},
+			{
+				loadingTitle: 'Exportando...',
+				loadingText: 'Generando documento Excel',
+				successTitle: 'Exportación completa',
+				successText: 'Documento de impresión generado correctamente',
+				errorTitle: 'Error de exportación',
+				errorText: 'Error al generar el documento'
+			}
+		).then(() => {
+			// Éxito ya manejado por withLoading
+		}).catch(error => {
+			console.error('Error en exportación:', error);
+			// Error ya manejado por withLoading
+		});
 	}
 }

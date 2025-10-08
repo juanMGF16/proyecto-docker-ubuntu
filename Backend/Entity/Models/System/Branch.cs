@@ -18,5 +18,6 @@ namespace Entity.Models.System
 
         // Propiedad de Navegacion Inversa
         public List<Zone> Zones { get; set; } = [];
+        public List<Checker> Checkers { get; set; } = [];
     }
 }

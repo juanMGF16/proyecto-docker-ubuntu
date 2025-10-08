@@ -13,16 +13,25 @@ namespace Web.Controllers.SecurityModel
     [Route("api/[controller]")]
     [Authorize(Roles = "SM_ACTION")]
 
+    /// <summary>
+    /// Controller para gestión de formularios y módulos
+    /// </summary>
     public class FormModuleController : BaseController<IFormModuleBusiness>
     {
         public FormModuleController(IFormModuleBusiness formModuleBusiness, ILogger<FormModuleController> logger)
             : base(formModuleBusiness, logger) { }
 
+        /// <summary>
+        /// Obtiene todos los registros activos
+        /// </summary>
         [HttpGet("GetAll/")]
         [ProducesResponseType(typeof(IEnumerable<FormModuleDTO>), 200)]
         public async Task<IActionResult> GetAll() =>
             await TryExecuteAsync(() => _service.GetAllAsync(), "GetAllFormModules");
 
+        /// <summary>
+        /// Obtiene todos los registros 
+        /// </summary>
         [HttpGet("GetAllJWT/")]
         [ProducesResponseType(typeof(IEnumerable<FormModuleDTO>), 200)]
         public async Task<IActionResult> GetAllJWT()
@@ -45,6 +54,9 @@ namespace Web.Controllers.SecurityModel
             return await TryExecuteAsync(() => _service.GetAllAsync(), "GetAllFormModules");
         }
 
+        /// <summary>
+        /// Obtiene un registro por su identificador
+        /// </summary>
         [HttpGet("GetById/{id:int}")]
         [ProducesResponseType(typeof(FormModuleDTO), 200)]
         [ProducesResponseType(400)]
@@ -52,6 +64,9 @@ namespace Web.Controllers.SecurityModel
         public async Task<IActionResult> GetById(int id) =>
             await TryExecuteAsync(() => _service.GetByIdAsync(id), "GetById");
 
+        /// <summary>
+        /// Crea un nuevo registro
+        /// </summary>
         [HttpPost("Create/")]
         [ProducesResponseType(typeof(FormModuleOptionsDTO), 201)]
         [ProducesResponseType(400)]
@@ -64,6 +79,9 @@ namespace Web.Controllers.SecurityModel
             }, "CreateFormModule");
         }
 
+        /// <summary>
+        /// Actualiza un registro existente
+        /// </summary>
         [HttpPut("Update/")]
         [ProducesResponseType(typeof(FormModuleOptionsDTO), 200)]
         [ProducesResponseType(400)]
@@ -71,6 +89,9 @@ namespace Web.Controllers.SecurityModel
         public async Task<IActionResult> Update([FromBody] FormModuleOptionsDTO dto) =>
             await TryExecuteAsync(() => _service.UpdateAsync(dto), "UpdateFormModule");
 
+        /// <summary>
+        /// Elimina un registro usando la estrategia especificada
+        /// </summary>
         [HttpDelete("Delete/{id:int}")]
         [ProducesResponseType(200)]
         [ProducesResponseType(400)]

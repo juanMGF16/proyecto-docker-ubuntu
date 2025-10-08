@@ -5,6 +5,10 @@ using Microsoft.Extensions.Logging;
 
 namespace Data.Repository.Implementations
 {
+    /// <summary>
+    /// Repositorio genérico con operaciones CRUD estándar
+    /// </summary>
+    /// <typeparam name="T">Tipo de entidad</typeparam>
     public class GenericData<T> : General<T>, IGenericData<T> where T : class
     {
         private readonly AppDbContext _context;
@@ -17,6 +21,9 @@ namespace Data.Repository.Implementations
             _logger = logger;
         }
 
+        /// <summary>
+        /// Obtiene todos los registros activos
+        /// </summary>
         public virtual async Task<IEnumerable<T>> GetAllAsync()
         {
             try
@@ -32,6 +39,10 @@ namespace Data.Repository.Implementations
             }
         }
 
+        /// <summary>
+        /// Obtiene un registro por su ID
+        /// </summary>
+        /// <param name="id">ID del registro</param>
         public virtual async Task<T?> GetByIdAsync(int id)
         {
             try
@@ -45,6 +56,10 @@ namespace Data.Repository.Implementations
             }
         }
 
+        /// <summary>
+        /// Crea un nuevo registro en la base de datos
+        /// </summary>
+        /// <param name="entity">Entidad a crear</param>
         public virtual async Task<T> CreateAsync(T entity)
         {
             try
@@ -60,6 +75,10 @@ namespace Data.Repository.Implementations
             }
         }
 
+        /// <summary>
+        /// Actualiza un registro existente
+        /// </summary>
+        /// <param name="entity">Entidad con los datos actualizados</param>
         public virtual async Task<T> UpdateAsync(T entity)
         {
             try
@@ -75,6 +94,10 @@ namespace Data.Repository.Implementations
             }
         }
 
+        /// <summary>
+        /// Elimina físicamente un registro de la base de datos
+        /// </summary>
+        /// <param name="id">ID del registro a eliminar</param>
         public virtual async Task<bool> DeletePersistenceAsync(int id)
         {
             try
@@ -93,6 +116,10 @@ namespace Data.Repository.Implementations
             }
         }
 
+        /// <summary>
+        /// Elimina lógicamente un registro marcándolo como inactivo
+        /// </summary>
+        /// <param name="id">ID del registro a eliminar</param>
         public virtual async Task<bool> DeleteLogicalAsync(int id)
         {
             try
@@ -105,6 +132,10 @@ namespace Data.Repository.Implementations
                 if (property != null)
                 {
                     property.SetValue(entity, false);
+
+                    // Marca la propiedad como modificada
+                    _context.Entry(entity).Property("Active").IsModified = true;
+
                     await _context.SaveChangesAsync();
                     return true;
                 }
@@ -113,7 +144,7 @@ namespace Data.Repository.Implementations
             }
             catch (Exception ex)
             {
-                _logger.LogInformation($"Error al realizar la eliminación logica con LINQ {ex.Message}");
+                _logger.LogInformation($"Error al realizar la eliminación lógica: {ex.Message}");
                 return false;
             }
         }

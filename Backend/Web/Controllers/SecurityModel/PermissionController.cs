@@ -10,6 +10,9 @@ using Web.Controllers.Base;
 
 namespace Web.Controllers.SecurityModel
 {
+    /// <summary>
+    /// Controller para gestión de Permisos 
+    /// </summary>
     [Route("api/[controller]/")]
     [Authorize(Roles = "SM_ACTION")]
     public class PermissionController : BaseController<IPermissionBusiness>
@@ -18,11 +21,17 @@ namespace Web.Controllers.SecurityModel
         public PermissionController(IPermissionBusiness permissionBusiness, ILogger<PermissionController> logger)
             : base(permissionBusiness, logger) { }
 
+        /// <summary>
+        /// Obtiene todos los registros activos
+        /// </summary>
         [HttpGet("GetAll/")]
         [ProducesResponseType(typeof(IEnumerable<PermissionDTO>), 200)]
         public async Task<IActionResult> GetAll() =>
             await TryExecuteAsync(() => _service.GetAllAsync(), "GetAllPermissions");
 
+        /// <summary>
+        /// Obtiene todos los registros 
+        /// </summary>
         [HttpGet("GetAllJWT/")]
         [ProducesResponseType(typeof(IEnumerable<PermissionDTO>), 200)]
         public async Task<IActionResult> GetAllJWT()
@@ -45,6 +54,9 @@ namespace Web.Controllers.SecurityModel
             return await TryExecuteAsync(() => _service.GetAllAsync(), "GetAllUsers");
         }
 
+        /// <summary>
+        /// Obtiene un registro por su identificador
+        /// </summary>
         [HttpGet("GetById/{id:int}")]
         [ProducesResponseType(typeof(PermissionDTO), 200)]
         [ProducesResponseType(400)]
@@ -52,6 +64,9 @@ namespace Web.Controllers.SecurityModel
         public async Task<IActionResult> GetById(int id) =>
             await TryExecuteAsync(() => _service.GetByIdAsync(id), "GetById");
 
+        /// <summary>
+        /// Crea un nuevo registro
+        /// </summary>
         [HttpPost("Create/")]
         [ProducesResponseType(typeof(PermissionDTO), 201)]
         [ProducesResponseType(400)]
@@ -64,6 +79,9 @@ namespace Web.Controllers.SecurityModel
             }, "CreatePermission");
         }
 
+        /// <summary>
+        /// Actualiza un registro existente
+        /// </summary>
         [HttpPut("Update/")]
         [ProducesResponseType(typeof(PermissionDTO), 200)]
         [ProducesResponseType(400)]
@@ -71,6 +89,9 @@ namespace Web.Controllers.SecurityModel
         public async Task<IActionResult> Update([FromBody] PermissionDTO dto) =>
             await TryExecuteAsync(() => _service.UpdateAsync(dto), "UpdatePermission");
 
+        /// <summary>
+        /// Elimina un registro usando la estrategia especificada
+        /// </summary>
         [HttpDelete("Delete/{id:int}")]
         [ProducesResponseType(200)]
         [ProducesResponseType(400)]

@@ -11,16 +11,10 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { Router } from '@angular/router';
 import { PersonMod } from '../../../Core/Models/SecurityModule/PersonMod.model';
 import { AuthService } from '../../../Core/Service/Auth/auth.service';
-<<<<<<< HEAD
-import { colombianPhoneValidator, documentNumberValidator, emailValidator } from '../../../Core/Utils/input-validators.util';
+import { colombianPhoneValidator, documentNumberValidator, emailValidator } from '../../../Core/Utils/input-validators.utils';
 import { NumericInputDirective } from '../../../Core/Directives/numeric-input.directive';
 
 
-=======
-import { colombianPhoneValidator, emailValidator } from '../../../Core/Utils/input-validators.util';
-import { ColombianPhoneDirective } from '../../Shared/Directives/colombian-phone.directive';
-import { OnlyNumbersDirective } from '../../Shared/Directives/only-numbers.directive';
->>>>>>> parent of 845d2803 (solucion de errores)
 
 
 
@@ -44,27 +38,37 @@ import { OnlyNumbersDirective } from '../../Shared/Directives/only-numbers.direc
 })
 export class FormPersonComponent implements OnInit, OnChanges {
 
+	// Inyección de servicios propios del proyecto
+	private readonly authService = inject(AuthService);
+
+	// Inyección de servicios nativos de Angular
+	private readonly fb = inject(FormBuilder);
+	private readonly router = inject(Router);
+
+	// Inputs principales del componente
 	@Input() person: PersonMod | null = null;
 	@Input() cancelRoute: string = '/Person';
+
+	// Outputs de eventos emitidos al componente padre
 	@Output() save = new EventEmitter<PersonMod>();
 
-	formPerson!: FormGroup;
+	// Variables de estado y control local
 	isEditMode = false;
 	showReactivarToggle = false;
 	reactivarUsuario = false;
 
-	private authService = inject(AuthService);
-	private fb = inject(FormBuilder);
-	private router = inject(Router);
-
+	// Listas de opciones y datos estáticos
 	documentTypes = [
-		{ value: 'RC', label: 'Registro Civil' },
 		{ value: 'TI', label: 'Tarjeta de Identidad' },
 		{ value: 'CC', label: 'Cédula de Ciudadanía' },
 		{ value: 'CE', label: 'Cédula de Extranjería' },
 		{ value: 'PP', label: 'Pasaporte' }
 	];
 
+	// Formulario reactivo del componente
+	formPerson!: FormGroup;
+
+	// Métodos del ciclo de vida del componente
 	ngOnInit(): void {
 		this.buildForm();
 	}
@@ -96,7 +100,7 @@ export class FormPersonComponent implements OnInit, OnChanges {
 			email: ['', [Validators.required, emailValidator()]],
 			documentType: ['', Validators.required],
 			documentNumber: ['', [Validators.required, documentNumberValidator(6, 10)]],
-			phone: ['', [ Validators.required, colombianPhoneValidator()]],
+			phone: ['', [Validators.required, colombianPhoneValidator()]],
 			active: [true]
 		});
 	}

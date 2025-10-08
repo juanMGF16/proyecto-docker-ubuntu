@@ -13,13 +13,19 @@ Chart.register(...registerables);
 	styleUrl: './category-item-chart.component.css'
 })
 export class CategoryItemChartComponent implements OnChanges, AfterViewInit, OnDestroy {
+
+	// Inputs principales del componente
 	@Input() data!: { [status: string]: number };
+
 	@ViewChild('chartCanvas') chartCanvas!: ElementRef<HTMLCanvasElement>;
 
+	// Variables de estado y control local
 	hasData = false;
 	private chart: Chart<'doughnut'> | null = null;
 	private viewInitialized = false;
 
+
+	// Métodos del ciclo de vida del componente
 	ngAfterViewInit() {
 		this.viewInitialized = true;
 		this.evaluateData();
@@ -28,6 +34,12 @@ export class CategoryItemChartComponent implements OnChanges, AfterViewInit, OnD
 	ngOnChanges(changes: SimpleChanges) {
 		if (changes['data']) {
 			this.evaluateData();
+		}
+	}
+
+	ngOnDestroy() {
+		if (this.chart) {
+			this.chart.destroy();
 		}
 	}
 
@@ -50,12 +62,6 @@ export class CategoryItemChartComponent implements OnChanges, AfterViewInit, OnD
 				this.chart.destroy();
 				this.chart = null;
 			}
-		}
-	}
-
-	ngOnDestroy() {
-		if (this.chart) {
-			this.chart.destroy();
 		}
 	}
 
@@ -162,7 +168,7 @@ export class CategoryItemChartComponent implements OnChanges, AfterViewInit, OnD
 			"Laboratorio": 'rgba(245, 158, 11, 0.8)',   // Amarillo
 			"Papelería": 'rgba(239, 68, 68, 0.8)',      // Rojo
 			"Comunicación": 'rgba(236, 72, 153, 0.8)',  // Rosa
-			"Electro": 'rgba(14, 165, 233, 0.8)'        // Celeste
+			"Electrodomésticos": 'rgba(14, 165, 233, 0.8)'        // Celeste
 		};
 
 		return statuses.map(

@@ -13,6 +13,16 @@
 
 	<!-- Sección derecha: Información de usuario -->
 	<div class="right-section">
+		<!-- Notificaciones -->
+		<button mat-icon-button class="notification-btn" [matMenuTriggerFor]="notificationsMenu">
+			<!-- Mostrar solo UN icono según el estado -->
+			@if (hasNotifications()) {
+			<mat-icon [matBadge]="notificationCount()" matBadgeColor="warn">notifications</mat-icon>
+			} @else {
+			<mat-icon>notifications_none</mat-icon>
+			}
+		</button>
+
 		<!-- Perfil de usuario -->
 		<div class="user-profile" [matMenuTriggerFor]="userMenu">
 			<div class="user-info">
@@ -24,6 +34,55 @@
 			</div>
 		</div>
 	</div>
+
+	<!-- Menú de notificaciones -->
+	<mat-menu #notificationsMenu="matMenu" class="notifications-menu">
+		<div class="notifications-header">
+			<h3>Notificaciones RQS</h3>
+			<button mat-icon-button (click)="markAllAsRead($event)" [disabled]="!hasNotifications() || isLoading()">
+				<mat-icon>done_all</mat-icon>
+			</button>
+		</div>
+
+		<mat-divider></mat-divider>
+
+		<!-- Loading state -->
+		<div class="notification-loading" *ngIf="isLoading()">
+			<mat-spinner diameter="20"></mat-spinner>
+			<span>Cargando notificaciones...</span>
+		</div>
+
+		<!-- Empty state -->
+		<div class="notification-empty" *ngIf="!isLoading() && !hasNotifications()">
+			<mat-icon>notifications_off</mat-icon>
+			<p>No hay notificaciones nuevas</p>
+		</div>
+
+		<!-- Notifications list -->
+		<div class="notifications-list">
+			<div class="notification-item" *ngFor="let notification of notifications()"
+				[class.inventory-request]="notification.isInventoryRequest">
+				<div class="notification-icon">
+					<mat-icon>{{ getNotificationIcon(notification.type) }}</mat-icon>
+				</div>
+				<div class="notification-content">
+					<p class="notification-title">{{ notification.title }}</p>
+					<p class="notification-message">{{ getOperatingGroupName(notification) }}</p>
+					<span class="notification-time">{{ formatTime(notification.date) }}</span>
+				</div>
+				<button mat-icon-button class="mark-read-btn" (click)="markAsRead(notification, $event)"
+					[disabled]="isLoading()">
+					<mat-icon>check_circle</mat-icon>
+				</button>
+			</div>
+		</div>
+
+		<mat-divider></mat-divider>
+
+		<div class="notifications-footer">
+			<button mat-button (click)="goToRQS()">Ver todas las RQS</button>
+		</div>
+	</mat-menu>
 
 	<!-- Menú de usuario -->
 	<mat-menu #userMenu="matMenu">

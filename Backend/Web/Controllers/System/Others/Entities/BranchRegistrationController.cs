@@ -6,6 +6,10 @@ using Utilities.Exceptions;
 
 namespace Web.Controllers.System.Others.Entities
 {
+    /// <summary>
+    /// Controlador responsable del registro de sucursales junto con su administrador principal.
+    /// Solo accesible por usuarios con rol de ADMINISTRADOR.
+    /// </summary>
     [ApiController]
     [Route("api/[controller]")]
     [Authorize(Roles = "ADMINISTRADOR")]
@@ -22,6 +26,11 @@ namespace Web.Controllers.System.Others.Entities
             _logger = logger;
         }
 
+        /// <summary>
+        /// Crea una nueva sucursal junto con su usuario administrador asociado.
+        /// </summary>
+        /// <param name="request">Datos necesarios para crear la sucursal y el administrador.</param>
+        /// <returns>Un resultado con el estado de la operación y los datos creados.</returns>
         [HttpPost("Create-With-Admin")]
         public async Task<IActionResult> CreateBranchWithAdmin([FromBody] BranchCreateRequestDTO request)
         {

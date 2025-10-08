@@ -77,8 +77,7 @@ namespace Entity.Migrations
 
                     b.Property<string>("Content")
                         .IsRequired()
-                        .HasMaxLength(500)
-                        .HasColumnType("nvarchar(500)");
+                        .HasColumnType("nvarchar(1000)");
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2(3)");
@@ -113,7 +112,7 @@ namespace Entity.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Notification", "System", t =>
+                    b.ToTable("Notification", "Parameters", t =>
                         {
                             t.HasCheckConstraint("CK_Notification_Type", "Type IN (1,2,3,4,5,6)");
                         });
@@ -546,7 +545,8 @@ namespace Entity.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("PersonId");
+                    b.HasIndex("PersonId")
+                        .IsUnique();
 
                     b.HasIndex("Username")
                         .IsUnique();
@@ -648,6 +648,47 @@ namespace Entity.Migrations
                         .IsUnique();
 
                     b.ToTable("Branch", "System");
+                });
+
+            modelBuilder.Entity("Entity.Models.System.Checker", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<bool>("Active")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(true);
+
+                    b.Property<int>("BranchId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2(3)");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("datetime2(3)");
+
+                    b.Property<string>("UpdatedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("BranchId");
+
+                    b.HasIndex("UserId")
+                        .IsUnique();
+
+                    b.ToTable("Checker", "System");
                 });
 
             modelBuilder.Entity("Entity.Models.System.Company", b =>
@@ -895,7 +936,10 @@ namespace Entity.Migrations
                     b.Property<string>("CreatedBy")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("OperationalGroupId")
+                    b.Property<int>("CreatedByUserId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("OperationalGroupId")
                         .HasColumnType("int");
 
                     b.Property<DateTime?>("UpdatedAt")
@@ -908,6 +952,8 @@ namespace Entity.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("CreatedByUserId");
 
                     b.HasIndex("OperationalGroupId");
 
@@ -958,8 +1004,7 @@ namespace Entity.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("UserId")
-                        .IsUnique();
+                    b.HasIndex("UserId");
 
                     b.ToTable("OperatingGroup", "System");
                 });
@@ -976,6 +1021,9 @@ namespace Entity.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("bit")
                         .HasDefaultValue(true);
+
+                    b.Property<int>("CheckerId")
+                        .HasColumnType("int");
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2(3)");
@@ -1003,15 +1051,11 @@ namespace Entity.Migrations
                     b.Property<string>("UpdatedBy")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
 
-                    b.HasIndex("InventaryId")
-                        .IsUnique();
+                    b.HasIndex("CheckerId");
 
-                    b.HasIndex("UserId")
+                    b.HasIndex("InventaryId")
                         .IsUnique();
 
                     b.ToTable("Verification", "System");
@@ -1133,8 +1177,8 @@ namespace Entity.Migrations
             modelBuilder.Entity("Entity.Models.SecurityModule.User", b =>
                 {
                     b.HasOne("Entity.Models.SecurityModule.Person", "Person")
-                        .WithMany("Users")
-                        .HasForeignKey("PersonId")
+                        .WithOne("User")
+                        .HasForeignKey("Entity.Models.SecurityModule.User", "PersonId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -1179,6 +1223,25 @@ namespace Entity.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("Entity.Models.System.Checker", b =>
+                {
+                    b.HasOne("Entity.Models.System.Branch", "Branch")
+                        .WithMany("Checkers")
+                        .HasForeignKey("BranchId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("Entity.Models.SecurityModule.User", "User")
+                        .WithOne("Checker")
+                        .HasForeignKey("Entity.Models.System.Checker", "UserId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Branch");
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("Entity.Models.System.Company", b =>
                 {
                     b.HasOne("Entity.Models.SecurityModule.User", "User")
@@ -1193,7 +1256,7 @@ namespace Entity.Migrations
             modelBuilder.Entity("Entity.Models.System.Inventary", b =>
                 {
                     b.HasOne("Entity.Models.System.OperatingGroup", "OperatingGroup")
-                        .WithMany()
+                        .WithMany("Inventories")
                         .HasForeignKey("OperatingGroupId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
@@ -1265,17 +1328,24 @@ namespace Entity.Migrations
 
             modelBuilder.Entity("Entity.Models.System.Operating", b =>
                 {
+                    b.HasOne("Entity.Models.SecurityModule.User", "CreatedByUser")
+                        .WithMany()
+                        .HasForeignKey("CreatedByUserId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
                     b.HasOne("Entity.Models.System.OperatingGroup", "OperationalGroup")
                         .WithMany("Operatings")
                         .HasForeignKey("OperationalGroupId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.SetNull);
 
                     b.HasOne("Entity.Models.SecurityModule.User", "User")
                         .WithOne("Operating")
                         .HasForeignKey("Entity.Models.System.Operating", "UserId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("CreatedByUser");
 
                     b.Navigation("OperationalGroup");
 
@@ -1285,8 +1355,8 @@ namespace Entity.Migrations
             modelBuilder.Entity("Entity.Models.System.OperatingGroup", b =>
                 {
                     b.HasOne("Entity.Models.SecurityModule.User", "User")
-                        .WithOne("OperationalGroup")
-                        .HasForeignKey("Entity.Models.System.OperatingGroup", "UserId")
+                        .WithMany("OperationalGroups")
+                        .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
@@ -1295,21 +1365,21 @@ namespace Entity.Migrations
 
             modelBuilder.Entity("Entity.Models.System.Verification", b =>
                 {
-                    b.HasOne("Entity.Models.System.Inventary", "Inventary")
-                        .WithOne("Verification")
-                        .HasForeignKey("Entity.Models.System.Verification", "InventaryId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Entity.Models.SecurityModule.User", "User")
-                        .WithOne("Verification")
-                        .HasForeignKey("Entity.Models.System.Verification", "UserId")
+                    b.HasOne("Entity.Models.System.Checker", "Checker")
+                        .WithMany("Verifications")
+                        .HasForeignKey("CheckerId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.Navigation("Inventary");
+                    b.HasOne("Entity.Models.System.Inventary", "Inventary")
+                        .WithOne("Verification")
+                        .HasForeignKey("Entity.Models.System.Verification", "InventaryId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
 
-                    b.Navigation("User");
+                    b.Navigation("Checker");
+
+                    b.Navigation("Inventary");
                 });
 
             modelBuilder.Entity("Entity.Models.System.Zone", b =>
@@ -1362,7 +1432,8 @@ namespace Entity.Migrations
 
             modelBuilder.Entity("Entity.Models.SecurityModule.Person", b =>
                 {
-                    b.Navigation("Users");
+                    b.Navigation("User")
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Entity.Models.SecurityModule.Role", b =>
@@ -1377,6 +1448,9 @@ namespace Entity.Migrations
                     b.Navigation("Branch")
                         .IsRequired();
 
+                    b.Navigation("Checker")
+                        .IsRequired();
+
                     b.Navigation("Company")
                         .IsRequired();
 
@@ -1385,13 +1459,9 @@ namespace Entity.Migrations
                     b.Navigation("Operating")
                         .IsRequired();
 
-                    b.Navigation("OperationalGroup")
-                        .IsRequired();
+                    b.Navigation("OperationalGroups");
 
                     b.Navigation("UserRoles");
-
-                    b.Navigation("Verification")
-                        .IsRequired();
 
                     b.Navigation("Zone")
                         .IsRequired();
@@ -1399,7 +1469,14 @@ namespace Entity.Migrations
 
             modelBuilder.Entity("Entity.Models.System.Branch", b =>
                 {
+                    b.Navigation("Checkers");
+
                     b.Navigation("Zones");
+                });
+
+            modelBuilder.Entity("Entity.Models.System.Checker", b =>
+                {
+                    b.Navigation("Verifications");
                 });
 
             modelBuilder.Entity("Entity.Models.System.Company", b =>
@@ -1411,8 +1488,7 @@ namespace Entity.Migrations
                 {
                     b.Navigation("InventaryDetails");
 
-                    b.Navigation("Verification")
-                        .IsRequired();
+                    b.Navigation("Verification");
                 });
 
             modelBuilder.Entity("Entity.Models.System.Item", b =>
@@ -1422,6 +1498,8 @@ namespace Entity.Migrations
 
             modelBuilder.Entity("Entity.Models.System.OperatingGroup", b =>
                 {
+                    b.Navigation("Inventories");
+
                     b.Navigation("Operatings");
                 });
 

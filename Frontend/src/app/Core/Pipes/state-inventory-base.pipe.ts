@@ -1,3 +1,9 @@
+// ==================================================
+// Pipe: StateInventoryBasePipe
+// ==================================================
+// Devuelve la configuración visual correspondiente a un estado de inventario (ícono, etiqueta y clase).
+// Si el estado no existe, retorna un valor por defecto.
+
 import { Pipe, PipeTransform } from '@angular/core';
 import { STATE_CONFIG } from '../Constants/item-mappings';
 

@@ -6,14 +6,26 @@ using Entity.DTOs.System.Dashboard.DashZone;
 
 namespace Business.Repository.Implementations.Specific.System.Others
 {
+    /// <summary>
+    /// Proporciona la lógica de negocio para obtener los datos de los diferentes Dashboards (Tableros de control)
+    /// a nivel de Compañía, Sucursal y Zona.
+    /// </summary>
     public class DashboardBusiness : IDashboardBusiness
     {
         private readonly IDashboardData _dashboardData;
+
         public DashboardBusiness(IDashboardData dashboardData)
         {
             _dashboardData = dashboardData;
         }
 
+        /// <summary>
+        /// Obtiene los datos principales del dashboard a nivel de Compañía, aplicando validaciones simples sobre los filtros.
+        /// </summary>
+        /// <param name="filter">Filtros para la consulta (ej. CompanyId).</param>
+        /// <returns>Un objeto DTO con la información del Dashboard de la Compañía.</returns>
+        /// <exception cref="ArgumentNullException">Lanzada si el filtro es nulo.</exception>
+        /// <exception cref="ArgumentException">Lanzada si el CompanyId es inválido.</exception>
         public async Task<DashboardDTO> GetDashboardAsync(DashboardFilterDTO filter)
         {
             // validaciones simples
@@ -23,12 +35,24 @@ namespace Business.Repository.Implementations.Specific.System.Others
             return await _dashboardData.GetDashboardAsync(filter);
         }
 
+        /// <summary>
+        /// Obtiene los datos del dashboard específico para una Sucursal, incluyendo validaciones.
+        /// </summary>
+        /// <param name="branchId">El identificador de la sucursal.</param>
+        /// <returns>Un objeto DTO con la información del Dashboard de la Sucursal.</returns>
+        /// <exception cref="ArgumentException">Lanzada si el BranchId es inválido.</exception>
         public async Task<BranchDashboardDTO> GetBranchDashboardAsync(int branchId)
         {
             if (branchId <= 0) throw new ArgumentException("BranchId inválido", nameof(branchId));
             return await _dashboardData.GetBranchDashboardAsync(branchId);
         }
 
+        /// <summary>
+        /// Obtiene los datos detallados del dashboard específico para una Zona,
+        /// realizando cálculos de información resumida y comparación de inventarios en la capa de negocio.
+        /// </summary>
+        /// <param name="zoneId">El identificador de la zona.</param>
+        /// <returns>Un objeto DTO con la información del Dashboard de la Zona, o null si la zona no existe.</returns>
         public async Task<ZoneDashboardDTO?> GetZoneDashboardAsync(int zoneId)
         {
             // Usar la capa de datos
@@ -106,6 +130,7 @@ namespace Business.Repository.Implementations.Specific.System.Others
                 .Concat(groupsFromInventories)
                 .GroupBy(g => g.Id)
                 .Select(g => g.First())
+                .Where(g => g.Active)
                 .ToList();
 
             var operatingGroups = allGroups.Select(g => new OperatingGroupDashboardDTO

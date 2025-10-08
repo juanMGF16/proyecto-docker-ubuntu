@@ -1,44 +1,52 @@
 import { CommonModule } from '@angular/common';
-import { Component, EventEmitter, HostListener, Input, Output, OnInit, OnDestroy, OnChanges, SimpleChanges, inject } from '@angular/core';
+import { Component, EventEmitter, HostListener, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges, inject } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { Subscription } from 'rxjs';
-import { AdminNavService, NavigationItem, NavigationState } from '../../../../Core/Service/Navigation/admin-nav.service';
-import { BranchService } from '../../../../Core/Service/System/branch.service';
-import { UserService } from '../../../../Core/Service/SecurityModule/user.service';
 import { BranchByCompanyMod } from '../../../../Core/Models/System/BranchMod.model';
-import Swal from 'sweetalert2';
+import { AdminNavService, NavigationItem, NavigationState } from '../../../../Core/Service/Navigation/admin-nav.service';
+import { UserService } from '../../../../Core/Service/SecurityModule/user.service';
+import { BranchService } from '../../../../Core/Service/System/branch.service';
+import { AlertTotalService } from './../../../../Core/Service/alert-total.service';
 
 @Component({
 	selector: 'app-admin-sidebar',
 	imports: [CommonModule, MatIconModule, MatButtonModule],
 	standalone: true,
 	templateUrl: './admin-sidebar.component.html',
-	styleUrls: ['../../../Shared/Styles/sidebar-shared.css','./admin-sidebar.component.css']
+	styleUrls: ['../../../Shared/Styles/sidebar-shared.css', './admin-sidebar.component.css']
 })
 export class AdminSidebarComponent implements OnInit, OnDestroy, OnChanges {
+
+	// Inyección de servicios propios del proyecto
+	private readonly userService = inject(UserService);
+	private readonly branchService = inject(BranchService);
+	private readonly alertService = inject(AlertTotalService);
+
+	// Inputs principales del componente
 	@Input() hasCompany: boolean | null = true;
 	@Input() isExpanded: boolean = false;
+
+	// Outputs de eventos emitidos al componente padre
 	@Output() toggleSidebar = new EventEmitter<void>();
 
+	// Variables de estado y control local
+	companyId: number | null = null;
+
+	// Listas de opciones y datos estáticos
 	navigationItems: NavigationItem[] = [];
 	navigationState: NavigationState = {
 		currentRoute: '',
 		expandedSections: {},
 		activeSection: undefined
 	};
-	companyId: number | null = null;
-
-	private userService = inject(UserService);
-	private branchService = inject(BranchService);
+	sucursales: BranchByCompanyMod[] = [];
 
 	private navigationSubscription: Subscription = new Subscription();
 
-	// Datos dinámicos (ejemplo para sucursales)
-	sucursales: BranchByCompanyMod[] = [];
-
 	constructor(private navigationService: AdminNavService) { }
 
+	// Métodos del ciclo de vida del componente
 	ngOnInit(): void {
 		// Suscribirse a cambios de estado de navegación
 		this.navigationSubscription = this.navigationService.navigationState$
@@ -65,10 +73,15 @@ export class AdminSidebarComponent implements OnInit, OnDestroy, OnChanges {
 		});
 	}
 
-
 	ngOnChanges(changes: SimpleChanges): void {
 		if (changes['hasCompany']) {
 			this.updateNavigation();
+		}
+	}
+
+	ngOnDestroy(): void {
+		if (this.navigationSubscription) {
+			this.navigationSubscription.unsubscribe();
 		}
 	}
 
@@ -82,16 +95,10 @@ export class AdminSidebarComponent implements OnInit, OnDestroy, OnChanges {
 				console.log('Error al cargar los datos:', err);
 				const mensajeCompleto = err?.error?.message || 'Ocurrio un error inesperado.';
 				const mensaje = mensajeCompleto.split(':')[1]?.trim() || mensajeCompleto;
-				Swal.fire({
-					icon: 'error',
-					title: 'Error',
-					text: mensaje,
-					confirmButtonText: 'Aceptar'
-				});
+				this.alertService.error('Error', mensaje);
 			}
 		});
 	}
-
 
 	private updateNavigation(): void {
 		// Obtener configuración basada en el estado de la empresa
@@ -103,18 +110,12 @@ export class AdminSidebarComponent implements OnInit, OnDestroy, OnChanges {
 		}
 	}
 
-	ngOnDestroy(): void {
-		if (this.navigationSubscription) {
-			this.navigationSubscription.unsubscribe();
-		}
-	}
-
 	private addDynamicSucursales(): void {
 		const dynamicSucursales: NavigationItem[] = this.sucursales.map(sucursal => ({
 			id: `dynamic-sucursal-${sucursal.id}`,
 			label: sucursal.name,
 			icon: 'store',
-			route: `/admin/sucursales/${sucursal.id}`
+			route: `/admin/branch/${sucursal.id}`
 		}));
 
 		this.navigationService.addDynamicItems('sucursales', dynamicSucursales);

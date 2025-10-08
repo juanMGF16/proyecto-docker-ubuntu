@@ -1,18 +1,17 @@
 ﻿using Business.Services.Jwt.Interfaces;
-using Business.Services.JWTService.Interfaces;
 using Entity.DTOs.Auth;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
-using System;
-using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
-using System.Linq;
 using System.Security.Claims;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace Business.Services.Jwt
 {
+    /// <summary>
+    /// Implementación de <see cref="IRefreshTokenService"/> para manejar la validación
+    /// de Refresh Tokens y la emisión de nuevos Access Tokens.
+    /// </summary>
     public class RefreshTokenService : IRefreshTokenService
     {
         private readonly IJwtService _jwtService;
@@ -24,6 +23,12 @@ namespace Business.Services.Jwt
             _configuration = configuration;
         }
 
+        /// <summary>
+        /// Intenta validar un Refresh Token y, si es válido, extrae los claims del usuario
+        /// para generar un nuevo y corto Access Token.
+        /// </summary>
+        /// <param name="refreshToken">El Refresh Token a validar.</param>
+        /// <returns>Un <see cref="RefreshResponseDTO"/> con el nuevo Access Token, o null si la validación o el proceso fallan.</returns>
         public RefreshResponseDTO? RefreshAccessToken(string refreshToken)
         {
             try

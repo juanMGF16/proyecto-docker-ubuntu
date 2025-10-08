@@ -6,16 +6,23 @@ using Microsoft.Extensions.Logging;
 
 namespace Data.Repository.Implementations.Specific.SecurityModule
 {
+    /// <summary>
+    /// Repositorio para gestión de relaciones entre formularios y módulos
+    /// </summary>
     public class FormModuleData : GenericData<FormModule>, IFormModuleData
     {
         private readonly AppDbContext _context;
         private readonly ILogger _logger;
+
         public FormModuleData(AppDbContext context, ILogger<FormModule> logger) : base(context, logger)
         {
             _context = context;
             _logger = logger;
         }
 
+        /// <summary>
+        /// Obtiene todas las relaciones formulario-módulo activas con sus datos relacionados
+        /// </summary>
         public override async Task<IEnumerable<FormModule>> GetAllAsync()
         {
             try
@@ -33,6 +40,10 @@ namespace Data.Repository.Implementations.Specific.SecurityModule
             }
         }
 
+        /// <summary>
+        /// Obtiene una relación formulario-módulo por ID con sus datos relacionados
+        /// </summary>
+        /// <param name="id">ID de la relación</param>
         public override async Task<FormModule?> GetByIdAsync(int id)
         {
             try
@@ -50,6 +61,9 @@ namespace Data.Repository.Implementations.Specific.SecurityModule
         }
 
         // General
+        /// <summary>
+        /// Obtiene todas las relaciones formulario-módulo sin filtrar por estado
+        /// </summary>
         public override async Task<IEnumerable<FormModule>> GetAllTotalAsync()
         {
             try

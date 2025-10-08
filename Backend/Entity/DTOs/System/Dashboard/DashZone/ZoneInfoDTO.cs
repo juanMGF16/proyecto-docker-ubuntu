@@ -7,7 +7,7 @@
         public string State { get; set; } = string.Empty;
         public int TotalItems { get; set; }
         public int InventoriesThisMonth { get; set; }
-        public DateTime? LastInventoryDate { get; set; }
+        public DateTimeOffset? LastInventoryDate { get; set; }
         public string ZoneManagerName { get; set; } = string.Empty;
     }
 }

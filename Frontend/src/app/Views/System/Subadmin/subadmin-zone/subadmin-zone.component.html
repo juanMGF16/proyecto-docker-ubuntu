@@ -1,7 +1,15 @@
 <div class="container-base zone-container">
-	<app-loader [loading]="loading" loadingMessage="Cargando información de la zona..." [error]="error"
-		[fullScreen]="true" [diameter]="60" color="accent" [showRetry]="true" (retry)="loadZoneData()">
+	<app-loader [loading]="loading" loadingMessage="Cargando información de la zona..." [fullScreen]="true"
+		[diameter]="60" color="accent" [showRetry]="true" (retry)="loadZoneData()">
 	</app-loader>
+
+	<div *ngIf="error && !loading" class="error-message-loader">
+		<mat-icon>error_outline</mat-icon>
+		<p>{{ errorMessage }}</p>
+		<button mat-raised-button color="primary" (click)="loadZoneData()">
+			Reintentar
+		</button>
+	</div>
 
 	<ng-container *ngIf="!loading && !error">
 		<!-- Header -->
@@ -90,7 +98,7 @@
 						</div>
 						<div class="kpi-content">
 							<div class="kpi-value">{{ itemsByState['En orden'] || 0 }}</div>
-							<div class="kpi-label">En Orden</div>
+							<div class="kpi-label">En orden</div>
 						</div>
 					</div>
 
@@ -100,7 +108,7 @@
 						</div>
 						<div class="kpi-content">
 							<div class="kpi-value">{{ itemsByState['Reparación'] || 0 }}</div>
-							<div class="kpi-label">En Reparación</div>
+							<div class="kpi-label">Reparación</div>
 						</div>
 					</div>
 
@@ -151,7 +159,7 @@
 					<div class="search-container">
 						<mat-icon class="search-icon">search</mat-icon>
 						<input type="text" class="search-input" placeholder="Buscar por nombre o serial..."
-							[(ngModel)]="searchText" >
+							[(ngModel)]="searchText">
 						<button class="clear-search" (click)="searchText = '';" *ngIf="searchText">
 							<mat-icon>close</mat-icon>
 						</button>

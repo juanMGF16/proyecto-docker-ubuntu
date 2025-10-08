@@ -1,3 +1,10 @@
+// ===== SERVICIO DE NAVEGACIÓN DEL SUBADMIN =====
+// Gestiona el menú lateral y el estado de navegación del panel del Subadministrador.
+// Forma parte del grupo de servicios de navegación junto a AdminNavService y AreaManagerNavService,
+// aportando la misma funcionalidad central: control de sidebar, menús dinámicos,
+// estado de secciones y eventos para refrescar datos.
+// Este servicio está orientado a la gestión de Zonas y Encargados de Zona.
+
 import { Injectable } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
 import { BehaviorSubject, Subject } from 'rxjs';
@@ -23,12 +30,20 @@ export interface NavigationState {
 	providedIn: 'root'
 })
 export class SubadminNavService {
+
+	// === EVENTOS COMPARTIDOS ===
+	// Subjects que emiten eventos globales: cerrar sidebar o refrescar lista de zonas.
 	private closeSidebarSubject = new Subject<void>();
 	public closeSidebar$ = this.closeSidebarSubject.asObservable();
 
 	private refreshZonesSubject = new Subject<void>();
 	public refreshZones$ = this.refreshZonesSubject.asObservable();
 
+
+
+	// === CONFIGURACIÓN DE NAVEGACIÓN ===
+	// Menú estático inicial: dashboard, gestión de zonas y encargados de zona.
+	// Permite agregar ítems dinámicos (ej. zonas cargadas desde backend).
 	// Configuración de navegación
 	private readonly navigationConfig: NavigationItem[] = [
 		{
@@ -62,18 +77,29 @@ export class SubadminNavService {
 		}
 	];
 
+
+
+	// === ESTADO DE NAVEGACIÓN ===
+	// Mantiene la ruta actual, secciones expandidas y activa.
+	// Se expone como observable para que el sidebar reaccione automáticamente a cambios de ruta.
 	private navigationState = new BehaviorSubject<NavigationState>({
 		currentRoute: '',
 		expandedSections: {},
 		activeSection: undefined
 	});
-
 	public navigationState$ = this.navigationState.asObservable();
+
+
 
 	constructor(private router: Router) {
 		this.initializeNavigation();
 	}
 
+
+
+	// === INICIALIZACIÓN ===
+	// Escucha cambios del Router y actualiza el estado de navegación.
+	// También emite cierre automático del sidebar en cada cambio de sección.
 	private initializeNavigation(): void {
 		// Escuchar cambios de ruta
 		this.router.events
@@ -88,11 +114,17 @@ export class SubadminNavService {
 		this.updateNavigationState(currentRoute);
 	}
 
-	// MÉTODO MODIFICADO: Ahora acepta el parámetro hasCompany
+
+
+	// === CONFIGURACIÓN DEL MENÚ ===
+	// Devuelve una copia de la configuración de navegación.
 	getNavigationConfig(): NavigationItem[] {
 		return [...this.navigationConfig];
 	}
 
+
+	// === ACTUALIZACIÓN DE ESTADO ===
+	// Actualiza sección activa y secciones expandidas según la ruta.
 	private updateNavigationState(route: string): void {
 		const currentState = this.navigationState.value;
 		const activeSection = this.findActiveSectionByRoute(route);
@@ -105,6 +137,10 @@ export class SubadminNavService {
 		});
 	}
 
+
+
+	// === UTILIDADES PRIVADAS ===
+	// Identifica qué sección corresponde a una ruta.
 	private findActiveSectionByRoute(route: string): string | undefined {
 		for (const item of this.navigationConfig) {
 			// Si es una sección expandible, verificar sus hijos
@@ -123,6 +159,7 @@ export class SubadminNavService {
 		return undefined;
 	}
 
+	// Verifica si la ruta actual coincide con una ruta objetivo.
 	private isRouteMatch(currentRoute: string, targetRoute: string): boolean {
 		// Normalizar rutas
 		const current = currentRoute.endsWith('/') ? currentRoute.slice(0, -1) : currentRoute;
@@ -131,6 +168,7 @@ export class SubadminNavService {
 		return current === target || current.startsWith(target + '/');
 	}
 
+	// Calcula qué secciones deben estar expandidas automáticamente.
 	private calculateExpandedSections(route: string, currentExpanded: { [key: string]: boolean }): { [key: string]: boolean } {
 		const newExpanded = { ...currentExpanded };
 		const activeSection = this.findActiveSectionByRoute(route);
@@ -146,15 +184,20 @@ export class SubadminNavService {
 		return newExpanded;
 	}
 
+	// Busca una sección por su id dentro del menú.
 	private findSectionById(id: string): NavigationItem | undefined {
 		return this.navigationConfig.find(item => item.id === id);
 	}
 
-	// Métodos públicos para el componente
+
+
+	// === MÉTODOS PÚBLICOS PARA EL SIDEBAR ===
+	// Obtiene el estado actual de la navegación.
 	getCurrentState(): NavigationState {
 		return this.navigationState.value;
 	}
 
+	// Alterna entre expandir/colapsar una sección del menú
 	toggleSection(sectionId: string): void {
 		const currentState = this.navigationState.value;
 		const newExpanded = {
@@ -168,6 +211,7 @@ export class SubadminNavService {
 		});
 	}
 
+	// Marca si la ruta indicada está activa.
 	isRouteActive(route: string): boolean {
 		const currentRoute = this.navigationState.value.currentRoute;
 
@@ -178,20 +222,26 @@ export class SubadminNavService {
 		return this.isRouteMatch(currentRoute, route);
 	}
 
+	// Comprueba qué sección está activa.
 	isSectionActive(sectionId: string): boolean {
 		return this.navigationState.value.activeSection === sectionId;
 	}
 
+	// Indica si una sección está expandida.
 	isSectionExpanded(sectionId: string): boolean {
 		return !!this.navigationState.value.expandedSections[sectionId];
 	}
 
+	// Redirige a una ruta, normalizando rutas base (ej: dashboard).
 	navigateTo(route: string): void {
 		const targetRoute = route === '/subadmin' ? '/subadmin/dashboard' : route;
 		this.router.navigate([targetRoute]);
 	}
 
-	// Método para agregar elementos dinámicos (como zonas)
+
+
+	// === ÍTEMS DINÁMICOS ===
+	// Inserta elementos dinámicos en el menú (ej. zonas).
 	addDynamicItems(parentSectionId: string, items: NavigationItem[]): void {
 		const parentIndex = this.navigationConfig.findIndex(item => item.id === parentSectionId);
 		if (parentIndex !== -1 && this.navigationConfig[parentIndex].children) {
@@ -203,11 +253,12 @@ export class SubadminNavService {
 		}
 	}
 
+	// Emite evento para refrescar listado de zonas.
 	triggerRefreshZones(): void {
 		this.refreshZonesSubject.next();
 	}
 
-	// Método para limpiar elementos dinámicos
+	// Elimina ítems dinámicos de una sección.
 	clearDynamicItems(parentSectionId: string): void {
 		const parentIndex = this.navigationConfig.findIndex(item => item.id === parentSectionId);
 		if (parentIndex !== -1 && this.navigationConfig[parentIndex].children) {

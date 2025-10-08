@@ -14,9 +14,12 @@ import { ModuleService } from '../../../../Core/Service/SecurityModule/module.se
 })
 export class UpdateModuleComponent {
 
-  private moduleService = inject(ModuleService);
-  private router = inject(Router);
-  private route = inject(ActivatedRoute);
+	// Inyección de servicios propios del proyecto
+  private readonly moduleService = inject(ModuleService);
+
+	// Inyección de servicios nativos de Angular
+  private readonly router = inject(Router);
+  private readonly route = inject(ActivatedRoute);
 
   module: ModuleMod | null = null;
 

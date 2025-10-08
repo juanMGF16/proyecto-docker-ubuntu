@@ -15,9 +15,13 @@ import { FormUserComponent } from '../../../../Components/SecurityModule/form-us
   styleUrl: './create-user.component.css'
 })
 export class CreateUserComponent implements OnInit {
-  private userService = inject(UserService);
-  private personService = inject(PersonService);
-  private router = inject(Router);
+
+	// Inyección de servicios propios del proyecto
+  private readonly userService = inject(UserService);
+  private readonly personService = inject(PersonService);
+
+	// Inyección de servicios nativos de Angular
+  private readonly router = inject(Router);
 
   personsAvailable: PersonAvailableMod[] = [];
 

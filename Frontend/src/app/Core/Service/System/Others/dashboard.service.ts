@@ -1,10 +1,18 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { GenericService } from '../../generic.service';
 import { environment } from '../../../../../environments/environment';
 import { DashboardBranchModel, DashboardModel, ZoneDashboard } from '../../../Models/System/Others/Dashboard.model';
+import { GenericService } from '../../generic.service';
 
+// ===== SERVICIO DE DASHBOARD =====
+// Gestiona la obtención de métricas globales y estadísticas operativas desde el backend.
+// Este servicio es clave en la capa de visualización, permitiendo construir dashboards
+// administrativos dinámicos a diferentes niveles:
+//
+// - getDashboardCompany: Devuelve métricas globales a nivel empresa, con filtros opcionales por sucursal o zona.
+// - getDashboardBranch: Proporciona estadísticas detalladas de una sucursal concreta (zonas, inventarios, ítems, etc.).
+// - getDashboardZone: Ofrece datos de estado e histórico de inventarios para una zona específica.
 @Injectable({
 	providedIn: 'root'
 })

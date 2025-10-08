@@ -17,8 +17,11 @@ import { BaseTableComponent } from '../../../../Components/SecurityModule/Base/b
 })
 export class IndiceUserComponent implements OnInit {
 
-  userService = inject(UserService);
-  router = inject(Router)
+	// Inyección de servicios propios del proyecto
+  private readonly userService = inject(UserService);
+
+	// Inyección de servicios nativos de Angular
+  private readonly router = inject(Router)
 
   userData: UserMod[] = [];
   columnasMostrar : string[] = [

@@ -13,36 +13,6 @@
 		<div class="modal-content">
 			<form [formGroup]="profileForm" class="modal-form" (ngSubmit)="saveProfile()">
 				<div class="form-row">
-					<!-- Campo Nombres -->
-					<div class="custom-input-group">
-						<input id="modalName" type="text" formControlName="name" placeholder=" "
-							[class.error]="nameErrors.length > 0">
-						<label for="modalName">Nombres</label>
-						@if (nameErrors.length > 0) {
-						<div class="error-messages">
-							@for (error of nameErrors; track error) {
-							<div class="error-message">{{ error }}</div>
-							}
-						</div>
-						}
-					</div>
-
-					<!-- Campo Apellidos -->
-					<div class="custom-input-group">
-						<input id="modalLastName" type="text" formControlName="lastName" placeholder=" "
-							[class.error]="lastNameErrors.length > 0">
-						<label for="modalLastName">Apellidos</label>
-						@if (lastNameErrors.length > 0) {
-						<div class="error-messages">
-							@for (error of lastNameErrors; track error) {
-							<div class="error-message">{{ error }}</div>
-							}
-						</div>
-						}
-					</div>
-				</div>
-
-				<div class="form-row">
 					<!-- Campo Email -->
 					<div class="custom-input-group">
 						<input id="modalEmail" type="email" formControlName="email" placeholder=" "

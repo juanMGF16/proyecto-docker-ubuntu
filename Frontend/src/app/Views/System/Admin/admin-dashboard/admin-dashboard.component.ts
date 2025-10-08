@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 import { CommonModule } from '@angular/common';
 import { Component, inject } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
@@ -10,36 +9,31 @@ import { CategoryChartComponent } from "../../../../Components/System/Admin/Anal
 import { StatusChartComponent } from "../../../../Components/System/Admin/Analytics/status-chart/status-chart.component";
 import { UserService } from '../../../../Core/Service/SecurityModule/user.service';
 import { DashboardService } from '../../../../Core/Service/System/Others/dashboard.service';
+import { MatButtonModule } from '@angular/material/button';
 
 type Rol = 'subadmins' | 'encargados' | 'verificadores' | 'operativos';
-=======
-import { Component } from '@angular/core';
->>>>>>> parent of 845d2803 (solucion de errores)
 
 @Component({
 	selector: 'app-admin-dashboard',
 	standalone: true,
-<<<<<<< HEAD
 	imports: [
 		CommonModule,
 		MatIconModule,
+		MatButtonModule,
 		MatProgressSpinnerModule,
 		KpiCardComponent,
 		CategoryChartComponent,
 		StatusChartComponent,
 		LoaderComponent
 	],
-=======
-	imports: [],
->>>>>>> parent of 845d2803 (solucion de errores)
 	templateUrl: './admin-dashboard.component.html',
 	styleUrls: ['../../../../Components/Shared/Styles/dashboard-shared.css', './admin-dashboard.component.css']
 })
 export class AdminDashboardComponent {
-<<<<<<< HEAD
 
-	userService = inject(UserService);
-	dashboardService = inject(DashboardService);
+// Inyección de servicios propios del proyecto
+	private readonly userService = inject(UserService);
+	private readonly dashboardService = inject(DashboardService);
 
 	companyId: number | null = null;
 
@@ -161,7 +155,4 @@ export class AdminDashboardComponent {
 		}
 	}
 
-=======
-	// Tu lógica aquí si necesitas
->>>>>>> parent of 845d2803 (solucion de errores)
 }

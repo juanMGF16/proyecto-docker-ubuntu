@@ -16,10 +16,13 @@ import { ModuleService } from '../../../../Core/Service/SecurityModule/module.se
 })
 export class CreateFormModuleComponent implements OnInit {
 
-  private formModuleService = inject(FormModuleService);
-  private formService = inject(FormService);
-  private moduleService = inject(ModuleService);
-  private router = inject(Router);
+	// Inyección de servicios propios del proyecto
+  private readonly formModuleService = inject(FormModuleService);
+  private readonly moduleService = inject(ModuleService);
+  private readonly formService = inject(FormService);
+
+	// Inyección de servicios nativos de Angular
+  private readonly router = inject(Router);
 
   selectFields: any[] = [];
 

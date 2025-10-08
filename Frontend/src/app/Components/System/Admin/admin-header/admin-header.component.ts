@@ -1,37 +1,40 @@
 import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { MatBadgeModule } from '@angular/material/badge';
 import { MatButtonModule } from '@angular/material/button';
+import { MatDividerModule } from '@angular/material/divider';
 import { MatIconModule } from '@angular/material/icon';
+import { MatMenuModule } from '@angular/material/menu';
 import { MatToolbarModule } from "@angular/material/toolbar";
 import { Router, RouterLink } from '@angular/router';
-import { AuthService } from '../../../../Core/Service/Auth/auth.service';
-import { MatMenuModule } from '@angular/material/menu';
-import { MatDividerModule } from '@angular/material/divider';
-import { MatBadgeModule } from '@angular/material/badge';
-import { confirmLogout, successMessage } from '../../../../Core/Utils/alerts.util';
 import { LogoutButtonDirective } from "../../../../Core/Directives/logout-button.directive";
+import { AuthService } from '../../../../Core/Service/Auth/auth.service';
 
 @Component({
 	selector: 'app-admin-header',
 	imports: [
-    CommonModule,
-    MatToolbarModule,
-    MatIconModule,
-    MatMenuModule,
-    MatButtonModule,
-    MatDividerModule,
-    RouterLink,
-    MatBadgeModule,
-    LogoutButtonDirective
-],
+		CommonModule,
+		MatToolbarModule,
+		MatIconModule,
+		MatMenuModule,
+		MatButtonModule,
+		MatDividerModule,
+		RouterLink,
+		MatBadgeModule,
+		LogoutButtonDirective
+	],
 	standalone: true,
 	templateUrl: './admin-header.component.html',
-	styleUrls: ['../../../Shared/Styles/header-shared.css','./admin-header.component.css']
+	styleUrls: ['../../../Shared/Styles/header-shared.css', './admin-header.component.css']
 })
 export class AdminHeaderComponent {
+
+	// Inputs principales del componente
 	@Input() redirectUrl: string = '';
 	@Input() isFixed: boolean = true;
-	@Input() hasCompany: boolean | null = false; // Nuevo input
+	@Input() hasCompany: boolean | null = false;
+
+	// Outputs de eventos emitidos al componente padre
 	@Output() toggleSidebar = new EventEmitter<void>();
 
 	notificationCount = 1;
@@ -63,6 +66,6 @@ export class AdminHeaderComponent {
 	}
 
 	goToCompany(): void {
-		this.router.navigate(['/admin/empresa/configuracion']);
+		this.router.navigate(['/admin/company/']);
 	}
 }

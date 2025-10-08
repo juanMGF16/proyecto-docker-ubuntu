@@ -14,15 +14,23 @@ namespace Web.Controllers.SecurityModel
     [Authorize(Roles = "SM_ACTION")]
     public class ModuleController : BaseController<IModuleBusiness>
     {
-
+        /// <summary>
+        /// Controller para gestión de Modulos
+        /// </summary>
         public ModuleController(IModuleBusiness moduleBusiness, ILogger<ModuleController> logger)
             : base(moduleBusiness, logger) { }
 
+        /// <summary>
+        /// Obtiene todos los registros activos
+        /// </summary>
         [HttpGet("GetAll/")]
         [ProducesResponseType(typeof(IEnumerable<ModuleDTO>), 200)]
         public async Task<IActionResult> GetAll() =>
             await TryExecuteAsync(() => _service.GetAllAsync(), "GetAllModules");
 
+        /// <summary>
+        /// Obtiene todos los registros 
+        /// </summary>
         [HttpGet("GetAllJWT/")]
         [ProducesResponseType(typeof(IEnumerable<ModuleDTO>), 200)]
         public async Task<IActionResult> GetAllJWT()
@@ -45,6 +53,9 @@ namespace Web.Controllers.SecurityModel
             return await TryExecuteAsync(() => _service.GetAllAsync(), "GetAllUsers");
         }
 
+        /// <summary>
+        /// Obtiene un registro por su identificador
+        /// </summary>
         [HttpGet("GetById/{id:int}")]
         [ProducesResponseType(typeof(ModuleDTO), 200)]
         [ProducesResponseType(400)]
@@ -52,6 +63,9 @@ namespace Web.Controllers.SecurityModel
         public async Task<IActionResult> GetById(int id) =>
             await TryExecuteAsync(() => _service.GetByIdAsync(id), "GetById");
 
+        /// <summary>
+        /// Crea un nuevo registro
+        /// </summary>
         [HttpPost("Create/")]
         [ProducesResponseType(typeof(ModuleDTO), 201)]
         [ProducesResponseType(400)]
@@ -64,6 +78,9 @@ namespace Web.Controllers.SecurityModel
             }, "CreateModule");
         }
 
+        /// <summary>
+        /// Actualiza un registro existente
+        /// </summary>
         [HttpPut("Update/")]
         [ProducesResponseType(typeof(ModuleDTO), 200)]
         [ProducesResponseType(400)]
@@ -71,6 +88,9 @@ namespace Web.Controllers.SecurityModel
         public async Task<IActionResult> Update([FromBody] ModuleDTO dto) =>
             await TryExecuteAsync(() => _service.UpdateAsync(dto), "UpdateModule");
 
+        /// <summary>
+        /// Elimina un registro usando la estrategia especificada
+        /// </summary>
         [HttpDelete("Delete/{id:int}")]
         [ProducesResponseType(200)]
         [ProducesResponseType(400)]

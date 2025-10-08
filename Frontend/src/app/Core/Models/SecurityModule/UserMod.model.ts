@@ -1,28 +1,34 @@
-export interface UserMod {
-	id: number,
-	username: string,
-	password: string,
-	active: boolean,
+// ==================================================
+// Modelos: Usuario del sistema
+// ==================================================
+// Estructuras principales para representar usuarios, incluyendo
+// opciones simplificadas, actualizaciones parciales y relación con compañías.
 
-	personId: number,
-	personName: string
+export interface UserMod {
+  id: number;
+  username: string;
+  password: string;
+  active: boolean;
+  personId: number;
+  personName: string;
 }
 
 export interface UserOptionsMod {
-	id: number,
-	username: string,
-	password?: string,
-	active: boolean
-
-	personId: number,
+  id: number;
+  username: string;
+  password?: string;
+  active: boolean;
+  personId: number;
 }
 
-export interface UserPartialUpdate {
-	id: number;
-	username?: string;
+export interface UserPartialUpdateMod {
+  id: number;
+  username?: string;
+  email?: string;
+  phone?: string;
+}
 
-	name?: string;
-	lastName?: string;
-	email?: string;
-	phone?: string;
+export interface UserHasCompanyMod {
+  hasCompany: boolean;
+  companyId: number | null;
 }

@@ -25,14 +25,16 @@ namespace Entity.Configurations.SQLServer.System
             builder.Property(v => v.Active).HasColumnType("bit").HasDefaultValue(1).IsRequired();
 
             builder.HasOne(v => v.Inventary)
-                .WithOne(i => i.Verification)
+                .WithOne(i => i.Verification)               
                 .HasForeignKey<Verification>(v => v.InventaryId)
-                .OnDelete(DeleteBehavior.Cascade);
-
-            builder.HasOne(v => v.User)
-                .WithOne(u => u.Verification)
-                .HasForeignKey<Verification>(v => v.UserId)
                 .OnDelete(DeleteBehavior.Restrict);
+
+            builder.HasOne(v => v.Checker)
+                .WithMany(u => u.Verifications)
+                .HasForeignKey(v => v.CheckerId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            builder.HasIndex(v => v.InventaryId).IsUnique();
 
             builder.Property(x => x.CreatedAt).HasColumnType("datetime2(3)").IsRequired();
             builder.Property(x => x.UpdatedAt).HasColumnType("datetime2(3)");

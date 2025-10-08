@@ -4,7 +4,7 @@
 		color="primary">
 	</app-loader>
 
-	<div *ngIf="error && !loading" class="error-message">
+	<div *ngIf="error && !loading" class="error-message-loader">
 		<mat-icon>error_outline</mat-icon>
 		<p>{{ errorMessage }}</p>
 		<button mat-raised-button color="primary" (click)="loadDashboardData()">Reintentar</button>

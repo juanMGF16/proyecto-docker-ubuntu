@@ -9,6 +9,9 @@ using Microsoft.Extensions.Configuration;
 
 namespace Entity.Context
 {
+    /// <summary>
+    /// Contexto de base de datos principal de la aplicación
+    /// </summary>
     public class AppDbContext : DbContext
     {
         // -----------------------
@@ -28,7 +31,7 @@ namespace Entity.Context
         // -----------------------
         // ParametersModule
         // -----------------------
-        public DbSet<CategoryItem> Category { get; set; }
+        public DbSet<CategoryItem> CategoryItem { get; set; }
         public DbSet<StateItem> StateItem { get; set; }
         public DbSet<Notification> Notification { get; set; }
 
@@ -43,6 +46,7 @@ namespace Entity.Context
         public DbSet<InventaryDetail> InventaryDetail { get; set; }
         public DbSet<Operating> Operating { get; set; }
         public DbSet<OperatingGroup> OperatingGroup { get; set; }
+        public DbSet<Checker> Checker { get; set; }
         public DbSet<Verification> Verification { get; set; }
 
         private readonly IConfiguration _configuration;
@@ -53,6 +57,9 @@ namespace Entity.Context
             _configuration = configuration;
         }
 
+        /// <summary>
+        /// Configura el modelo de datos y aplica las configuraciones de entidades
+        /// </summary>
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
@@ -63,6 +70,9 @@ namespace Entity.Context
             modelBuilder.ApplyConfigurationsFromAssembly(typeof(AppDbContext).Assembly);
         }
 
+        /// <summary>
+        /// Configura la conexión a la base de datos
+        /// </summary>
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (!optionsBuilder.IsConfigured)
@@ -79,12 +89,17 @@ namespace Entity.Context
             optionsBuilder.EnableSensitiveDataLogging();
         }
 
-
+        /// <summary>
+        /// Configura convenciones globales para las propiedades
+        /// </summary>
         protected override void ConfigureConventions(ModelConfigurationBuilder configurationBuilder)
         {
             configurationBuilder.Properties<decimal>().HavePrecision(18, 2);
         }
 
+        /// <summary>
+        /// Guarda los cambios en la base de datos y registra auditoría automáticamente
+        /// </summary>
         public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
         {
             var now = DateTime.UtcNow;

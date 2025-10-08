@@ -14,9 +14,12 @@ import { PermissionService } from '../../../../Core/Service/SecurityModule/permi
 })
 export class UpdatePermissionComponent {
 
-  private permissionService = inject(PermissionService);
-  private router = inject(Router);
-  private route = inject(ActivatedRoute);
+	// Inyección de servicios propios del proyecto
+  private readonly permissionService = inject(PermissionService);
+
+	// Inyección de servicios nativos de Angular
+  private readonly router = inject(Router);
+  private readonly route = inject(ActivatedRoute);
 
   permission: PermissionMod | null = null;
 

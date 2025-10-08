@@ -24,20 +24,24 @@ export interface InventoryItemTable {
 		MatMenuModule,
 		MatIconModule,
 		MatButtonModule,
-		// Pipes
 		CategoryInventoryBasePipe,
 	],
 	templateUrl: './inventory-table.component.html',
 	styleUrls: ['./inventory-table.component.css']
 })
 export class InventoryTableComponent {
+
+	// Inputs principales del componente
 	@Input() dataSource: InventoryItemTable[] = [];
+
+	// Outputs de eventos emitidos al componente padre
 	@Output() editItem = new EventEmitter<InventoryItemTable>();
 	@Output() deleteItem = new EventEmitter<InventoryItemTable>();
+	@Output() viewDetails = new EventEmitter<InventoryItemTable>();
 
 	readonly displayedColumns: string[] = ['code', 'name', 'description', 'state', 'actions'];
 
-		stateClasses: { [key: string]: string } = {
+	stateClasses: { [key: string]: string } = {
 		'En orden': 'state-ok',
 		'Reparación': 'state-repair',
 		'Dañado': 'state-damaged',
@@ -52,12 +56,11 @@ export class InventoryTableComponent {
 		this.deleteItem.emit(item);
 	}
 
-	viewDetails(item: InventoryItemTable): void {
-		// TODO: Implementar funcionalidad de ver detalles
-		console.log('Ver detalles del item:', item);
+	onViewDetails(item: InventoryItemTable): void {
+		this.viewDetails.emit(item); // Emitir el evento
 	}
 
-		getStateClass(state: string): string {
+	getStateClass(state: string): string {
 		return this.stateClasses[state] || 'state-default';
 	}
 }

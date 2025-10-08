@@ -13,14 +13,18 @@ Chart.register(...registerables);
 	styleUrl: './zona-status-chart.component.css'
 })
 export class ZonaStatusChartComponent implements OnChanges, AfterViewInit, OnDestroy {
+
+	// Inputs principales del componente
 	@Input() data!: { [status: string]: number };
+
 	@ViewChild('chartCanvas') chartCanvas!: ElementRef<HTMLCanvasElement>;
 
+	// Variables de estado y control local
 	hasData = false;
 	private chart: Chart<'doughnut'> | null = null;
 	private viewInitialized = false;
 
-
+	// Métodos del ciclo de vida del componente
 	ngAfterViewInit() {
 		this.viewInitialized = true;
 		this.evaluateData();
@@ -29,6 +33,12 @@ export class ZonaStatusChartComponent implements OnChanges, AfterViewInit, OnDes
 	ngOnChanges(changes: SimpleChanges) {
 		if (changes['data']) {
 			this.evaluateData();
+		}
+	}
+
+	ngOnDestroy() {
+		if (this.chart) {
+			this.chart.destroy();
 		}
 	}
 
@@ -51,12 +61,6 @@ export class ZonaStatusChartComponent implements OnChanges, AfterViewInit, OnDes
 				this.chart.destroy();
 				this.chart = null;
 			}
-		}
-	}
-
-	ngOnDestroy() {
-		if (this.chart) {
-			this.chart.destroy();
 		}
 	}
 

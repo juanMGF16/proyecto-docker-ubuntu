@@ -29,10 +29,13 @@ import { delay, pipe } from 'rxjs';
 	styleUrls: ['../../../../Components/Shared/Styles/edification-view-shared.css', './subadmin-zone.component.css']
 })
 export class SubadminZoneComponent implements OnInit {
-	private zoneService = inject(ZoneService);
+
+	// Inyección de servicios propios del proyecto
+	private readonly zoneService = inject(ZoneService);
 
 	loading = true;
-	error: string | null = null;
+	error = false;
+	errorMessage = '';
 	zoneId: number = 0;
 
 	// Variables para búsqueda y filtros (solo para la sección de inventario)
@@ -71,7 +74,8 @@ export class SubadminZoneComponent implements OnInit {
 
 	loadZoneData(): void {
 		this.loading = true;
-		this.error = null;
+		this.error = false;
+		this.errorMessage = '';
 
 		this.zoneService.getZoneDetailsById(this.zoneId).pipe(
 			delay(1500)
@@ -79,16 +83,17 @@ export class SubadminZoneComponent implements OnInit {
 			next: (data) => {
 				this.zone = data;
 				this.loading = false;
-
-				// ✅ Calcular datos para KPIs y gráfico (sin filtros)
-				this.calculateSummaryData();
+				this.calculateSummaryData(); // KPIs y gráfico
 			},
 			error: (err) => {
-				this.error = err.message;
+				console.error('Error cargando zona:', err);
+				this.error = true;
+				this.errorMessage = 'No se pudo cargar la información de la zona.';
 				this.loading = false;
 			}
 		});
 	}
+
 
 	// ✅ Método para calcular datos del resumen (KPIs y gráfico) - SIN filtros
 	private calculateSummaryData(): void {

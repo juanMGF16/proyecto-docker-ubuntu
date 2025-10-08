@@ -8,7 +8,7 @@ import { UserService } from '../../../../../Core/Service/SecurityModule/user.ser
 import { UserPartialUpdateMod } from '../../../../../Core/Models/SecurityModule/UserMod.model';
 import { ProfileField, ShowInfoProfileComponent } from '../../../../../Components/Shared/Forms/show-info-profile/show-info-profile.component';
 import { ProfileEditField, UpdateInfoProfileComponent } from '../../../../../Components/Shared/Modals/update-info-profile/update-info-profile.component';
-import { ChangePasswordModalComponent } from '../../../../../Components/Shared/Modals/change-password/change-passwordcomponent';
+import { ChangePasswordModalComponent } from '../../../../../Components/Shared/Modals/change-password/change-password.component';
 
 @Component({
 	selector: 'app-subadmin-profile',
@@ -23,13 +23,17 @@ import { ChangePasswordModalComponent } from '../../../../../Components/Shared/M
 	styleUrl: './subadmin-profile.component.css'
 })
 export class SubadminProfileComponent implements OnInit {
+
+	// Inyección de servicios propios del proyecto
 	private readonly authService = inject(AuthService);
 	private readonly personService = inject(PersonService);
 	private readonly userService = inject(UserService);
 
+	// Signals para datos del usuario y control de modales
 	user = signal<PersonMod | null>(null);
 	isEditModalOpen = signal(false);
 	isPasswordModalOpen = signal(false);
+
 
 	// Profile fields configuration
 	profileFields: ProfileField[] = [
@@ -68,7 +72,6 @@ export class SubadminProfileComponent implements OnInit {
 	];
 
 	private readonly documentTypes: Record<string, string> = {
-		'RC': 'Registro Civil',
 		'TI': 'Tarjeta de Identidad',
 		'CC': 'Cédula de Ciudadanía',
 		'CE': 'Cédula de Extranjería',
@@ -158,6 +161,6 @@ export class SubadminProfileComponent implements OnInit {
 		this.loadUserData();
 	}
 	onPasswordChanged(): void {
-    this.closePasswordModal();
-  }
+		this.closePasswordModal();
+	}
 }

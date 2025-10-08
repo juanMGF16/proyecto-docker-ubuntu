@@ -1,3 +1,9 @@
+// ==================================================
+// Pipe: StaffFilterPipe
+// ==================================================
+// Filtra una lista de elementos (por ejemplo, personal) según un texto de búsqueda general.
+// Busca coincidencias en todos los valores del objeto.
+
 import { Pipe, PipeTransform } from '@angular/core';
 
 @Pipe({
@@ -14,13 +20,12 @@ export class StaffFilterPipe implements PipeTransform {
 
 		return items.filter(item =>
 			Object.values(item).some(value =>
-				value &&
-				this.normalizeText(value.toString().toLowerCase()).includes(normalizedSearch)
+				value && this.normalizeText(value.toString().toLowerCase()).includes(normalizedSearch)
 			)
 		);
 	}
 
-	// Quitar tildes y normalizar
+	// Normaliza texto eliminando tildes
 	private normalizeText(text: string): string {
 		return text.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
 	}

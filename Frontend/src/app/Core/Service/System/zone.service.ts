@@ -1,16 +1,28 @@
+// ===== SERVICIOS DE ENTIDADES =====
+// Conjunto de servicios que heredan de GenericService<TWrite, TRead> para estandarizar
+// las operaciones CRUD (GetAll, GetById, Create, Update, Delete).
+// Cada servicio se especializa en una entidad del sistema, centralizando
+// la comunicación con su respectiva API.
+
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { environment } from '../../../../environments/environment';
-
-
 import { catchError, map, Observable, throwError } from 'rxjs';
-import { ApiResponse } from '../../Models/System/Others/BranchNestedCreation.model';
-import { ZoneCreateRequestDTO } from '../../Models/System/Others/ZoneNestedCreation.model';
-import { ZoneByBranchMod, ZoneDetailsApi, ZoneDetailsMod, ZoneInChargesMod, ZoneMod, ZoneOptionsMod, ZonePartialUpdateMod } from '../../Models/System/ZoneMod.model';
-import { GenericService } from '../generic.service';
+import { environment } from '../../../../environments/environment';
 import { CATEGORY_MAP, STATE_MAP } from '../../Constants/item-mappings';
 import { ZONE_STATE_MAP } from '../../Constants/zone-mapping';
+import { ItemInventoryBaseSimpleMod } from '../../Models/System/ItemMod.model';
+import { ApiResponse } from '../../Models/System/Others/NestedCreation/BranchNestedCreation.model';
+import { ZoneCreateRequestMod } from '../../Models/System/Others/NestedCreation/ZoneNestedCreation.model';
+import { ZoneByBranchMod, ZoneDetailsApi, ZoneDetailsMod, ZoneInChargesMod, ZoneMod, ZoneOptionsMod, ZonePartialUpdateMod } from '../../Models/System/ZoneMod.model';
+import { GenericService } from '../generic.service';
 
+// Servicio de gestión de Zonas.
+// Amplía CRUD genérico con métodos clave:
+// - Obtener zonas por sucursal o encargado.
+// - Consultar detalles con mapeo semántico (CATEGORY_MAP, STATE_MAP, ZONE_STATE_MAP).
+// - Listar encargados de zonas y obtener inventario base.
+// - Crear zona junto con encargado (flujo anidado).
+// - Actualización parcial con PATCH.
 @Injectable({
 	providedIn: 'root'
 })
@@ -55,7 +67,11 @@ export class ZoneService extends GenericService<ZoneOptionsMod, ZoneMod> {
 		return this.http.get<ZoneMod>(`${this.baseUrl}GetZoneByAreaManager/${id}`);
 	}
 
-	createWithEncZone(request: ZoneCreateRequestDTO): Observable<ApiResponse<ZoneMod>> {
+	getInventoryBase(id: number): Observable<ItemInventoryBaseSimpleMod[]> {
+		return this.http.get<ItemInventoryBaseSimpleMod[]>(`${this.baseUrl}BaseInventory/${id}`);
+	}
+
+	createWithEncZone(request: ZoneCreateRequestMod): Observable<ApiResponse<ZoneMod>> {
 		return this.http.post<ApiResponse<ZoneMod>>(
 			`${environment.apiURL}api/ZoneRegistration/Create-With-EncZone`,
 			request

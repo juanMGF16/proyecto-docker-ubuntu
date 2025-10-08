@@ -15,9 +15,11 @@ import { RoleService } from '../../../../Core/Service/SecurityModule/role.servic
 })
 export class UpdateRoleComponent {
 
-  private roleService = inject(RoleService);
-  private router = inject(Router);
-  private route = inject(ActivatedRoute);
+	// Inyección de servicios propios del proyecto
+  private readonly roleService = inject(RoleService);
+
+  private readonly router = inject(Router);
+  private readonly route = inject(ActivatedRoute);
 
   role: RoleMod | null = null;
 

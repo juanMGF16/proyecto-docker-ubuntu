@@ -1,6 +1,6 @@
 using Business.AutoMapper;
 using CloudinaryDotNet;
-using Data.DataINIT.SeederHelpers;
+using Data.SeedData.SeederHelpers;
 using Web.Extensions;
 
 
@@ -27,6 +27,8 @@ builder.Services.AddAutoMapper(typeof(GeneralMapper));
 builder.Services.AddSwaggerDocumentation();
 builder.Services.AddSwaggerWithJwtSupport(); // Extension
 
+builder.Services.AddMemoryCache();
+
 // JWT 
 builder.Services.AddJwtAuthentication(builder.Configuration); // Extension
 
@@ -36,7 +38,7 @@ builder.Services.AddCustomCors(builder.Configuration); // Extension
 // Entities
 builder.Services.AddEntitiesServices(); //Extension
 
-// BUSINESS + UTILS
+// BUSINESS + SERVICES EXTRAS
 builder.Services.AddBusinessServices(builder.Configuration); // Extension
 
 

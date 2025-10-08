@@ -29,28 +29,17 @@ import { MatButtonModule } from '@angular/material/button';
 	styleUrls: ['./app-loader.component.css']
 })
 export class LoaderComponent {
-	/** Estado de carga */
+
+	// Inputs principales del componente
 	@Input() loading: boolean = false;
-
-	/** Mensaje de carga */
 	@Input() loadingMessage: string = 'Cargando...';
-
-	/** Mensaje de error */
 	@Input() error: string | null = null;
-
-	/** Mostrar overlay pantalla completa */
 	@Input() fullScreen: boolean = false;
-
-	/** Tamaño del spinner */
 	@Input() diameter: number = 50;
-
-	/** Color del spinner (primary, accent, warn) */
 	@Input() color: 'primary' | 'accent' | 'warn' = 'primary';
-
-	/** Mostrar botón de reintento */
 	@Input() showRetry: boolean = false;
 
-	/** Evento cuando se hace click en reintentar */
+	// Outputs de eventos emitidos al componente padre
 	@Output() retry = new EventEmitter<void>();
 
 	onRetry() {

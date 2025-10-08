@@ -11,104 +11,113 @@ import { Router } from '@angular/router';
 import { AuthService } from '../../../../Core/Service/Auth/auth.service';
 
 @Component({
-  selector: 'app-base-form-pivote',
-  standalone: true,
-  imports: [
-    CommonModule,
-    ReactiveFormsModule,
-    MatFormFieldModule,
-    MatInputModule,
-    MatSelectModule,
-    MatSlideToggleModule,
-    MatButtonModule,
-    MatIconModule,
-  ],
-  templateUrl: './base-form-pivote.component.html',
-  styleUrl: './base-form-pivote.component.css'
+	selector: 'app-base-form-pivote',
+	standalone: true,
+	imports: [
+		CommonModule,
+		ReactiveFormsModule,
+		MatFormFieldModule,
+		MatInputModule,
+		MatSelectModule,
+		MatSlideToggleModule,
+		MatButtonModule,
+		MatIconModule,
+	],
+	templateUrl: './base-form-pivote.component.html',
+	styleUrl: './base-form-pivote.component.css'
 })
 export class BaseFormPivoteComponent implements OnInit, OnChanges {
 
-  @Input() entity: any = null;
-  @Input() cancelRoute: string = '/';
-  @Input() selectFields: Array<{
-    label: string;
-    controlName: string;
-    options: Array<{ id: number, name: string }>
-  }> = [];
+	// Inyección de servicios propios del proyecto
+	private readonly authService = inject(AuthService);
 
-  @Output() save = new EventEmitter<any>();
+	// Inyección de servicios nativos de Angular
+	private readonly fb = inject(FormBuilder);
+	private readonly router = inject(Router);
 
-  form!: FormGroup;
-  isEditMode = false;
-  showReactivarToggle = false;
-  reactivarUsuario = false;
+	// Inputs principales del componente
+	@Input() entity: any = null;
+	@Input() cancelRoute: string = '/';
+	@Input() selectFields: Array<{
+		label: string;
+		controlName: string;
+		options: Array<{ id: number, name: string }>
+	}> = [];
 
-  private readonly authService = inject(AuthService);
-  private readonly fb = inject(FormBuilder);
-  private readonly router = inject(Router);
+	// Outputs de eventos emitidos al componente padre
+	@Output() save = new EventEmitter<any>();
 
-  ngOnInit(): void {
-    this.buildForm();
-  }
+	// Variables de estado y control local
+	isEditMode = false;
+	showReactivarToggle = false;
+	reactivarUsuario = false;
 
-  ngOnChanges(changes: SimpleChanges): void {
-    if (changes['selectFields'] && !changes['selectFields'].firstChange) {
-      // Si cambian los selects, vuelve a construir el formulario
-      this.buildForm();
-    }
+	// Formulario reactivo del componente
+	form!: FormGroup;
 
-    if (changes['entity'] && this.entity) {
-      this.isEditMode = !!this.entity.id;
-      if (this.form) {
-        this.form.patchValue(this.entity);
-      }
-    }
+	// Métodos del ciclo de vida del componente
+	ngOnInit(): void {
+		this.buildForm();
+	}
 
-    if (this.isEditMode && this.entity) {
-      const isInactive = this.entity.active === false;
-      const isAdmin = this.authService.getRole() === 'SM_ACTION';
-      this.showReactivarToggle = isInactive && isAdmin;
-    }
-  }
+	ngOnChanges(changes: SimpleChanges): void {
+		if (changes['selectFields'] && !changes['selectFields'].firstChange) {
+			// Si cambian los selects, vuelve a construir el formulario
+			this.buildForm();
+		}
 
-  onToggleChange(event: MatSlideToggleChange): void {
-    this.reactivarUsuario = event.checked;
-    this.form.patchValue({
-      active: event.checked
-    });
-  }
+		if (changes['entity'] && this.entity) {
+			this.isEditMode = !!this.entity.id;
+			if (this.form) {
+				this.form.patchValue(this.entity);
+			}
+		}
 
-  private buildForm(): void {
-    const controls: any = {
-      active: [true]
-    };
+		if (this.isEditMode && this.entity) {
+			const isInactive = this.entity.active === false;
+			const isAdmin = this.authService.getRole() === 'SM_ACTION';
+			this.showReactivarToggle = isInactive && isAdmin;
+		}
+	}
 
-    for (const field of this.selectFields) {
-      controls[field.controlName] = [null, Validators.required];
-    }
+	onToggleChange(event: MatSlideToggleChange): void {
+		this.reactivarUsuario = event.checked;
+		this.form.patchValue({
+			active: event.checked
+		});
+	}
 
-    this.form = this.fb.group(controls);
+	private buildForm(): void {
+		const controls: any = {
+			active: [true]
+		};
 
-    if (this.isEditMode && this.entity) {
-      this.form.patchValue(this.entity);
-    }
-  }
+		for (const field of this.selectFields) {
+			controls[field.controlName] = [null, Validators.required];
+		}
 
-  onSubmit(): void {
-    if (this.form.invalid) {
-      this.form.markAllAsTouched();
-      return;
-    }
+		this.form = this.fb.group(controls);
 
-    const result = {
-      ...(this.isEditMode ? { id: this.entity.id } : {}),
-      ...this.form.value
-    };
+		if (this.isEditMode && this.entity) {
+			this.form.patchValue(this.entity);
+		}
+	}
 
-    this.save.emit(result);
-  }
+	onSubmit(): void {
+		if (this.form.invalid) {
+			this.form.markAllAsTouched();
+			return;
+		}
 
-  onCancel(): void {
-    this.router.navigate([this.cancelRoute]);
-  }
+		const result = {
+			...(this.isEditMode ? { id: this.entity.id } : {}),
+			...this.form.value
+		};
+
+		this.save.emit(result);
+	}
+
+	onCancel(): void {
+		this.router.navigate([this.cancelRoute]);
+	}
 }

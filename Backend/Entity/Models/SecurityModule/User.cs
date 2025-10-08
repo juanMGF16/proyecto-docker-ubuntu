@@ -21,8 +21,8 @@ namespace Entity.Models.SecurityModule
         public Branch Branch { get; set; } = null!;
         public Zone Zone { get; set; } = null!;
         public Operating Operating { get; set; } = null!;
-        public OperatingGroup OperationalGroup { get; set; } = null!;
-        public Verification Verification { get; set; } = null!;
+        public Checker Checker { get; set; } = null!;
+        public List<OperatingGroup> OperationalGroups { get; set; } = [];
         public List<Notification> Notifications { get; set; } = [];
 
         // Funcionalides

@@ -1,3 +1,9 @@
+// ===== SERVICIO DE NAVEGACIÓN DEL ADMIN =====
+// Gestiona el menú lateral y el estado de la navegación dentro del panel de administración.
+// Incluye la configuración de items estáticos y dinámicos (ej. sucursales),
+// el control de secciones activas/expandidas, la escucha de cambios de ruta
+// y la emisión de eventos para refrescar o cerrar el sidebar.
+
 import { Injectable } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
 import { BehaviorSubject, Subject } from 'rxjs';
@@ -23,13 +29,20 @@ export interface NavigationState {
 	providedIn: 'root'
 })
 export class AdminNavService {
+
+	// === EVENTOS COMPARTIDOS ===
+	// Subject para notificar el cierre del sidebar
 	private closeSidebarSubject = new Subject<void>();
 	public closeSidebar$ = this.closeSidebarSubject.asObservable();
 
+	// Subject para forzar la recarga de sucursales
 	private refreshBranchesSubject = new Subject<void>();
 	public refreshBranches$ = this.refreshBranchesSubject.asObservable();
 
-	// Configuración de navegación
+
+
+	// === CONFIGURACIÓN DE MENÚS ===
+	// Menú principal cuando el usuario tiene empresa
 	private readonly navigationConfig: NavigationItem[] = [
 		{
 			id: 'dashboard',
@@ -37,26 +50,6 @@ export class AdminNavService {
 			icon: 'dashboard',
 			route: '/admin/dashboard',
 			expandable: false
-		},
-		{
-			id: 'empresa',
-			label: 'Empresa',
-			icon: 'business',
-			expandable: true,
-			children: [
-				{
-					id: 'empresa-registro',
-					label: 'Registrar Empresa',
-					icon: 'app_registration',
-					route: '/admin/empresa/registro'
-				},
-				{
-					id: 'empresa-configuracion',
-					label: 'Configuración',
-					icon: 'settings',
-					route: '/admin/empresa/configuracion'
-				}
-			]
 		},
 		{
 			id: 'sucursales',
@@ -68,39 +61,21 @@ export class AdminNavService {
 					id: 'sucursales-nueva',
 					label: 'Nueva Sucursal',
 					icon: 'add',
-					route: '/admin/sucursales/nueva'
+					route: '/admin/register-branch'
 				}
 				// Las sucursales dinámicas se agregarán aquí
 			]
 		},
 		{
-<<<<<<< HEAD
 			id: 'subAdmin',
 			label: 'Encargados de Sucursal',
-=======
-			id: 'administradores',
-			label: 'Administradores',
->>>>>>> parent of 845d2803 (solucion de errores)
 			icon: 'supervisor_account',
-			expandable: true,
-			children: [
-				{
-					id: 'administradores-nuevo',
-					label: 'Nuevo Admin',
-					icon: 'person_add',
-					route: '/admin/administradores/nuevo'
-				},
-				{
-					id: 'administradores-lista',
-					label: 'Lista de Admins',
-					icon: 'list',
-					route: '/admin/administradores/lista'
-				}
-			]
+			route: '/admin/subadmins-list',
+			expandable: false,
 		}
 	];
 
-	// Configuración mínima cuando no tiene empresa
+	// Menú reducido cuando no hay empresa registrada
 	private readonly noCompanyNavigationConfig: NavigationItem[] = [
 		{
 			id: 'register-company',
@@ -111,18 +86,24 @@ export class AdminNavService {
 		}
 	];
 
+	// Estado actual de navegación (ruta, secciones activas/expandidas)
 	private navigationState = new BehaviorSubject<NavigationState>({
 		currentRoute: '',
 		expandedSections: {},
 		activeSection: undefined
 	});
-
 	public navigationState$ = this.navigationState.asObservable();
+
+
 
 	constructor(private router: Router) {
 		this.initializeNavigation();
 	}
 
+
+
+	// === INICIALIZACIÓN ===
+	// Escucha cambios de ruta y actualiza el estado de navegación
 	private initializeNavigation(): void {
 		// Escuchar cambios de ruta
 		this.router.events
@@ -137,7 +118,10 @@ export class AdminNavService {
 		this.updateNavigationState(currentRoute);
 	}
 
-	// MÉTODO MODIFICADO: Ahora acepta el parámetro hasCompany
+
+
+	// === CONFIGURACIÓN DE NAVEGACIÓN ===
+	// Obtiene el menú según si el usuario tiene empresa o no
 	getNavigationConfig(hasCompany: boolean = true): NavigationItem[] {
 		if (!hasCompany) {
 			return [...this.noCompanyNavigationConfig];
@@ -145,6 +129,9 @@ export class AdminNavService {
 		return [...this.navigationConfig];
 	}
 
+
+	// === ACTUALIZACIÓN DE ESTADO ===
+	// Actualiza el estado de navegación (ruta, sección activa, secciones expandidas)
 	private updateNavigationState(route: string): void {
 		const currentState = this.navigationState.value;
 		const activeSection = this.findActiveSectionByRoute(route);
@@ -157,6 +144,10 @@ export class AdminNavService {
 		});
 	}
 
+
+
+	// === UTILIDADES PRIVADAS ===
+	// Determina qué sección está activa según la ruta actual
 	private findActiveSectionByRoute(route: string): string | undefined {
 		for (const item of this.navigationConfig) {
 			// Si es una sección expandible, verificar sus hijos
@@ -175,6 +166,7 @@ export class AdminNavService {
 		return undefined;
 	}
 
+	// Verifica si la ruta actual coincide con una ruta objetivo
 	private isRouteMatch(currentRoute: string, targetRoute: string): boolean {
 		// Normalizar rutas
 		const current = currentRoute.endsWith('/') ? currentRoute.slice(0, -1) : currentRoute;
@@ -183,6 +175,7 @@ export class AdminNavService {
 		return current === target || current.startsWith(target + '/');
 	}
 
+	// Calcula qué secciones deben estar expandidas automáticamente
 	private calculateExpandedSections(route: string, currentExpanded: { [key: string]: boolean }): { [key: string]: boolean } {
 		const newExpanded = { ...currentExpanded };
 		const activeSection = this.findActiveSectionByRoute(route);
@@ -198,15 +191,20 @@ export class AdminNavService {
 		return newExpanded;
 	}
 
+	// Busca una sección por su id dentro del menú
 	private findSectionById(id: string): NavigationItem | undefined {
 		return this.navigationConfig.find(item => item.id === id);
 	}
 
-	// Métodos públicos para el componente
+
+
+	// === MÉTODOS PÚBLICOS PARA EL SIDEBAR ===
+	// Obtiene el estado actual de la navegación
 	getCurrentState(): NavigationState {
 		return this.navigationState.value;
 	}
 
+	// Alterna entre expandir/colapsar una sección del menú
 	toggleSection(sectionId: string): void {
 		const currentState = this.navigationState.value;
 		const newExpanded = {
@@ -220,6 +218,7 @@ export class AdminNavService {
 		});
 	}
 
+	// Marca si la ruta indicada está activa.
 	isRouteActive(route: string): boolean {
 		const currentRoute = this.navigationState.value.currentRoute;
 
@@ -230,20 +229,26 @@ export class AdminNavService {
 		return this.isRouteMatch(currentRoute, route);
 	}
 
+	// Comprueba qué sección está activa.
 	isSectionActive(sectionId: string): boolean {
 		return this.navigationState.value.activeSection === sectionId;
 	}
 
+	// Indica si una sección está expandida.
 	isSectionExpanded(sectionId: string): boolean {
 		return !!this.navigationState.value.expandedSections[sectionId];
 	}
 
+	// Redirige a una ruta, normalizando rutas base (ej: dashboard).
 	navigateTo(route: string): void {
 		const targetRoute = route === '/admin' ? '/admin/dashboard' : route;
 		this.router.navigate([targetRoute]);
 	}
 
-	// Método para agregar elementos dinámicos (como sucursales)
+
+
+	// === MANEJO DE ÍTEMS DINÁMICOS ===
+	// Agrega ítems dinámicos (ej: sucursales cargadas desde backend) a una sección
 	addDynamicItems(parentSectionId: string, items: NavigationItem[]): void {
 		const parentIndex = this.navigationConfig.findIndex(item => item.id === parentSectionId);
 		if (parentIndex !== -1 && this.navigationConfig[parentIndex].children) {
@@ -255,11 +260,12 @@ export class AdminNavService {
 		}
 	}
 
+	// Emite evento para refrescar la lista de sucursales
 	triggerRefreshBranches(): void {
 		this.refreshBranchesSubject.next();
 	}
 
-	// Método para limpiar elementos dinámicos
+	// Elimina ítems dinámicos de una sección.
 	clearDynamicItems(parentSectionId: string): void {
 		const parentIndex = this.navigationConfig.findIndex(item => item.id === parentSectionId);
 		if (parentIndex !== -1 && this.navigationConfig[parentIndex].children) {

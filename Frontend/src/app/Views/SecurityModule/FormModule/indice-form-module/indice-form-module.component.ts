@@ -17,8 +17,11 @@ import { FormModuleService } from '../../../../Core/Service/SecurityModule/form-
 })
 export class IndiceFormModuleComponent implements OnInit {
 
-  formModuleService = inject(FormModuleService);
-  router = inject(Router)
+	// Inyección de servicios propios del proyecto
+  private readonly formModuleService = inject(FormModuleService);
+
+	// Inyección de servicios nativos de Angular
+  private readonly router = inject(Router)
 
   formModuleData : FormModuleMod[] = [];
   columnasMostrar : string[] = [

@@ -13,8 +13,12 @@ import { RoleService } from '../../../../Core/Service/SecurityModule/role.servic
   styleUrl: './create-role.component.css'
 })
 export class CreateRoleComponent {
-  private roleService = inject(RoleService);
-  private router = inject(Router);
+
+	// Inyección de servicios propios del proyecto
+  private readonly roleService = inject(RoleService);
+
+	// Inyección de servicios nativos de Angular
+  private readonly router = inject(Router);
 
   handleSaveRole(newRole: RoleMod): void {
       // console.log(newRole)

@@ -19,12 +19,15 @@ import { RoleFormPermissionService } from '../../../../Core/Service/SecurityModu
 })
 export class UpdateRoleFormPermissionComponent implements OnInit {
 
-  private roleFormPermissionService = inject(RoleFormPermissionService);
-  private roleService = inject(RoleService);
-  private formService = inject(FormService);
-  private permissionService = inject(PermissionService);
-  private route = inject(ActivatedRoute);
-  private router = inject(Router);
+	// Inyección de servicios propios del proyecto
+  private readonly roleFormPermissionService = inject(RoleFormPermissionService);
+  private readonly roleService = inject(RoleService);
+  private readonly formService = inject(FormService);
+  private readonly permissionService = inject(PermissionService);
+
+	// Inyección de servicios nativos de Angular
+  private readonly route = inject(ActivatedRoute);
+  private readonly router = inject(Router);
 
   entity!: RoleFormPermissionMod;
   selectFields: any[] = [];

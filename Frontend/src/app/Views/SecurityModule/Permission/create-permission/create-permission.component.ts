@@ -13,8 +13,12 @@ import { PermissionService } from '../../../../Core/Service/SecurityModule/permi
   styleUrl: './create-permission.component.css'
 })
 export class CreatePermissionComponent {
-  private permissionService = inject(PermissionService);
-  private router = inject(Router);
+
+	// Inyección de servicios propios del proyecto
+  private readonly permissionService = inject(PermissionService);
+
+	// Inyección de servicios nativos de Angular
+  private readonly router = inject(Router);
 
   handleSavePermission(newPermission: PermissionMod): void {
       // console.log(newPermission)

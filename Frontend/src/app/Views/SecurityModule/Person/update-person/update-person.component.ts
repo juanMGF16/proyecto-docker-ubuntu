@@ -14,9 +14,12 @@ import { PersonService } from '../../../../Core/Service/SecurityModule/person.se
 })
 export class UpdatePersonComponent {
 
-  private personService = inject(PersonService);
-  private router = inject(Router);
-  private route = inject(ActivatedRoute);
+	// Inyección de servicios propios del proyecto
+  private readonly personService = inject(PersonService);
+
+	// Inyección de servicios nativos de Angular
+  private readonly router = inject(Router);
+  private readonly route = inject(ActivatedRoute);
 
   person: PersonMod | null = null;
 

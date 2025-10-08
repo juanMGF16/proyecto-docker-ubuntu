@@ -1,44 +1,37 @@
-<<<<<<< HEAD
+// ===== SERVICIOS DE ENTIDADES =====
+// Conjunto de servicios que heredan de GenericService<TWrite, TRead> para estandarizar
+// las operaciones CRUD (GetAll, GetById, Create, Update, Delete).
+// Cada servicio se especializa en una entidad del sistema, centralizando
+// la comunicación con su respectiva API.
+
 import { HttpClient } from '@angular/common/http';
-=======
->>>>>>> parent of 845d2803 (solucion de errores)
 import { Injectable } from '@angular/core';
-import { GenericService } from '../generic.service';
-<<<<<<< HEAD
-=======
-import { HttpClient } from '@angular/common/http';
-import { environment } from '../../../../environments/environment';
 import { Observable } from 'rxjs';
-import { CompanyConsultDTO, CompanyCreateDTO } from '../../Models/System/CompanyMod.model';
->>>>>>> parent of 845d2803 (solucion de errores)
+import { environment } from '../../../../environments/environment';
+import { CompanyMod, CompanyOptionsMod, CompanyPartialUpdateMod } from '../../Models/System/CompanyMod.model';
+import { GenericService } from '../generic.service';
+
+// Servicio de gestión de Empresas.
+// Extiende CRUD genérico y añade:
+// - createCompany → simplifica la creación estándar.
+// - partialUpdate → actualización parcial de datos.
 
 @Injectable({
 	providedIn: 'root'
 })
-export class CompanyService extends GenericService<CompanyCreateDTO, CompanyConsultDTO> {
+export class CompanyService extends GenericService<CompanyOptionsMod, CompanyMod> {
 
 	constructor(http: HttpClient) {
 		const urlBase = environment.apiURL + 'api/Company/';
 		super(http, urlBase);
 	}
 
-<<<<<<< HEAD
 	createCompany(companyData: CompanyOptionsMod): Observable<CompanyMod> {
 		return this.create(companyData);
 	}
 
 	partialUpdate(companyData: CompanyPartialUpdateMod): Observable<CompanyMod> {
 		return this.http.patch<CompanyMod>(`${this.baseUrl}PartialUpdate/`, companyData);
-=======
-	// Método específico para registrar una empresa
-	registerCompany(companyData: CompanyCreateDTO): Observable<CompanyConsultDTO> {
-		return this.create(companyData);
-	}
-
-	// Método para obtener empresas por usuario (si lo necesitas más adelante)
-	getCompaniesByUserId(userId: number): Observable<CompanyConsultDTO[]> {
-		return this.http.get<CompanyConsultDTO[]>(`${this.baseUrl}GetByUserId/${userId}`);
->>>>>>> parent of 845d2803 (solucion de errores)
 	}
 }
 

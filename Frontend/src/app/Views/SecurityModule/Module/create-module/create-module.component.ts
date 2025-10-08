@@ -13,8 +13,12 @@ import { ModuleService } from '../../../../Core/Service/SecurityModule/module.se
   styleUrl: './create-module.component.css'
 })
 export class CreateModuleComponent {
-  private moduleService = inject(ModuleService);
-  private router = inject(Router);
+
+	// Inyección de servicios propios del proyecto
+  private readonly moduleService = inject(ModuleService);
+
+	// Inyección de servicios nativos de Angular
+  private readonly router = inject(Router);
 
   handleSaveModule(newModule: ModuleMod): void {
       // console.log(newModule)

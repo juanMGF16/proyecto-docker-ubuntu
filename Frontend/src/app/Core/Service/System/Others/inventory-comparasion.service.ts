@@ -5,6 +5,16 @@ export interface InventoryComparisonResult extends InventoryItemCompareMod {
 	status: 'correct' | 'missing' | 'different-state' | 'damaged';
 }
 
+// ===== SERVICIO DE COMPARACIÓN DE INVENTARIOS =====
+// Implementa la lógica de negocio encargada de analizar el estado real de los ítems
+// frente al estado esperado en inventarios. Su objetivo es facilitar la detección
+// de discrepancias y generar reportes analíticos.
+//
+// Funcionalidades clave:
+// - compareInventoryItem: Evalúa un ítem individual y lo clasifica en uno de los estados:
+//   "correct", "missing", "different-state" o "damaged".
+// - processInventoryComparison: Procesa una lista completa de ítems y devuelve el resultado comparado.
+// - getComparisonStatistics: Genera métricas globales (totales por estado, total general, etc.).
 @Injectable({
 	providedIn: 'root'
 })

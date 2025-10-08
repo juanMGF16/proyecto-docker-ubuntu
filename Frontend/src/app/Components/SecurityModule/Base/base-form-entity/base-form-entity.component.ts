@@ -11,91 +11,100 @@ import { Router } from '@angular/router';
 import { AuthService } from '../../../../Core/Service/Auth/auth.service';
 
 @Component({
-  selector: 'app-base-form-entity',
-  standalone: true,
-  imports: [
-    CommonModule,
-    ReactiveFormsModule,
-    MatFormFieldModule,
-    MatInputModule,
-    MatSelectModule,
-    MatSlideToggleModule,
-    MatButtonModule,
-    MatIconModule
-  ],
-  templateUrl: './base-form-entity.component.html',
-  styleUrl: './base-form-entity.component.css'
+	selector: 'app-base-form-entity',
+	standalone: true,
+	imports: [
+		CommonModule,
+		ReactiveFormsModule,
+		MatFormFieldModule,
+		MatInputModule,
+		MatSelectModule,
+		MatSlideToggleModule,
+		MatButtonModule,
+		MatIconModule
+	],
+	templateUrl: './base-form-entity.component.html',
+	styleUrl: './base-form-entity.component.css'
 })
 export class BaseFormEntityComponent implements OnInit, OnChanges {
 
-  @Input() entity: any = null;
-  @Input() cancelRoute: string = '/';
-  @Output() save = new EventEmitter<any>();
+	// Inyección de servicios propios del proyecto
+	private readonly authService = inject(AuthService);
 
-  form!: FormGroup;
-  isEditMode = false;
-  showReactivarToggle = false;
-  reactivarUsuario = false;
+	// Inyección de servicios nativos de Angular
+	private readonly fb = inject(FormBuilder);
+	private readonly router = inject(Router);
 
-  private authService = inject(AuthService);
-  private fb = inject(FormBuilder);
-  private router = inject(Router);
+	// Inputs principales del componente
+	@Input() entity: any = null;
+	@Input() cancelRoute: string = '/';
 
-  ngOnInit(): void {
-    this.buildForm();
-  }
+	// Outputs de eventos emitidos al componente padre
+	@Output() save = new EventEmitter<any>();
 
-  ngOnChanges(changes: SimpleChanges): void {
-    if (changes['entity'] && this.entity) {
-      this.isEditMode = !!this.entity.id;
-      if (this.form) {
-        this.form.patchValue(this.entity);
-      }
-    }
+	// Variables de estado y control local
+	isEditMode = false;
+	showReactivarToggle = false;
+	reactivarUsuario = false;
 
-    if (this.isEditMode && this.entity) {
-      const isInactive = this.entity.active === false;
-      const isAdmin = this.authService.getRole() === 'SM_ACTION';
-      this.showReactivarToggle = isInactive && isAdmin;
-    }
-  }
+	// Formulario reactivo del componente
+	form!: FormGroup;
 
-  onToggleChange(event: MatSlideToggleChange): void {
-    this.reactivarUsuario = event.checked;
-    this.form.patchValue({
-      active: event.checked
-    });
-  }
+	// Métodos del ciclo de vida del componente
+	ngOnInit(): void {
+		this.buildForm();
+	}
+
+	ngOnChanges(changes: SimpleChanges): void {
+		if (changes['entity'] && this.entity) {
+			this.isEditMode = !!this.entity.id;
+			if (this.form) {
+				this.form.patchValue(this.entity);
+			}
+		}
+
+		if (this.isEditMode && this.entity) {
+			const isInactive = this.entity.active === false;
+			const isAdmin = this.authService.getRole() === 'SM_ACTION';
+			this.showReactivarToggle = isInactive && isAdmin;
+		}
+	}
+
+	onToggleChange(event: MatSlideToggleChange): void {
+		this.reactivarUsuario = event.checked;
+		this.form.patchValue({
+			active: event.checked
+		});
+	}
+
+	private buildForm(): void {
+		this.form = this.fb.group({
+			name: ['', [Validators.required, Validators.minLength(3)]],
+			description: ['', [Validators.required, Validators.minLength(5)]],
+			active: [true]
+		});
+
+		if (this.isEditMode && this.entity) {
+			this.form.patchValue(this.entity);
+		}
+	}
+
+	onSubmit(): void {
+		if (this.form.invalid) {
+			this.form.markAllAsTouched();
+			return;
+		}
+
+		const result = {
+			...(this.isEditMode ? { id: this.entity.id } : {}),
+			...this.form.value
+		};
+
+		this.save.emit(result);
+	}
 
 
-  private buildForm(): void {
-    this.form = this.fb.group({
-      name: ['', [Validators.required, Validators.minLength(3)]],
-      description: ['', [Validators.required, Validators.minLength(5)]],
-      active: [true]
-    });
-
-    if (this.isEditMode && this.entity) {
-      this.form.patchValue(this.entity);
-    }
-  }
-
-  onSubmit(): void {
-    if (this.form.invalid) {
-      this.form.markAllAsTouched();
-      return;
-    }
-
-    const result = {
-      ...(this.isEditMode ? { id: this.entity.id } : {}),
-      ...this.form.value
-    };
-
-    this.save.emit(result);
-  }
-
-
-  onCancel(): void {
-    this.router.navigate([this.cancelRoute]);
-  }
+	onCancel(): void {
+		this.router.navigate([this.cancelRoute]);
+	}
 }

@@ -12,9 +12,13 @@ import { AreaManagerNavService } from '../../../../Core/Service/Navigation/areaM
 	styleUrl: './area-manager-screen.component.css'
 })
 export class AreaManagerScreenComponent implements OnInit, OnDestroy {
-	private areaManagerNavService = inject(AreaManagerNavService);
-	private router = inject(Router);
-	private destroy$ = new Subject<void>();
+
+	// Inyección de servicios propios del proyecto
+	private readonly areaManagerNavService = inject(AreaManagerNavService);
+
+	// Inyección de servicios nativos de Angular
+	private readonly router = inject(Router);
+	private readonly destroy$ = new Subject<void>();
 
 	isSidebarExpanded: boolean = false;
 

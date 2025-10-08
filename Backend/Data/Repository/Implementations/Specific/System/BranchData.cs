@@ -1,35 +1,39 @@
 ﻿
-using Data.Repository.Interfaces.System;
+using Data.Repository.Interfaces.Specific.System;
 using Entity.Context;
-<<<<<<< HEAD
-using Entity.DTOs.System.Branch;
-=======
-using Entity.Models.SecurityModule;
->>>>>>> parent of 845d2803 (solucion de errores)
 using Entity.Models.System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
 using Microsoft.Extensions.Logging;
 using Utilities.Exceptions;
 
-namespace Data.Repository.Implementations.System
+namespace Data.Repository.Implementations.Specific.System
 {
+    /// <summary>
+    /// Repositorio para gestión de sucursales
+    /// </summary>
     public class BranchData : GenericData<Branch>, IBranch
     {
         private readonly AppDbContext _context;
         private readonly ILogger _logger;
+
         public BranchData(AppDbContext context, ILogger<Branch> logger) : base(context, logger)
         {
             _context = context;
             _logger = logger;
         }
 
-        //Contexto para Transacciones
+        /// <summary>
+        /// Inicia una transacción de base de datos
+        /// </summary>
         public async Task<IDbContextTransaction> BeginTransactionAsync()
         {
             return await _context.Database.BeginTransactionAsync();
         }
 
+        /// <summary>
+        /// Obtiene todas las sucursales activas con sus relaciones
+        /// </summary>
         public override async Task<IEnumerable<Branch>> GetAllAsync()
         {
             try
@@ -47,6 +51,10 @@ namespace Data.Repository.Implementations.System
             }
         }
 
+        /// <summary>
+        /// Obtiene una sucursal por ID con sus relaciones
+        /// </summary>
+        /// <param name="id">ID de la sucursal</para
         public override async Task<Branch?> GetByIdAsync(int id)
         {
             try
@@ -63,6 +71,11 @@ namespace Data.Repository.Implementations.System
             }
         }
 
+
+        /// <summary>
+        /// Crea una nueva sucursal validando nombres duplicados
+        /// </summary>
+        /// <param name="entity">Sucursal a crear</param>
         public override async Task<Branch> CreateAsync(Branch entity)
         {
             try
@@ -90,6 +103,10 @@ namespace Data.Repository.Implementations.System
         }
 
         // General
+
+        /// <summary>
+        /// Obtiene todas las sucursales sin filtrar por estado
+        /// </summary>
         public override async Task<IEnumerable<Branch>> GetAllTotalAsync()
         {
             try
@@ -106,7 +123,14 @@ namespace Data.Repository.Implementations.System
             }
         }
 
+
         //Specific
+
+        /// <summary>
+        /// Verifica si existe una sucursal con el mismo nombre en una compañía
+        /// </summary>
+        /// <param name="name">Nombre de la sucursal</param>
+        /// <param name="companyId">ID de la compañía</param>
         private async Task<bool> BranchNameExistsAsync(string name, int companyId)
         {
             try
@@ -123,6 +147,10 @@ namespace Data.Repository.Implementations.System
             }
         }
 
+        /// <summary>
+        /// Obtiene encargados de sucursales con sus datos de persona
+        /// </summary>
+        /// <param name="companyId">ID de la compañía</param>
         public async Task<IEnumerable<Branch>> GetInChargesAsync(int companyId)
         {
             try
@@ -140,6 +168,10 @@ namespace Data.Repository.Implementations.System
             }
         }
 
+        /// <summary>
+        /// Obtiene sucursales de una compañía con encargados
+        /// </summary>
+        /// <param name="companyId">ID de la compañía</param>
         public async Task<IEnumerable<Branch>> GetBranchesByCompanyAsync(int companyId)
         {
             try
@@ -157,6 +189,10 @@ namespace Data.Repository.Implementations.System
             }
         }
 
+        /// <summary>
+        /// Obtiene sucursal con zonas, items e inventarios completos
+        /// </summary>
+        /// <param name="branchId">ID de la sucursal</param>
         public async Task<Branch?> GetBranchWithZonesAndItemsAsync(int branchId)
         {
             try
@@ -178,6 +214,10 @@ namespace Data.Repository.Implementations.System
             }
         }
 
+        /// <summary>
+        /// Obtiene sucursal con datos del encargado
+        /// </summary>
+        /// <param name="branchId">ID de la sucursal</param>
         public async Task<Branch?> GetInChargeAsync(int branchId)
         {
             try
@@ -194,6 +234,10 @@ namespace Data.Repository.Implementations.System
             }
         }
 
+        /// <summary>
+        /// Obtiene sucursal asignada a un encargado
+        /// </summary>
+        /// <param name="userId">ID del usuario encargado</param>
         public async Task<Branch?> GetBranchByInChargeAsync(int userId)
         {
             try
@@ -211,5 +255,3 @@ namespace Data.Repository.Implementations.System
         }
     }
 }
-
-

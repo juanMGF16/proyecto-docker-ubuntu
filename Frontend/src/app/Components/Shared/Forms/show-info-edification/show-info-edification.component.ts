@@ -3,6 +3,7 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTabsModule } from '@angular/material/tabs';
+import { MatTooltipModule } from '@angular/material/tooltip';
 import { RouterModule } from '@angular/router';
 
 export interface DataField {
@@ -20,6 +21,7 @@ export interface DataField {
 		CommonModule,
 		MatButtonModule,
 		MatIconModule,
+		MatTooltipModule,
 		MatTabsModule,
 		RouterModule
 	],
@@ -27,19 +29,20 @@ export interface DataField {
 	styleUrls: ['../../Styles/show-info-shared.css', './show-info-edification.component.css']
 })
 export class ShowInfoEdificationComponent {
-	// Inputs principales
+
+	// Inputs principales del componente
 	@Input() entityData: any = null;
 	@Input() entityType: string = 'Entidad';
 	@Input() dataFields: DataField[] = [];
 	@Input() showDeleteButton: boolean = true;
 	@Input() backRoute: string = '/';
 
-	// Configuración del header
+	// Inputs para la configuración del header
 	@Input() headerIcon: string = 'business';
 	@Input() headerTitle: string = 'Datos';
 	@Input() headerSubtitle: string = 'Gestión de información';
 
-	// Configuración de la sección de avatar
+	// Inputs para la configuración de la sección de avatar
 	@Input() showAvatarSection: boolean = true;
 	@Input() avatarBadgeIcon: string = 'business';
 	@Input() avatarBadgeText: string = 'Entidad';
@@ -48,7 +51,7 @@ export class ShowInfoEdificationComponent {
 	@Input() avatarSubtitle: string = 'información';
 	@Input() avatarRole: string = 'EMPRESA';
 
-	// Eventos
+	// Outputs de eventos emitidos al componente padre
 	@Output() onEdit = new EventEmitter<void>();
 	@Output() onDelete = new EventEmitter<void>();
 

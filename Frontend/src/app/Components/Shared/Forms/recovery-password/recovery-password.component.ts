@@ -1,13 +1,13 @@
 import { CommonModule } from '@angular/common';
 import { Component, inject, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators, AbstractControl, ValidationErrors } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
-import { MatIconModule } from '@angular/material/icon';
+import { AbstractControl, FormBuilder, FormGroup, ReactiveFormsModule, ValidationErrors, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
-import { InitialHeaderComponent } from '../../../System/Landing/initial-header/initial-navbar.component';
+import { MatIconModule } from '@angular/material/icon';
+import { ActivatedRoute, Router } from '@angular/router';
+import { AlertTotalService } from '../../../../Core/Service/alert-total.service';
 import { AuthService } from '../../../../Core/Service/Auth/auth.service';
-import Swal from 'sweetalert2';
-import { performLogout } from '../../../../Core/Utils/auth.util';
+import { performLogout } from '../../../../Core/Utils/auth.utils';
+import { InitialHeaderComponent } from '../../../System/Landing/initial-header/initial-navbar.component';
 
 @Component({
 	selector: 'app-recovery-password',
@@ -23,24 +23,31 @@ import { performLogout } from '../../../../Core/Utils/auth.util';
 	styleUrl: './recovery-password.component.css'
 })
 export class RecoveryPasswordComponent implements OnInit {
+
+	// Inyección de servicios propios del proyecto
+	private readonly authService = inject(AuthService)
+	private readonly alertService = inject(AlertTotalService);
+
+	// Inyección de servicios nativos de Angular
+	private readonly fb = inject(FormBuilder)
+	private readonly router = inject(Router)
+	private readonly route = inject(ActivatedRoute)
+
+	// Variables de estado y control local
 	isSidebarExpanded: boolean = false;
 	isSubmitting: boolean = false;
-	recoveryForm!: FormGroup;
 	userEmail: string = '';
 	showNewPassword: boolean = false;
 	showConfirmPassword: boolean = false;
-
 	private token: string = '';
 
-	private formBuilder = inject(FormBuilder)
-	private router = inject(Router)
-	private route = inject(ActivatedRoute)
-	private authService = inject(AuthService)
+	// Formulario reactivo del componente
+	recoveryForm!: FormGroup;
 
-
+	// Métodos del ciclo de vida del componente
 	ngOnInit(): void {
 		// Inicializar formulario
-		this.recoveryForm = this.formBuilder.group({
+		this.recoveryForm = this.fb.group({
 			newPassword: ['', [
 				Validators.required,
 				Validators.minLength(8),
@@ -55,10 +62,9 @@ export class RecoveryPasswordComponent implements OnInit {
 			if (this.token) {
 				this.validateToken();
 			} else {
-				Swal.fire({
-					title: "Token no proporcionado",
-					icon: "error"
-				});
+				this.alertService.error(
+					'Token no proporcionado'
+				);
 				this.router.navigate(['Login']);
 			}
 		});
@@ -71,19 +77,25 @@ export class RecoveryPasswordComponent implements OnInit {
 				if (res.valid) {
 					this.userEmail = res.email;
 				} else {
-					Swal.fire({
-						icon: 'error',
-						title: 'Enlace inválido',
-						text: 'El enlace de recuperación no es válido o ha expirado.',
-						confirmButtonText: 'Volver al login'
-					}).then(() => {
+					// 🔄 CAMBIO: Usar el servicio unificado para error + navegación
+					this.alertService.error(
+						'Enlace inválido',
+						'El enlace de recuperación no es válido o ha expirado.'
+					).then(() => {
 						this.router.navigate(['/Login']);
 					});
 				}
 			},
 			error: (e) => {
 				console.log("Error al validar el enlace de recuperación.", e);
-				this.router.navigate(['/Login']);
+
+				// 🔄 MEJORA: Mostrar error específico antes de navegar
+				this.alertService.error(
+					'Error de validación',
+					'No se pudo validar el enlace de recuperación. Serás redirigido al login.'
+				).then(() => {
+					this.router.navigate(['/Login']);
+				});
 			}
 		});
 	}
@@ -184,12 +196,12 @@ export class RecoveryPasswordComponent implements OnInit {
 		this.authService.resetPassword(payload).subscribe({
 			next: () => {
 				this.isSubmitting = false;
-				Swal.fire({
-					icon: 'success',
-					title: 'Contraseña restablecida',
-					text: 'Tu contraseña ha sido cambiada correctamente.',
-					confirmButtonText: 'Ir al login'
-				}).then(() => {
+
+				// 🔄 CAMBIO: Usar el servicio unificado
+				this.alertService.success(
+					'Contraseña restablecida',
+					'Tu contraseña ha sido cambiada correctamente.'
+				).then(() => {
 					performLogout(this.router);
 					this.router.navigate(['/Login']);
 				});
@@ -197,6 +209,12 @@ export class RecoveryPasswordComponent implements OnInit {
 			error: (e) => {
 				this.isSubmitting = false;
 				console.log("Hubo un error al restablecer la contraseña.", e);
+
+				// 🔄 MEJORA: Mostrar error específico
+				this.alertService.error(
+					'Error al restablecer',
+					'No se pudo cambiar la contraseña. Por favor, intenta nuevamente.'
+				);
 			}
 		});
 	}

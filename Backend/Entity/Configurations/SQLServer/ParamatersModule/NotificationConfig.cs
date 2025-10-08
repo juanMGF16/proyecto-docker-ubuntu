@@ -8,7 +8,7 @@ namespace Entity.Configurations.SQLServer.ParamatersModule
     public class NotificationConfig : IEntityTypeConfiguration<Notification>
     {
         public void Configure(EntityTypeBuilder<Notification> builder)
-        {
+        {   
             builder.ToTable("Notification", DatabaseSchemas.Parameters);
 
             builder.HasKey(n => n.Id);
@@ -22,7 +22,7 @@ namespace Entity.Configurations.SQLServer.ParamatersModule
                 .IsRequired();
 
             builder.Property(n => n.Content)
-                .HasMaxLength(500)
+                .HasColumnType("nvarchar(1000)")
                 .IsRequired();
 
             builder.Property(n => n.Date)
@@ -39,7 +39,7 @@ namespace Entity.Configurations.SQLServer.ParamatersModule
             var notificationValues = string.Join(",",
                 Enum.GetValues<TypeNotification>().Cast<int>());
 
-            builder.ToTable("Notification", t =>
+            builder.ToTable("Notification", DatabaseSchemas.Parameters, t =>
             {
                 t.HasCheckConstraint("CK_Notification_Type",
                     $"{nameof(Notification.Type)} IN ({notificationValues})");

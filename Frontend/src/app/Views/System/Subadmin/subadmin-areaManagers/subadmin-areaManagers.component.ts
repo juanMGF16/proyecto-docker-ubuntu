@@ -14,10 +14,14 @@ import { catchError, of } from 'rxjs';
 	templateUrl: './subadmin-areaManagers.component.html'
 })
 export class SubadminAreaManagersComponent implements OnInit {
-	private router = inject(Router);
-	private authService = inject(AuthService);
-	private branchService = inject(BranchService);
-	private zoneService = inject(ZoneService);
+
+	// Inyección de servicios propios del proyecto
+	private readonly authService = inject(AuthService);
+	private readonly branchService = inject(BranchService);
+	private readonly zoneService = inject(ZoneService);
+
+	// Inyección de servicios nativos de Angular
+	private readonly router = inject(Router);
 
 	loading = true;
 	error = false;

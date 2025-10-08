@@ -10,6 +10,9 @@ using Web.Controllers.Base;
 
 namespace Web.Controllers.SecurityModel
 {
+    /// <summary>
+    /// Controller para gestión de Roles
+    /// </summary>
     [Route("api/[controller]/")]
     [Authorize(Roles = "SM_ACTION")]
     public class RoleController : BaseController<IRoleBusiness>
@@ -18,11 +21,17 @@ namespace Web.Controllers.SecurityModel
         public RoleController(IRoleBusiness roleBusiness, ILogger<RoleController> logger)
             : base(roleBusiness, logger) { }
 
+        /// <summary>
+        /// Obtiene todos los registros activos
+        /// </summary>
         [HttpGet("GetAll/")]
         [ProducesResponseType(typeof(IEnumerable<RoleDTO>), 200)]
         public async Task<IActionResult> GetAll() =>
             await TryExecuteAsync(() => _service.GetAllAsync(), "GetAllRoles");
 
+        /// <summary>
+        /// Obtiene todos los registros 
+        /// </summary>
         [HttpGet("GetAllJWT/")]
         [ProducesResponseType(typeof(IEnumerable<RoleDTO>), 200)]
         public async Task<IActionResult> GetAllJWT()
@@ -45,6 +54,9 @@ namespace Web.Controllers.SecurityModel
             return await TryExecuteAsync(() => _service.GetAllAsync(), "GetAllUsers");
         }
 
+        /// <summary>
+        /// Obtiene un registro por su identificador
+        /// </summary>
         [HttpGet("GetById/{id:int}")]
         [ProducesResponseType(typeof(RoleDTO), 200)]
         [ProducesResponseType(400)]
@@ -52,6 +64,9 @@ namespace Web.Controllers.SecurityModel
         public async Task<IActionResult> GetById(int id) =>
             await TryExecuteAsync(() => _service.GetByIdAsync(id), "GetById");
 
+        /// <summary>
+        /// Crea un nuevo registro
+        /// </summary>
         [HttpPost("Create/")]
         [ProducesResponseType(typeof(RoleDTO), 201)]
         [ProducesResponseType(400)]
@@ -64,6 +79,9 @@ namespace Web.Controllers.SecurityModel
             }, "CreateRole");
         }
 
+        /// <summary>
+        /// Actualiza un registro existente
+        /// </summary>
         [HttpPut("Update/")]
         [ProducesResponseType(typeof(RoleDTO), 200)]
         [ProducesResponseType(400)]
@@ -71,6 +89,9 @@ namespace Web.Controllers.SecurityModel
         public async Task<IActionResult> Update([FromBody] RoleDTO dto) =>
             await TryExecuteAsync(() => _service.UpdateAsync(dto), "UpdateRole");
 
+        /// <summary>
+        /// Elimina un registro usando la estrategia especificada
+        /// </summary>
         [HttpDelete("Delete/{id:int}")]
         [ProducesResponseType(200)]
         [ProducesResponseType(400)]

@@ -17,8 +17,11 @@ import { RoleFormPermissionService } from '../../../../Core/Service/SecurityModu
 })
 export class IndiceRoleFormPermissionComponent implements OnInit {
 
-  roleFormPermissionService = inject(RoleFormPermissionService);
-  router = inject(Router)
+	// Inyección de servicios propios del proyecto
+  private readonly roleFormPermissionService = inject(RoleFormPermissionService);
+
+	// Inyección de servicios nativos de Angular
+  private readonly router = inject(Router)
 
   roleFormPermissionData : RoleFormPermissionMod[] = [];
   columnasMostrar : string[] = [

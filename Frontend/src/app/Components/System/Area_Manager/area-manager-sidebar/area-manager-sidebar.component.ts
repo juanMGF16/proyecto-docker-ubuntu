@@ -2,11 +2,13 @@ import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, HostListener, inject, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
-import { Subscription } from 'rxjs';
+import { catchError, of, Subscription } from 'rxjs';
 import { OpGroupByAreaManagerMod } from '../../../../Core/Models/System/OpGroupMod';
 import { AuthService } from '../../../../Core/Service/Auth/auth.service';
 import { AreaManagerNavService, NavigationItem, NavigationState } from '../../../../Core/Service/Navigation/areaManager-nav.service';
 import { OpGroupService } from '../../../../Core/Service/System/opGroup.service';
+import Swal from 'sweetalert2';
+import { AlertTotalService } from '../../../../Core/Service/alert-total.service';
 
 @Component({
 	selector: 'app-area-manager-sidebar',
@@ -16,7 +18,16 @@ import { OpGroupService } from '../../../../Core/Service/System/opGroup.service'
 	styleUrls: ['../../../Shared/Styles/sidebar-shared.css', './area-manager-sidebar.component.css']
 })
 export class AreaManagerSidebarComponent implements OnInit, OnDestroy {
+
+	// Inyección de servicios propios del proyecto
+	private readonly authService = inject(AuthService);
+	private readonly opGroupService = inject(OpGroupService);
+	private readonly alertService = inject(AlertTotalService)
+
+	// Inputs principales del componente
 	@Input() isExpanded: boolean = false;
+
+	// Outputs de eventos emitidos al componente padre
 	@Output() toggleSidebar = new EventEmitter<void>();
 
 	navigationItems: NavigationItem[] = [];
@@ -27,9 +38,6 @@ export class AreaManagerSidebarComponent implements OnInit, OnDestroy {
 	};
 	areaManagerId: number | null = null;
 
-	private authService = inject(AuthService);
-	private opGroupService = inject(OpGroupService);
-
 	private navigationSubscription: Subscription = new Subscription();
 	private refreshSubscription: Subscription = new Subscription();
 
@@ -38,6 +46,7 @@ export class AreaManagerSidebarComponent implements OnInit, OnDestroy {
 
 	constructor(private navigationService: AreaManagerNavService) { }
 
+	// Métodos del ciclo de vida del componente
 	ngOnInit(): void {
 		// Suscribirse a cambios de estado de navegación
 		this.navigationSubscription = this.navigationService.navigationState$
@@ -67,52 +76,38 @@ export class AreaManagerSidebarComponent implements OnInit, OnDestroy {
 		// AGREGAR ESTA LÍNEA: Inicializar navegación básica
 		this.initializeNavigation();
 
-		// if (this.areaManagerId) {
-		//   this.cargarOpGroups();
-		// }
+		if (this.areaManagerId) {
+			this.cargarOpGroups();
+		}
 	}
 
 	private initializeNavigation(): void {
 		// Obtener configuración estática inicial
 		this.navigationItems = this.navigationService.getNavigationConfig();
-
-		// Opcional: Agregar datos mock para pruebas
-		this.addMockOpGroups();
 	}
 
-	// MÉTODO TEMPORAL para pruebas (opcional)
-private addMockOpGroups(): void {
-  const mockOpGroups: OpGroupByAreaManagerMod[] = [
-    { id: 1, name: 'Grupo Alpha' },
-    { id: 2, name: 'Grupo Beta' }
-  ];
-
-  this.opGroups = mockOpGroups;
-  this.addDynamicOpGroups();
-}
+	ngOnDestroy(): void {
+		this.navigationSubscription.unsubscribe();
+		this.refreshSubscription.unsubscribe();
+	}
 
 	cargarOpGroups(): void {
-		// this.opGroupService.getByIdAreaManger(this.areaManagerId).pipe(
-		//   catchError(err => {
-		//     console.error('Error al cargar los datos:', err);
-		//     const mensajeCompleto = err?.error?.message || 'Ocurrió un error inesperado.';
-		//     const mensaje = mensajeCompleto.includes(':')
-		//       ? mensajeCompleto.split(':')[1].trim()
-		//       : mensajeCompleto;
+		this.opGroupService.getByIdAreaManger(this.areaManagerId).pipe(
+			catchError(err => {
+				console.error('Error al cargar los datos:', err);
+				const mensajeCompleto = err?.error?.message || 'Ocurrió un error inesperado.';
+				const mensaje = mensajeCompleto.includes(':')
+					? mensajeCompleto.split(':')[1].trim()
+					: mensajeCompleto;
 
-		//     Swal.fire({
-		//       icon: 'error',
-		//       title: 'Error',
-		//       text: mensaje,
-		//       confirmButtonText: 'Aceptar'
-		//     });
+				this.alertService.error('Error', mensaje);
 
-		//     return of([]);
-		//   })
-		// ).subscribe((data: OpGroupByAreaManagerMod[]) => {
-		//   this.opGroups = data || [];
-		//   this.updateNavigation();
-		// });
+				return of([]);
+			})
+		).subscribe((data: OpGroupByAreaManagerMod[]) => {
+			this.opGroups = data || [];
+			this.updateNavigation();
+		});
 	}
 
 	private updateNavigation(): void {
@@ -123,17 +118,12 @@ private addMockOpGroups(): void {
 		this.addDynamicOpGroups();
 	}
 
-	ngOnDestroy(): void {
-		this.navigationSubscription.unsubscribe();
-		this.refreshSubscription.unsubscribe();
-	}
-
 	private addDynamicOpGroups(): void {
 		const dynamicOpGroups: NavigationItem[] = this.opGroups.map(opGroup => ({
 			id: `dynamic-opGroup-${opGroup.id}`,
 			label: opGroup.name,
 			icon: 'diversity_3',
-			route: `/areaManager/operating-group/${opGroup.id}`
+			route: `/areaManager/operative-group/${opGroup.id}`
 		}));
 
 		this.navigationService.addDynamicItems('operatingGroups', dynamicOpGroups);

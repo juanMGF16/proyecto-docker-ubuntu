@@ -1,14 +1,17 @@
-﻿using Data.Repository.Interfaces.Parameters;
-using Data.Repository.Interfaces.Specific;
-using Data.Repository.Interfaces.Specific.ParametersModule;
+﻿using Data.Repository.Interfaces.Specific.ParametersModule;
 using Data.Repository.Interfaces.Specific.SecurityModule;
 using Data.Repository.Interfaces.Specific.System;
-using Data.Repository.Interfaces.System;
 
 namespace Data.Factory
 {
+    /// <summary>
+    /// Fábrica para crear instancias de repositorios de datos con sus dependencias configuradas
+    /// </summary>
     public interface IDataFactoryGlobal
     {
+        // Los métodos crean instancias de repositorios con logger y contexto inyectados
+
+
         // -----------------------
         // SecurityModule
         // -----------------------
@@ -40,6 +43,7 @@ namespace Data.Factory
         IInventaryDetail CreateInventaryDetailData();
         IOperating CreateOperatingData();
         IOperatingGroup CreateOperatingGroupData();
+        ICheckerData CreateCheckerData();
         IVerification CreateVerificationData();
 
         // Ejemplo de Generico

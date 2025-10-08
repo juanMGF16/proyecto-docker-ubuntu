@@ -3,7 +3,7 @@
 		<header class="modal-header">
 			<h2>
 				<mat-icon>cloud_upload</mat-icon>
-				Importar Inventario desde Excel
+				Importar {{typeName}} desde Excel
 			</h2>
 			<button mat-icon-button class="close-button" (click)="closeModal()">
 				<mat-icon>close</mat-icon>
@@ -13,7 +13,7 @@
 		<div class="modal-content">
 			<p class="modal-description">
 				Selecciona un archivo Excel para importar el inventario base de
-				<strong>{{ zoneName }}</strong>
+				<strong>{{ entityName }}</strong>
 			</p>
 
 			<!-- Área de arrastre o clic -->

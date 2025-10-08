@@ -6,6 +6,9 @@ using Microsoft.Extensions.Logging;
 
 namespace Data.Repository.Implementations.Specific.SecurityModule
 {
+    /// <summary>
+    /// Repositorio para gestión de permisos de formularios por rol
+    /// </summary>
     public class RoleFormPermissionData : GenericData<RoleFormPermission>, IRoleFormPermissionData
     {
         private readonly AppDbContext _context;
@@ -18,6 +21,9 @@ namespace Data.Repository.Implementations.Specific.SecurityModule
             _logger = logger;
         }
 
+        /// <summary>
+        /// Obtiene todos los permisos activos con sus relaciones
+        /// </summary>
         public override async Task<IEnumerable<RoleFormPermission>> GetAllAsync()
         {
             try
@@ -36,6 +42,10 @@ namespace Data.Repository.Implementations.Specific.SecurityModule
             }
         }
 
+        /// <summary>
+        /// Obtiene un permiso por ID con sus relaciones
+        /// </summary>
+        /// <param name="id">ID del permiso</param>
         public override async Task<RoleFormPermission?> GetByIdAsync(int id)
         {
             try
@@ -53,7 +63,11 @@ namespace Data.Repository.Implementations.Specific.SecurityModule
             }
         }
 
+
         // General
+        /// <summary>
+        /// Obtiene todos los permisos sin filtrar por estado
+        /// </summary>
         public override async Task<IEnumerable<RoleFormPermission>> GetAllTotalAsync()
         {
             try

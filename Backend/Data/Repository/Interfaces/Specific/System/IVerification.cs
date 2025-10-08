@@ -1,12 +1,16 @@
-﻿using Entity.Models.ParametersModule;
+﻿using Entity.DTOs.System.Verification.AreaManager;
 using Entity.Models.System;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Data.Repository.Interfaces.Specific.System
 {
-    public interface IVerification : IGenericData<Verification> { }
+    /// <summary>
+    /// Repositorio para verificaciones de inventarios
+    /// </summary>
+    public interface IVerification : IGenericData<Verification>
+    {
+        /// <summary>
+        /// Obtiene detalle completo de una verificación
+        /// </summary>
+        Task<VerificationDetailResponseDTO?> GetVerificationDetailAsync(int inventoryId);
+    }
 }

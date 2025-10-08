@@ -17,8 +17,11 @@ import { RoleService } from '../../../../Core/Service/SecurityModule/role.servic
 })
 export class IndiceRoleComponent implements OnInit {
 
-  roleService = inject(RoleService);
-  router = inject(Router)
+	// Inyección de servicios propios del proyecto
+  private readonly roleService = inject(RoleService);
+
+	// Inyección de servicios nativos de Angular
+  private readonly router = inject(Router)
 
   roleData : RoleMod[] = [];
   columnasMostrar : string[] = [

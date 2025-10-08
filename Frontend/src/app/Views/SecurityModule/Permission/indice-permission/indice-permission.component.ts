@@ -17,8 +17,10 @@ import { PermissionService } from '../../../../Core/Service/SecurityModule/permi
 })
 export class IndicePermissionComponent implements OnInit {
 
-  permissionService = inject(PermissionService);
-  router = inject(Router)
+	// Inyección de servicios propios del proyecto
+  private readonly permissionService = inject(PermissionService);
+
+  private readonly router = inject(Router)
 
   permissionData : PermissionMod[] = [];
   columnasMostrar : string[] = [

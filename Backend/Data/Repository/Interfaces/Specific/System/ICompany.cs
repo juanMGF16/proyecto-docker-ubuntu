@@ -1,11 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Entity.Models.System;
+﻿using Entity.Models.System;
 
-namespace Data.Repository.Interfaces.System
+namespace Data.Repository.Interfaces.Specific.System
 {
-    public interface ICompany : IGenericData<Company> { }
+    /// <summary>
+    /// Repositorio para empresas
+    /// </summary>
+    public interface ICompany : IGenericData<Company>
+    {
+        /// <summary>
+        /// Elimina una empresa y todas sus dependencias
+        /// </summary>
+        Task<bool> KillCompanyAsync(int companyId, int currentUserId);
+    }
 }

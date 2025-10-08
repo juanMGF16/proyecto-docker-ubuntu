@@ -4,8 +4,16 @@ using Microsoft.IdentityModel.Tokens;
 
 namespace Web.Extensions
 {
+    /// <summary>
+    /// Extensiones para configurar autenticación JWT en la aplicación
+    /// </summary>
     public static class AuthenticationExtensions
     {
+        /// <summary>
+        /// Configura autenticación JWT con validación de tokens
+        /// </summary>
+        /// <param name="services">Colección de servicios</param>
+        /// <param name="configuration">Configuración de la aplicación</param>
         public static IServiceCollection AddJwtAuthentication(this IServiceCollection services, IConfiguration configuration)
         {
             var jwtSettings = configuration.GetSection("Jwt");

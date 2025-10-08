@@ -8,6 +8,8 @@ import { MatIconModule } from "@angular/material/icon";
 	styleUrl: './kpi-card.component.css'
 })
 export class KpiCardComponent {
+
+	// Inputs principales del componente
 	@Input() icon!: string;
 	@Input() value!: number | string;
 	@Input() label!: string;

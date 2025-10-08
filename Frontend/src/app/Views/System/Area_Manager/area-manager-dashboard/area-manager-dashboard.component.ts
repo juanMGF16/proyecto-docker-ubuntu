@@ -10,10 +10,11 @@ import { StatusChartComponent } from '../../../../Components/System/Admin/Analyt
 import { ZONE_STATE_ESPECIFIC_MAP } from '../../../../Core/Constants/zone-mapping';
 import { ItemStatusMod, ZoneDashboard, ZoneInfoMod } from '../../../../Core/Models/System/Others/Dashboard.model';
 import { AuthService } from '../../../../Core/Service/Auth/auth.service';
-import { CalculateStatusOpGroupService, OperatingGroup } from '../../../../Core/Service/System/Others/calculate-status-opGroup.service';
+import { CalculateStatusOpGroupService, OperatingGroup } from '../../../../Core/Service/System/Others/Operatives/calculate-status-opGroup.service';
 import { DashboardService } from '../../../../Core/Service/System/Others/dashboard.service';
 import { InventoryComparisonResult, InventoryComparisonService } from '../../../../Core/Service/System/Others/inventory-comparasion.service';
 import { ZoneService } from '../../../../Core/Service/System/zone.service';
+import { MatButtonModule } from '@angular/material/button';
 
 @Component({
 	selector: 'app-area-manager-dashboard',
@@ -22,6 +23,7 @@ import { ZoneService } from '../../../../Core/Service/System/zone.service';
 		CommonModule,
 		MatIconModule,
 		MatCardModule,
+		MatButtonModule,
 		MatTableModule,
 		LoaderComponent,
 		KpiCardComponent,
@@ -31,10 +33,11 @@ import { ZoneService } from '../../../../Core/Service/System/zone.service';
 	styleUrls: ['../../../../Components/Shared/Styles/dashboard-shared.css', './area-manager-dashboard.component.css']
 })
 export class AreaManagerDashboardComponent implements OnInit {
-	// Servicios inyectados
+
+	// Inyección de servicios propios del proyecto
+	private readonly authService = inject(AuthService);
 	private readonly inventoryComparisonService = inject(InventoryComparisonService);
 	private readonly calculateStateOpGroupService = inject(CalculateStatusOpGroupService);
-	private readonly authService = inject(AuthService);
 	private readonly zoneService = inject(ZoneService);
 	private readonly dashboardService = inject(DashboardService);
 

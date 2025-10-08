@@ -1,12 +1,15 @@
-﻿using Business.Services.JWTService.Interfaces;
+﻿using Business.Services.Jwt.Interfaces;
 using Entity.Context;
 using Entity.DTOs.Auth;
-using Entity.Models.SecurityModule;
 using Microsoft.EntityFrameworkCore;
 using Utilities.Helpers;
 
-namespace Business.Services.JWTService
+namespace Business.Services.Jwt
 {
+    /// <summary>
+    /// Proporciona los servicios de autenticación de usuarios contra la base de datos y
+    /// la emisión de los tokens de seguridad (Access y Refresh Tokens).
+    /// </summary>
     public class AuthService
     {
         private readonly AppDbContext _context;
@@ -18,6 +21,12 @@ namespace Business.Services.JWTService
             _jwtService = jwtService;
         }
 
+        /// <summary>
+        /// Autentica a un usuario mediante nombre de usuario y contraseña.
+        /// Si la autenticación es exitosa, genera y devuelve un Access Token y un Refresh Token.
+        /// </summary>
+        /// <param name="loginRequest">Los datos de inicio de sesión (usuario y contraseña).</param>
+        /// <returns>Un <see cref="LoginResponseDTO"/> con los tokens, o null si la autenticación falla.</returns>
         public async Task<LoginResponseDTO?> AuthenticateAsync(LoginRequestDTO loginRequest)
         {
             var user = await _context.User
@@ -31,10 +40,10 @@ namespace Business.Services.JWTService
 
             var role = user.UserRoles.FirstOrDefault()?.Role?.Name ?? "Usuario";
 
-            // Access Token (corto, ej. 10 minutos)
-            var accessToken = _jwtService.GenerateToken(user.Id, user.PersonId, user.Username, role, 10);
+            // Access Token 
+            var accessToken = _jwtService.GenerateToken(user.Id, user.PersonId, user.Username, role, 120);
 
-            // Refresh Token (largo,1440 min = 1 día)
+            // Refresh Token 
             var refreshToken = _jwtService.GenerateToken(user.Id, user.PersonId, user.Username, role, 1440);
 
             return new LoginResponseDTO
@@ -44,6 +53,12 @@ namespace Business.Services.JWTService
             };
         }
 
+        /// <summary>
+        /// Autentica a un usuario operativo utilizando el tipo y número de documento.
+        /// Está diseñado específicamente para la autenticación de usuarios con el rol "OPERATIVO".
+        /// </summary>
+        /// <param name="loginRequest">Los datos de inicio de sesión del operativo (tipo y número de documento).</param>
+        /// <returns>Un <see cref="LoginResponseDTO"/> con los tokens, o null si el usuario no es encontrado o no es operativo.</returns>
         public async Task<LoginResponseDTO?> AuthenticateByDocument(LoginOperativoDTO loginRequest)
         {
             var users = await _context.User
@@ -66,8 +81,8 @@ namespace Business.Services.JWTService
 
             var role = user.UserRoles.FirstOrDefault()?.Role?.Name ?? "OPERATIVO";
 
-            // 🎟️ Generar tokens
-            var accessToken = _jwtService.GenerateToken(user.Id, user.PersonId, user.Username, role, 10);
+            // Generar tokens
+            var accessToken = _jwtService.GenerateToken(user.Id, user.PersonId, user.Username, role, 120);
             var refreshToken = _jwtService.GenerateToken(user.Id, user.PersonId, user.Username, role, 1440);
 
             return new LoginResponseDTO
@@ -76,9 +91,5 @@ namespace Business.Services.JWTService
                 RefreshToken = refreshToken
             };
         }
-
-
-
-
     }
 }

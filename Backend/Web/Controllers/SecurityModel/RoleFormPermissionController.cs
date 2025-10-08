@@ -10,6 +10,9 @@ using Web.Controllers.Base;
 
 namespace Web.Controllers.SecurityModel
 {
+    /// <summary>
+    /// Controller para gestión de Roles y sus Permisos en Formularios
+    /// </summary>
     [Route("api/[controller]")]
     [Authorize(Roles = "SM_ACTION")]
 
@@ -18,11 +21,17 @@ namespace Web.Controllers.SecurityModel
         public RoleFormPermissionController(IRoleFormPermissionBusiness roleFormPermissionBusiness, ILogger<RoleFormPermissionController> logger)
             : base(roleFormPermissionBusiness, logger) { }
 
+        /// <summary>
+        /// Obtiene todos los registros activos
+        /// </summary>
         [HttpGet("GetAll/")]
         [ProducesResponseType(typeof(IEnumerable<RoleFormPermissionDTO>), 200)]
         public async Task<IActionResult> GetAll() =>
             await TryExecuteAsync(() => _service.GetAllAsync(), "GetAllRoleFormPermissions");
 
+        /// <summary>
+        /// Obtiene todos los registros 
+        /// </summary>
         [HttpGet("GetAllJWT/")]
         [ProducesResponseType(typeof(IEnumerable<RoleFormPermissionDTO>), 200)]
         public async Task<IActionResult> GetAllJWT()
@@ -45,6 +54,9 @@ namespace Web.Controllers.SecurityModel
             return await TryExecuteAsync(() => _service.GetAllAsync(), "GetAllRoleFormPermissions");
         }
 
+        /// <summary>
+        /// Obtiene un registro por su identificador
+        /// </summary>
         [HttpGet("GetById/{id:int}")]
         [ProducesResponseType(typeof(RoleFormPermissionDTO), 200)]
         [ProducesResponseType(400)]
@@ -52,6 +64,9 @@ namespace Web.Controllers.SecurityModel
         public async Task<IActionResult> GetById(int id) =>
             await TryExecuteAsync(() => _service.GetByIdAsync(id), "GetById");
 
+        /// <summary>
+        /// Crea un nuevo registro
+        /// </summary>
         [HttpPost("Create/")]
         [ProducesResponseType(typeof(RoleFormPermissionOptionsDTO), 201)]
         [ProducesResponseType(400)]
@@ -64,6 +79,9 @@ namespace Web.Controllers.SecurityModel
             }, "CreateRoleFormPermission");
         }
 
+        /// <summary>
+        /// Actualiza un registro existente
+        /// </summary>
         [HttpPut("Update/")]
         [ProducesResponseType(typeof(RoleFormPermissionOptionsDTO), 200)]
         [ProducesResponseType(400)]
@@ -71,6 +89,9 @@ namespace Web.Controllers.SecurityModel
         public async Task<IActionResult> Update([FromBody] RoleFormPermissionOptionsDTO dto) =>
             await TryExecuteAsync(() => _service.UpdateAsync(dto), "UpdateRoleFormPermission");
 
+        /// <summary>
+        /// Elimina un registro usando la estrategia especificada
+        /// </summary>
         [HttpDelete("Delete/{id:int}")]
         [ProducesResponseType(200)]
         [ProducesResponseType(400)]

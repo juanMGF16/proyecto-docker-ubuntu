@@ -1,4 +1,5 @@
 ﻿using Entity.Models.SecurityModule;
+using Entity.Models.System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -31,9 +32,19 @@ namespace Entity.Configurations.SQLServer.SecurityModule
             builder.Property(u => u.PersonId).IsRequired();
 
             builder.HasOne(u => u.Person)
-                .WithMany(p => p.Users)
-                .HasForeignKey(u => u.PersonId)
+                .WithOne(p => p.User)
+                .HasForeignKey<User>(u => u.PersonId)
                 .OnDelete(DeleteBehavior.Cascade);
+
+            builder.HasOne(u => u.Checker)
+                .WithOne(v => v.User)
+                .HasForeignKey<Checker>(v => v.UserId) 
+                .OnDelete(DeleteBehavior.Restrict);
+
+            builder.HasMany(u => u.OperationalGroups)
+                .WithOne(og => og.User)
+                .HasForeignKey(og => og.UserId)
+                .OnDelete(DeleteBehavior.Restrict);
 
             builder.Property(x => x.CreatedAt).HasColumnType("datetime2(3)").IsRequired();
             builder.Property(x => x.UpdatedAt).HasColumnType("datetime2(3)");

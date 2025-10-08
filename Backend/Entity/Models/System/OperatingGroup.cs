@@ -15,5 +15,6 @@ namespace Entity.Models.System
 
         // Propiedad de Navegacion Inversa
         public List<Operating> Operatings { get; set; } = [];
+        public List<Inventary> Inventories { get; set; } = [];
     }
 }

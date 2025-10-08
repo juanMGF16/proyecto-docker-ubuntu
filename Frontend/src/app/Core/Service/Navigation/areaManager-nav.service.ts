@@ -1,3 +1,10 @@
+// ===== SERVICIO DE NAVEGACIÓN DEL ENCARGADO DE ZONA =====
+// Gestiona el menú lateral y el estado de navegación del panel de área manager.
+// Aporta junto a AdminNavService una funcionalidad común: control de sidebars,
+// menús dinámicos, estados de secciones y eventos para recargar datos.
+// Incluye configuración de items estáticos y dinámicos, escucha de rutas,
+// activación de secciones y utilidades para expandir/cerrar el sidebar.
+
 import { Injectable } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
 import { BehaviorSubject, Subject } from 'rxjs';
@@ -23,13 +30,20 @@ export interface NavigationState {
 	providedIn: 'root'
 })
 export class AreaManagerNavService {
+
+	// === EVENTOS COMPARTIDOS ===
+	// Subjects que emiten eventos globales: cerrar sidebar o refrescar grupos operativos.
 	private closeSidebarSubject = new Subject<void>();
 	public closeSidebar$ = this.closeSidebarSubject.asObservable();
 
 	private refreshOperatingGroupsSubject = new Subject<void>();
 	public refreshOperatingGroups$ = this.refreshOperatingGroupsSubject.asObservable();
 
-	// Configuración de navegación
+
+
+	// === CONFIGURACIÓN DE NAVEGACIÓN ===
+	// Menú estático inicial: dashboard, inventario, operativos, grupos operativos y reportes.
+	// Se pueden añadir ítems dinámicos (ej: grupos de operativos) en tiempo de ejecución.
 	private readonly navigationConfig: NavigationItem[] = [
 		{
 			id: 'dashboard',
@@ -54,7 +68,7 @@ export class AreaManagerNavService {
 					id: 'requestsInventary',
 					label: 'RQS Inventario',
 					icon: 'assignment_late',
-					route: '/areaManager/requests-inventary'
+					route: '/areaManager/inventory-requests'
 				},
 				{
 					id: 'Reports',
@@ -65,10 +79,10 @@ export class AreaManagerNavService {
 			]
 		},
 		{
-			id: 'itemManagement',
-			label: 'Gestión de Ítems',
-			icon: 'category',
-			route: '/areaManager/item-management',
+			id: 'operating',
+			label: 'Operativos',
+			icon: 'engineering',
+			route: '/areaManager/operatives',
 			expandable: false,
 		},
 		{
@@ -81,39 +95,43 @@ export class AreaManagerNavService {
 					id: 'newGroup',
 					label: 'Nueva Grupo',
 					icon: 'add',
-					route: '/areaManager/register-group'
+					route: '/areaManager/create-operative-group'
 				}
 				// Los elementos dinámicas se agregarán aquí
 			]
 		},
 		{
-			id: 'operating',
-			label: 'Operativos',
-			icon: 'engineering',
-			route: '/areaManager/operating-list',
-			expandable: false,
-		},
-		{
 			id: 'fullInventories',
 			label: 'Inventarios Realizados',
 			icon: 'assignment_turned_in',
-			route: '/areaManager/full-inventories',
+			route: '/areaManager/inventories',
 			expandable: false,
 		},
 	];
 
+
+
+	// === ESTADO DE NAVEGACIÓN ===
+	// Mantiene la ruta actual, secciones expandidas y activa.
+	// Se expone como observable para que el sidebar se reactive automáticamente.
 	private navigationState = new BehaviorSubject<NavigationState>({
 		currentRoute: '',
 		expandedSections: {},
 		activeSection: undefined
 	});
-
 	public navigationState$ = this.navigationState.asObservable();
+
+
 
 	constructor(private router: Router) {
 		this.initializeNavigation();
 	}
 
+
+
+	// === INICIALIZACIÓN ===
+	// Se engancha al Router para escuchar cambios de ruta y actualizar el estado.
+	// También cierra automáticamente el sidebar al cambiar de sección.
 	private initializeNavigation(): void {
 		// Escuchar cambios de ruta
 		this.router.events
@@ -128,11 +146,18 @@ export class AreaManagerNavService {
 		this.updateNavigationState(currentRoute);
 	}
 
-	// MÉTODO MODIFICADO: Ahora acepta el parámetro hasCompany
+
+
+	// === CONFIGURACIÓN DEL MENÚ ===
+	// Devuelve una copia de la configuración de navegación.
 	getNavigationConfig(): NavigationItem[] {
 		return [...this.navigationConfig];
 	}
 
+
+
+	// === ACTUALIZACIÓN DE ESTADO ===
+	// Determina la sección activa y cuáles deben expandirse según la ruta actual.
 	private updateNavigationState(route: string): void {
 		const currentState = this.navigationState.value;
 		const activeSection = this.findActiveSectionByRoute(route);
@@ -145,6 +170,10 @@ export class AreaManagerNavService {
 		});
 	}
 
+
+
+	// === UTILIDADES PRIVADAS ===
+	// Identifica qué sección corresponde a una ruta.
 	private findActiveSectionByRoute(route: string): string | undefined {
 		for (const item of this.navigationConfig) {
 			// Si es una sección expandible, verificar sus hijos
@@ -163,6 +192,7 @@ export class AreaManagerNavService {
 		return undefined;
 	}
 
+	// Verifica si la ruta actual coincide con una ruta objetivo.
 	private isRouteMatch(currentRoute: string, targetRoute: string): boolean {
 		// Normalizar rutas
 		const current = currentRoute.endsWith('/') ? currentRoute.slice(0, -1) : currentRoute;
@@ -171,6 +201,7 @@ export class AreaManagerNavService {
 		return current === target || current.startsWith(target + '/');
 	}
 
+	// Calcula qué secciones deben estar expandidas automáticamente.
 	private calculateExpandedSections(route: string, currentExpanded: { [key: string]: boolean }): { [key: string]: boolean } {
 		const newExpanded = { ...currentExpanded };
 		const activeSection = this.findActiveSectionByRoute(route);
@@ -186,15 +217,20 @@ export class AreaManagerNavService {
 		return newExpanded;
 	}
 
+	// Busca una sección por su id dentro del menú.
 	private findSectionById(id: string): NavigationItem | undefined {
 		return this.navigationConfig.find(item => item.id === id);
 	}
 
-	// Métodos públicos para el componente
+
+
+	// === MÉTODOS PÚBLICOS PARA EL SIDEBAR ===
+	// Obtiene el estado actual de la navegación.
 	getCurrentState(): NavigationState {
 		return this.navigationState.value;
 	}
 
+	// Alterna entre expandir/colapsar una sección del menú
 	toggleSection(sectionId: string): void {
 		const currentState = this.navigationState.value;
 		const newExpanded = {
@@ -208,6 +244,7 @@ export class AreaManagerNavService {
 		});
 	}
 
+	// Marca si la ruta indicada está activa.
 	isRouteActive(route: string): boolean {
 		const currentRoute = this.navigationState.value.currentRoute;
 
@@ -218,20 +255,26 @@ export class AreaManagerNavService {
 		return this.isRouteMatch(currentRoute, route);
 	}
 
+	// Comprueba qué sección está activa.
 	isSectionActive(sectionId: string): boolean {
 		return this.navigationState.value.activeSection === sectionId;
 	}
 
+	// Indica si una sección está expandida.
 	isSectionExpanded(sectionId: string): boolean {
 		return !!this.navigationState.value.expandedSections[sectionId];
 	}
 
+	// Redirige a una ruta, normalizando rutas base (ej: dashboard).
 	navigateTo(route: string): void {
 		const targetRoute = route === '/areaManager' ? '/areaManager/dashboard' : route;
 		this.router.navigate([targetRoute]);
 	}
 
-	// Método para agregar elementos dinámicos (como zonas)
+
+
+	// === ÍTEMS DINÁMICOS ===
+	// Inserta elementos dinámicos en una sección (ej. grupos operativos).
 	addDynamicItems(parentSectionId: string, items: NavigationItem[]): void {
 		const parentIndex = this.navigationConfig.findIndex(item => item.id === parentSectionId);
 		if (parentIndex !== -1 && this.navigationConfig[parentIndex].children) {
@@ -243,11 +286,12 @@ export class AreaManagerNavService {
 		}
 	}
 
+	// Emite evento para refrescar la lista de grupos operativos
 	triggerRefreshOperatingGroups(): void {
 		this.refreshOperatingGroupsSubject.next();
 	}
 
-	// Método para limpiar elementos dinámicos
+	// Elimina ítems dinámicos de una sección.
 	clearDynamicItems(parentSectionId: string): void {
 		const parentIndex = this.navigationConfig.findIndex(item => item.id === parentSectionId);
 		if (parentIndex !== -1 && this.navigationConfig[parentIndex].children) {

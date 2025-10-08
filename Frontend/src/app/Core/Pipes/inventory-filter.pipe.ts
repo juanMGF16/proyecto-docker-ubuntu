@@ -1,3 +1,9 @@
+// ==================================================
+// Pipe: InventoryFilterPipe
+// ==================================================
+// Filtra ítems de zona por nombre, serial, categoría o estado.
+// Aplica normalización para coincidencias insensibles a acentos y mayúsculas.
+
 import { Pipe, PipeTransform } from '@angular/core';
 import { ZoneItemMod } from '../Models/System/ZoneMod.model';
 
@@ -11,7 +17,7 @@ export class InventoryFilterPipe implements PipeTransform {
 
 		let filteredItems = items;
 
-		// Filtro por búsqueda de texto (nombre o serial)
+		// Filtro por texto
 		if (searchText) {
 			const normalizedSearch = this.normalizeText(searchText.toLowerCase());
 			filteredItems = filteredItems.filter(item =>
@@ -33,7 +39,7 @@ export class InventoryFilterPipe implements PipeTransform {
 		return filteredItems;
 	}
 
-	// Método para normalizar texto (quitar tildes)
+	// Normaliza texto para búsqueda
 	private normalizeText(text: string): string {
 		return text.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
 	}

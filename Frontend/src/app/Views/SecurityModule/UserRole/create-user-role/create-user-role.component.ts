@@ -16,9 +16,11 @@ import { UserService } from '../../../../Core/Service/SecurityModule/user.servic
 })
 export class CreateUserRoleComponent implements OnInit {
 
-  private userRoleService = inject(UserRoleService);
-  private userService = inject(UserService);
-  private roleService = inject(RoleService);
+	// Inyección de servicios propios del proyecto
+  private readonly userRoleService = inject(UserRoleService);
+  private readonly userService = inject(UserService);
+  private readonly roleService = inject(RoleService);
+
 
   private router = inject(Router);
 

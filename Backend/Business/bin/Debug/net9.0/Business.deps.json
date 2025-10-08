@@ -1505,6 +1505,7 @@
       },
       "Utilities/1.0.0": {
         "dependencies": {
+          "ClosedXML": "0.105.0",
           "Microsoft.Extensions.Identity.Core": "9.0.4"
         },
         "runtime": {

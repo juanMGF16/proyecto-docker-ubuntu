@@ -13,61 +13,6 @@ body {
 	font-family: 'Montserrat', sans-serif;
 }
 
-/* TIPOGRAFIA */
-/* Ultra light (100) */
-.text-thin {
-	font-weight: 100;
-	/* Muy delgada, casi de adorno */
-}
-
-/* Extra light (200) */
-.text-extra-light {
-	font-weight: 200;
-	/* Similar a thin pero un poco más legible */
-}
-
-/* Light (300) */
-.text-light {
-	font-weight: 300;
-	/* Ideal para subtítulos o texto secundario */
-}
-
-/* Regular (400) */
-.text-regular {
-	font-weight: 400;
-	/* Peso por defecto, el más equilibrado */
-}
-
-/* Medium (500) */
-.text-medium {
-	font-weight: 500;
-	/* Un poco más fuerte, útil para resaltar */
-}
-
-/* Semi-bold (600) */
-.text-semi-bold {
-	font-weight: 600;
-	/* Buen balance para títulos */
-}
-
-/* Bold (700) */
-.text-bold {
-	font-weight: 700;
-	/* Negrita clásica para encabezados */
-}
-
-/* Extra bold (800) */
-.text-extra-bold {
-	font-weight: 800;
-	/* Muy fuerte, útil en títulos llamativos */
-}
-
-/* Black (900) */
-.text-black {
-	font-weight: 900;
-	/* Máximo grosor, mejor para destacar poco texto */
-}
-
 :root {
 	/* Colores */
 
@@ -184,12 +129,12 @@ body {
 	--color-white: rgb(255, 255, 255);
 	--color-off-white: rgb(248, 250, 252);
 
-	/* Dimensione */
+	/* Table */
+	--header-table-th: rgb(64, 69, 90);
+
+	/* Dimensiones */
 	--header-height: 75px;
 }
-
-
-
 
 .ejemplo-uso {
 	background-color: var(--color-blue-600);
@@ -199,4 +144,33 @@ body {
 /* Estilos Universales */
 .border-h {
 	border: 3px solid var(--color-green-500) !important;
+}
+
+/* ===== ERROR MESSAGE ===== */
+.error-message-loader {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	padding: 3rem;
+	text-align: center;
+	color: rgba(255, 255, 255, 0.8);
+	background: rgba(239, 68, 68, 0.1);
+	border: 1px solid rgba(239, 68, 68, 0.3);
+	border-radius: 16px;
+	margin: 2rem;
+}
+
+.error-message-loader mat-icon {
+	font-size: 4rem;
+	width: 4rem;
+	height: 4rem;
+	margin-bottom: 1.5rem;
+	color: rgba(239, 68, 68, 0.8);
+}
+
+.error-message-loader p {
+	font-size: 1.2rem;
+	margin-bottom: 2rem;
+	max-width: 600px;
 }

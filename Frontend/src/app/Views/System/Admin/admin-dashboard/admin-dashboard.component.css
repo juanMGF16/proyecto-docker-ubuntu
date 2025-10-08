@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 .kpi-grid {
 	display: grid;
 	grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
@@ -174,5 +173,3 @@
 		border: 1px solid rgba(255, 255, 255, 0.1);
 	}
 }
-=======
->>>>>>> parent of 845d2803 (solucion de errores)

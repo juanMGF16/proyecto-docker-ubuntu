@@ -1,7 +1,6 @@
 ﻿using Entity.Models.System;
-using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Microsoft.EntityFrameworkCore;
-using Utilities.Enums.Models;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Entity.Configurations.SQLServer.System
 {

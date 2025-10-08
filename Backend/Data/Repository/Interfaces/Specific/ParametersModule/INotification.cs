@@ -1,11 +1,25 @@
 ﻿using Entity.Models.ParametersModule;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Data.Repository.Interfaces.Specific.ParametersModule
 {
-    public interface INotification : IGenericData<Notification> { }
+    /// <summary>
+    /// Repositorio base para notificaciones
+    /// </summary>
+    public interface INotification : IGenericData<Notification>
+    {
+        /// <summary>
+        /// Obtiene notificaciones de solicitudes de inventario para un usuario
+        /// </summary>
+        Task<IEnumerable<Notification>> GetInventoryRequestNotificationsAsync(int userId);
+
+        /// <summary>
+        /// Obtiene notificaciones no leídas para mostrar en el encabezado
+        /// </summary>
+        Task<IEnumerable<Notification>> GetUnreadNotificationsForHeaderAsync(int userId);
+
+        /// <summary>
+        /// Cuenta las notificaciones no leídas de un usuario
+        /// </summary>
+        Task<int> GetUnreadCountForHeaderAsync(int userId);
+    }
 }

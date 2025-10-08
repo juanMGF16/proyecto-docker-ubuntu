@@ -17,31 +17,34 @@ import { LoaderComponent } from "../../../../Components/Shared/app-loader/app-lo
 	selector: 'app-admin-branch',
 	standalone: true,
 	imports: [
-    CommonModule,
-    MatIconModule,
-    MatCardModule,
-    MatButtonModule,
-    FormsModule,
-    MatInputModule,
-    ZoneFilterPipe,
-    MatProgressSpinnerModule,
-    LoaderComponent
-],
+		CommonModule,
+		MatIconModule,
+		MatCardModule,
+		MatButtonModule,
+		FormsModule,
+		MatInputModule,
+		ZoneFilterPipe,
+		MatProgressSpinnerModule,
+		LoaderComponent
+	],
 	templateUrl: './admin-branch.component.html',
-	styleUrls: ['../../../../Components/Shared/Styles/edification-view-shared.css','./admin-branch.component.css']
+	styleUrls: ['../../../../Components/Shared/Styles/edification-view-shared.css', './admin-branch.component.css']
 })
 export class AdminBranchComponent implements OnInit {
 
-	private route = inject(ActivatedRoute);
-	private branchService = inject(BranchService);
+// Inyección de servicios propios del proyecto
+	private readonly branchService = inject(BranchService);
 
+	// Inyección de servicios nativos de Angular
+	private readonly route = inject(ActivatedRoute);
 
 	branchId: number = 0;
 	sucursal: BranchDetailsMod | null = null;
 	subAdministrador: BranchInChargeMod | null = null;
 
 	loading = true;
-	error: string | null = null;
+	error = false;
+	errorMessage = '';
 
 	searchText: string = '';
 
@@ -54,7 +57,8 @@ export class AdminBranchComponent implements OnInit {
 
 	cargarDatos(): void {
 		this.loading = true;
-		this.error = null;
+		this.error = false;
+		this.errorMessage = '';
 
 		forkJoin({
 			sucursal: this.branchService.getByDetails(this.branchId).pipe(delay(1500)),
@@ -67,11 +71,13 @@ export class AdminBranchComponent implements OnInit {
 			},
 			error: (err) => {
 				console.error('Error al cargar datos de sucursal:', err);
-				this.error = 'No se pudo cargar la información de la sucursal.';
+				this.error = true;
+				this.errorMessage = 'No se pudo cargar la información de la sucursal.';
 				this.loading = false;
 			}
 		});
 	}
+
 
 	// Getter para verificar si hay zonas
 	get hasZones(): boolean {

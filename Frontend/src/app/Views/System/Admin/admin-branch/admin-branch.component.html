@@ -1,7 +1,15 @@
 <div class="container-base">
-	<app-loader [loading]="loading" loadingMessage="Cargando información de la sucursal..." [error]="error"
-		[fullScreen]="true" [diameter]="60" color="accent" [showRetry]="true" (retry)="cargarDatos()">
+	<app-loader [loading]="loading" [loadingMessage]="'Cargando información de la sucursal...'" [fullScreen]="true"
+		[diameter]="60" color="accent">
 	</app-loader>
+
+	<div *ngIf="error && !loading" class="error-message-loader">
+		<mat-icon>error_outline</mat-icon>
+		<p>{{ errorMessage }}</p>
+		<button mat-raised-button color="primary" (click)="cargarDatos()">
+			Reintentar
+		</button>
+	</div>
 
 	<ng-container *ngIf="!loading && !error">
 		<!-- Header -->

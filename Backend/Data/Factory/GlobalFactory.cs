@@ -1,17 +1,10 @@
-﻿using Data.Repository.Implementations.Parameters;
-using Data.Repository.Implementations.Specific;
-using Data.Repository.Implementations.Specific.ParametersModule;
+﻿using Data.Repository.Implementations.Specific.ParametersModule;
 using Data.Repository.Implementations.Specific.SecurityModule;
 using Data.Repository.Implementations.Specific.System;
-using Data.Repository.Implementations.System;
 using Data.Repository.Interfaces.General;
-using Data.Repository.Interfaces.Parameters;
-using Data.Repository.Interfaces.Specific;
-using Data.Repository.Interfaces.Specific.ParametersModule;
 using Data.Repository.Interfaces.Specific.ParametersModule;
 using Data.Repository.Interfaces.Specific.SecurityModule;
 using Data.Repository.Interfaces.Specific.System;
-using Data.Repository.Interfaces.System;
 using Entity.Context;
 using Entity.Models.ParametersModule;
 using Entity.Models.SecurityModule;
@@ -20,6 +13,10 @@ using Microsoft.Extensions.Logging;
 
 namespace Data.Factory
 {
+    /// <summary>
+    /// Implementación de la fábrica global que centraliza la creación de repositorios de datos.
+    /// Configura cada repositorio con su contexto, logger y servicios necesarios.
+    /// </summary>
     public class GlobalFactory : IDataFactoryGlobal
     {
         private readonly AppDbContext _context;
@@ -32,6 +29,8 @@ namespace Data.Factory
             _loggerFactory = loggerFactory;
             _qrService = qrService;
         }
+
+        // Cada método Create instancia un repositorio específico con sus dependencias configuradas
 
         // -----------------------
         // SecurityModule
@@ -151,6 +150,11 @@ namespace Data.Factory
         {
             var logger = _loggerFactory.CreateLogger<OperatingGroup>();
             return new OperatingGroupData(_context, logger);
+        }
+        public ICheckerData CreateCheckerData()
+        {
+            var logger = _loggerFactory.CreateLogger<Checker>();
+            return new CheckerData(_context, logger);
         }
         public IVerification CreateVerificationData()
         {

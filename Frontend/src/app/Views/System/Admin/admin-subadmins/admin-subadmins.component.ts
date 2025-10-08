@@ -12,9 +12,13 @@ import { BranchInChargesMod } from '../../../../Core/Models/System/BranchMod.mod
   templateUrl: './admin-subadmins.component.html'
 })
 export class AdminSubadminsComponent implements OnInit {
-  private router = inject(Router);
-  private userService = inject(UserService);
-  private branchService = inject(BranchService);
+
+	// Inyección de servicios propios del proyecto
+  private readonly userService = inject(UserService);
+  private readonly branchService = inject(BranchService);
+
+	// Inyección de servicios nativos de Angular
+  private readonly router = inject(Router);
 
   loading = true;
   error: string | null = null;

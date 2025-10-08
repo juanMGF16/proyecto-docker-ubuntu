@@ -18,6 +18,8 @@ export interface Inventory {
 	styleUrl: './recent-inventories.component.css'
 })
 export class RecentInventoriesComponent {
+
+	// Inputs principales del componente
 	@Input() inventories: Inventory[] = [];
 
 	getStatusIcon(estado: string): string {

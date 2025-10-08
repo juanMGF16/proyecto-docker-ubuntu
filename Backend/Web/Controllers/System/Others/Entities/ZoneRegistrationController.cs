@@ -6,6 +6,10 @@ using Utilities.Exceptions;
 
 namespace Web.Controllers.System.Others.Entities
 {
+    /// <summary>
+    /// Controlador responsable de registrar nuevas zonas junto con su encargado de zona.
+    /// Solo accesible por usuarios con rol SUBADMINISTRADOR.
+    /// </summary>
     [ApiController]
     [Route("api/[controller]")]
     [Authorize(Roles = "SUBADMINISTRADOR")]
@@ -22,6 +26,11 @@ namespace Web.Controllers.System.Others.Entities
             _logger = logger;
         }
 
+        /// <summary>
+        /// Crea una nueva zona junto con el usuario encargado de dicha zona.
+        /// </summary>
+        /// <param name="request">Datos necesarios para crear la zona y su encargado.</param>
+        /// <returns>Un resultado con el estado de la operación y los datos creados.</returns>
         [HttpPost("Create-With-EncZone")]
         public async Task<IActionResult> CreateZoneWithEncZone([FromBody] ZoneCreateRequestDTO request)
         {

@@ -4,8 +4,16 @@ using System.Text.RegularExpressions;
 
 namespace Utilities.Helpers
 {
+    /// <summary>
+    /// Helper para normalización y validación de cadenas de texto
+    /// </summary>
     public static class StringHelper
     {
+        /// <summary>
+        /// Normaliza texto removiendo tildes, puntuación, espacios y convirtiendo a minúsculas
+        /// </summary>
+        /// <param name="input">Texto a normalizar</param>
+        /// <returns>Texto normalizado</returns>
         public static string Normalize(string input)
         {
             if (string.IsNullOrEmpty(input))
@@ -26,9 +34,20 @@ namespace Utilities.Helpers
             return normalized.Trim().ToLowerInvariant().Replace(" ", "");
         }
 
+        /// <summary>
+        /// Valida formato de email usando expresión regular
+        /// </summary>
+        /// <param name="email">Email a validar</param>
+        /// <returns>True si el formato es válido</returns>
         public static bool IsValidEmail(string email)
             => Regex.IsMatch(email, @"^[^@\s]+@[^@\s]+\.[^@\s]+$");
 
+        /// <summary>
+        /// Compara dos cadenas normalizándolas primero
+        /// </summary>
+        /// <param name="a">Primera cadena</param>
+        /// <param name="b">Segunda cadena</param>
+        /// <returns>True si son iguales después de normalizar</returns>
         public static bool EqualsNormalized(string a, string b)
             => Normalize(a) == Normalize(b);
     }

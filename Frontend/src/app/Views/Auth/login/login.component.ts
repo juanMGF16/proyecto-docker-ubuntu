@@ -7,12 +7,11 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { RouterLink } from '@angular/router';
-import Swal from 'sweetalert2';
-import { InitialHeaderComponent} from "../../../Components/System/Landing/initial-header/initial-navbar.component";
+import { InitialHeaderComponent } from "../../../Components/System/Landing/initial-header/initial-navbar.component";
 import { AuthService } from '../../../Core/Service/Auth/auth.service';
 import { RoleRedirectService } from '../../../Core/Service/Auth/role-redirect.service';
-import { AlertService } from '../../../Core/Service/alert.service';
 import { lastValueFrom } from 'rxjs';
+import { AlertTotalService } from '../../../Core/Service/alert-total.service';
 
 @Component({
 	selector: 'app-login',
@@ -23,17 +22,24 @@ import { lastValueFrom } from 'rxjs';
 })
 export class LoginComponent {
 
-	private formBuilder = inject(FormBuilder);
-	private authService = inject(AuthService);
-	private roleRedirect = inject(RoleRedirectService);
-	private alertService = inject(AlertService);
+	// Inyección de servicios propios del proyecto
+	private readonly authService = inject(AuthService);
+	private readonly roleRedirect = inject(RoleRedirectService);
+	private readonly alertService = inject(AlertTotalService);
 
+	// Inyección de servicios nativos de Angular
+	private readonly fb = inject(FormBuilder);
+
+	// Signal para controlar el estado del inicio de sesión
+	isLoggingIn = signal(false);
+
+	// Variables de estado y control local
 	hidePassword = true;
 	usernameFocused = false;
 	passwordFocused = false;
-	isLoggingIn = signal(false); // Deshabilitar Boton Submit
 
-	loginForm = this.formBuilder.group({
+	// Formulario reactivo del componente
+	loginForm = this.fb.group({
 		username: ['', Validators.required],
 		password: ['', [
 			Validators.required
@@ -49,48 +55,41 @@ export class LoginComponent {
 		const { username, password } = this.loginForm.value;
 
 		this.isLoggingIn.set(true); // Deshabilitar Boton Submit
-		this.alertService.showLoading('Procesando...', 'Iniciando sesión');
 
 		try {
-			const loginResponse = await lastValueFrom(
-				this.authService.login({ username: username!, password: password! })
+			// 🔄 CAMBIO: Usar withLoading del servicio unificado
+			const loginResponse = await this.alertService.withLoading(
+				async () => {
+					return await lastValueFrom(
+						this.authService.login({ username: username!, password: password! })
+					);
+				},
+				{
+					loadingTitle: 'Iniciando sesión...',
+					loadingText: 'Verificando credenciales',
+					showSuccessAlert: false, // No mostrar alerta de éxito para login
+					errorTitle: 'Error de autenticación',
+					errorText: 'Credenciales incorrectas'
+				}
 			);
 
-			this.alertService.closeAlert();
 			this.authService.saveToken(loginResponse.token);
 			const role = this.authService.getRole();
 			this.roleRedirect.redirectUser(role);
 
 		} catch (error: any) {
-			this.alertService.closeAlert();
-
-			Swal.fire({
-				icon: 'error',
-				title: 'Oopss...',
-				text: 'Credenciales Incorrectas',
-				confirmButtonText: 'Aceptar'
-			});
+			// Error ya manejado por withLoading
+			console.error('Login error:', error);
 		} finally {
-			this.isLoggingIn.set(false); //  Rehabilitar botón
+			this.isLoggingIn.set(false); // Rehabilitar botón
 		}
 	}
 
-<<<<<<< HEAD
 	onForgotPassword(): void {
-		Swal.fire({
-			title: 'Recuperar contraseña',
+		this.alertService.inputEmail('Recuperar contraseña', {
 			text: 'Ingresa tu correo electrónico',
-			input: 'email',
-			inputPlaceholder: 'correo@ejemplo.com',
-			showCancelButton: true,
 			confirmButtonText: 'Enviar',
-			cancelButtonText: 'Cancelar',
-			inputValidator: (value) => {
-				if (!value) {
-					return 'Por favor ingresa tu correo';
-				}
-				return null;
-			}
+			cancelButtonText: 'Cancelar'
 		}).then((result) => {
 			if (result.isConfirmed && result.value) {
 				const email = result.value;
@@ -98,8 +97,10 @@ export class LoginComponent {
 				this.alertService.withLoading(
 					() => lastValueFrom(this.authService.forgotPassword(email)),
 					{
+						loadingTitle: 'Enviando solicitud...',
+						loadingText: 'Procesando recuperación de contraseña',
 						successTitle: 'Solicitud enviada',
-						successText: 'Si el email está registrado, recibirás instrucciones en tu bandeja de entrada 📩',
+						successText: 'Si el email está registrado, recibirás instrucciones en tu bandeja de entrada',
 						errorTitle: 'Error',
 						errorText: 'Ocurrió un error al procesar la solicitud'
 					}
@@ -107,6 +108,5 @@ export class LoginComponent {
 			}
 		});
 	}
-=======
->>>>>>> parent of 845d2803 (solucion de errores)
+
 }

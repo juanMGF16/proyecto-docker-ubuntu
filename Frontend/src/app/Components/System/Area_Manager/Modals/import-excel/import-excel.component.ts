@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, Input, Output, inject, signal } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
-import { errorMessage } from '../../../../../Core/Utils/alerts.util';
+import { AlertTotalService } from '../../../../../Core/Service/alert-total.service';
 
 @Component({
 	selector: 'app-import-excel',
@@ -19,17 +19,26 @@ import { errorMessage } from '../../../../../Core/Utils/alerts.util';
 	]
 })
 export class ImportExcelComponent {
-	@Input() zoneName: string = '';
+
+	// Inyección de servicios propios del proyecto
+	private readonly alertService = inject(AlertTotalService);
+
+	// Inputs principales del componente
+	@Input() entityName: string = '';
+	@Input() typeName: string = '';
 	@Input() isOpen: boolean = false;
 
+	// Outputs de eventos emitidos al componente padre
 	@Output() onClose = new EventEmitter<void>();
 	@Output() onImport = new EventEmitter<File>();
 
-	selectedFile: File | null = null;
+	// Signals para controlar el arrastre y la carga
 	isDragging = signal(false);
 	isLoading = signal(false);
 
-	// 🔹 Abre el explorador de archivos dinámicamente
+	selectedFile: File | null = null;
+
+	// Abre el explorador de archivos dinámicamente
 	triggerFileDialog(): void {
 		const input = document.createElement('input');
 		input.type = 'file';
@@ -45,7 +54,7 @@ export class ImportExcelComponent {
 		input.click();
 	}
 
-	// 🔹 Drag & Drop
+	// Drag & Drop
 	onDragOver(event: DragEvent): void {
 		event.preventDefault();
 		event.stopPropagation();
@@ -68,7 +77,7 @@ export class ImportExcelComponent {
 		}
 	}
 
-	// 🔹 Procesa el archivo
+	// Procesa el archivo
 	private processFile(file: File): void {
 		const validExtensions = ['.xlsx', '.xls'];
 		const validMimeTypes = [
@@ -78,24 +87,24 @@ export class ImportExcelComponent {
 
 		const fileExtension = file.name.substring(file.name.lastIndexOf('.')).toLowerCase();
 
-		// ❌ Validación extensión y MIME
+		// 🔄 CAMBIO: Usar error del servicio unificado
+		// Validación extensión y MIME
 		if (!validExtensions.includes(fileExtension) || !validMimeTypes.includes(file.type)) {
-			errorMessage('Archivo inválido', 'Por favor, selecciona un archivo Excel válido (.xlsx o .xls)');
+			this.alertService.error('Archivo inválido', 'Por favor, selecciona un archivo Excel válido (.xlsx o .xls)');
 			return;
 		}
 
-		// ❌ Validación tamaño
+		// Validación tamaño
 		if (file.size > 5 * 1024 * 1024) {
-			errorMessage('Archivo demasiado grande', 'El archivo no debe exceder los 5MB');
+			this.alertService.error('Archivo demasiado grande', 'El archivo no debe exceder los 5MB');
 			return;
 		}
 
-		// ✅ Si pasa las validaciones
+		// Si pasa las validaciones
 		this.selectedFile = file;
 	}
 
-
-	// 🔹 Acciones de UI
+	// Acciones de UI
 	removeFile(): void {
 		this.selectedFile = null;
 	}
@@ -106,7 +115,7 @@ export class ImportExcelComponent {
 		else return (bytes / 1048576).toFixed(1) + ' MB';
 	}
 
-	// 🔹 Botones del modal
+	// Botones del modal
 	importFile(): void {
 		if (this.selectedFile) {
 			this.onImport.emit(this.selectedFile);

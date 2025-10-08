@@ -207,6 +207,7 @@ button[type="submit"]:disabled {
 
 .register-link {
 	margin-top: 1rem;
+	margin-bottom: 1rem;
 	text-align: center;
 	color: var(--color-white);
 	font-size: 0.9rem;
@@ -222,6 +223,40 @@ button[type="submit"]:disabled {
 
 .register-link a:hover {
 	color: #e0e0e0;
+}
+
+/* Enlace de recuperación de contraseña */
+.recover-password-link {
+	text-align: center;
+	margin: 0;
+	padding: 0.5rem;
+	border-radius: 8px;
+	margin-top: -1rem;
+	transition: background-color 0.2s ease;
+	cursor: pointer;
+}
+
+
+.recover-password-link a {
+	display: inline-flex;
+	align-items: center;
+	gap: 0.5rem;
+	color: var(--color-white);
+	text-decoration: none;
+	font-size: 0.9rem;
+	transition: color 0.2s ease;
+}
+
+.recover-password-link a:hover {
+	color: var(--color-blue-400);
+	text-decoration: underline;
+}
+
+.recover-password-link mat-icon {
+	font-size: 1rem !important;
+	width: 1rem !important;
+	height: 1rem !important;
+	margin-top: 0.2rem;
 }
 
 /* Responsividad para pantallas muy pequeñas */

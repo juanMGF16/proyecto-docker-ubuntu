@@ -6,16 +6,23 @@ using Microsoft.Extensions.Logging;
 
 namespace Data.Repository.Implementations.Specific.SecurityModule
 {
+    /// <summary>
+    /// Repositorio para gestión de asignación de roles a usuarios
+    /// </summary>
     public class UserRoleData : GenericData<UserRole>, IUserRoleData
     {
         private readonly AppDbContext _context;
         private readonly ILogger _logger;
+
         public UserRoleData(AppDbContext context, ILogger<UserRole> logger) : base(context, logger)
         {
             _context = context;
             _logger = logger;
         }
 
+        /// <summary>
+        /// Obtiene todas las asignaciones activas con sus relaciones
+        /// </summary>
         public override async Task<IEnumerable<UserRole>> GetAllAsync()
         {
             try
@@ -33,6 +40,10 @@ namespace Data.Repository.Implementations.Specific.SecurityModule
             }
         }
 
+        /// <summary>
+        /// Obtiene una asignación por ID con sus relaciones
+        /// </summary>
+        /// <param name="id">ID de la asignación</param>
         public override async Task<UserRole?> GetByIdAsync(int id)
         {
             try
@@ -49,7 +60,12 @@ namespace Data.Repository.Implementations.Specific.SecurityModule
             }
         }
 
+
         // General
+
+        /// <summary>
+        /// Obtiene todas las asignaciones sin filtrar por estado
+        /// </summary>
         public override async Task<IEnumerable<UserRole>> GetAllTotalAsync()
         {
             try

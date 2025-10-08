@@ -36,6 +36,7 @@ export class CarouselComponent implements OnInit, OnDestroy {
 		}
 	];
 
+	// Métodos del ciclo de vida del componente
 	ngOnInit() {
 		this.startAutoSlide();
 	}

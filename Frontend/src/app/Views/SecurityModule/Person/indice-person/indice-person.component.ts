@@ -17,8 +17,11 @@ import { PersonService } from '../../../../Core/Service/SecurityModule/person.se
 })
 export class IndicePersonComponent implements OnInit {
 
-  personService = inject(PersonService);
-  router = inject(Router)
+	// Inyección de servicios propios del proyecto
+  private readonly personService = inject(PersonService);
+
+	// Inyección de servicios nativos de Angular
+  private readonly router = inject(Router)
 
   personData : PersonMod[] = [];
   columnasMostrar : string[] = [

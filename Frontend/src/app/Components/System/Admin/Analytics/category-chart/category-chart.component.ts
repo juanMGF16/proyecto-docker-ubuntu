@@ -13,13 +13,18 @@ Chart.register(...registerables);
 	styleUrl: './category-chart.component.css'
 })
 export class CategoryChartComponent implements OnChanges, AfterViewInit, OnDestroy {
+
+	// Inputs principales del componente
 	@Input() data!: { [category: string]: number };
+
 	@ViewChild('chartCanvas') chartCanvas!: ElementRef<HTMLCanvasElement>;
 
+	// Variables de estado y control local
 	hasData = false;
 	private chart: Chart | null = null;
 	private viewInitialized = false;
 
+	// Métodos del ciclo de vida del componente
 	ngAfterViewInit() {
 		this.viewInitialized = true;
 		this.evaluateData();
@@ -28,6 +33,12 @@ export class CategoryChartComponent implements OnChanges, AfterViewInit, OnDestr
 	ngOnChanges(changes: SimpleChanges) {
 		if (changes['data']) {
 			this.evaluateData();
+		}
+	}
+
+	ngOnDestroy() {
+		if (this.chart) {
+			this.chart.destroy();
 		}
 	}
 
@@ -50,12 +61,6 @@ export class CategoryChartComponent implements OnChanges, AfterViewInit, OnDestr
 				this.chart.destroy();
 				this.chart = null;
 			}
-		}
-	}
-
-	ngOnDestroy() {
-		if (this.chart) {
-			this.chart.destroy();
 		}
 	}
 

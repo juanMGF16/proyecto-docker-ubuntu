@@ -1,17 +1,10 @@
-﻿using Entity.Models.System;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Entity.DTOs.System.Inventary
+﻿namespace Entity.DTOs.System.Inventary
 {
     public class InventaryDTO
     {
         public int Id { get; set; }
-        public DateTime Date { get; set; }
-        public string Observations { get; set; }
+        public DateTimeOffset Date { get; set; }
+        public string Observations { get; set; } = string.Empty;
         public int ZoneId { get; set; }
         public int OperatingGroupId { get; set; }
 

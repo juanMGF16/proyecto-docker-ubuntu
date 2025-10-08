@@ -13,9 +13,13 @@ Chart.register(...registerables);
 	styleUrl: './status-chart.component.css'
 })
 export class StatusChartComponent implements OnChanges, AfterViewInit, OnDestroy {
+
+	// Inputs principales del componente
 	@Input() data!: { [status: string]: number };
+
 	@ViewChild('chartCanvas') chartCanvas!: ElementRef<HTMLCanvasElement>;
 
+	// Variables de estado y control local
 	hasData = false;
 	private chart: Chart<'doughnut'> | null = null;
 	private viewInitialized = false;
@@ -28,6 +32,12 @@ export class StatusChartComponent implements OnChanges, AfterViewInit, OnDestroy
 	ngOnChanges(changes: SimpleChanges) {
 		if (changes['data']) {
 			this.evaluateData();
+		}
+	}
+
+	ngOnDestroy() {
+		if (this.chart) {
+			this.chart.destroy();
 		}
 	}
 
@@ -50,12 +60,6 @@ export class StatusChartComponent implements OnChanges, AfterViewInit, OnDestroy
 				this.chart.destroy();
 				this.chart = null;
 			}
-		}
-	}
-
-	ngOnDestroy() {
-		if (this.chart) {
-			this.chart.destroy();
 		}
 	}
 

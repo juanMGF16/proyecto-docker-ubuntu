@@ -17,8 +17,11 @@ import { ModuleService } from '../../../../Core/Service/SecurityModule/module.se
 })
 export class IndiceModuleComponent implements OnInit {
 
-  moduleService = inject(ModuleService);
-  router = inject(Router)
+	// Inyección de servicios propios del proyecto
+  private readonly moduleService = inject(ModuleService);
+
+	// Inyección de servicios nativos de Angular
+  private readonly router = inject(Router)
 
   moduleData : ModuleMod[] = [];
   columnasMostrar : string[] = [

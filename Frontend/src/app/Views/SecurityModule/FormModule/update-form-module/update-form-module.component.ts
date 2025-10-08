@@ -18,11 +18,14 @@ import { ModuleService } from '../../../../Core/Service/SecurityModule/module.se
 })
 export class UpdateFormModuleComponent implements OnInit {
 
-  private route = inject(ActivatedRoute);
-  private formService = inject(FormService);
-  private moduleService = inject(ModuleService);
-  private router = inject(Router);
-  private formModuleService = inject(FormModuleService);
+	// Inyección de servicios propios del proyecto
+  private readonly formService = inject(FormService);
+  private readonly moduleService = inject(ModuleService);
+  private readonly formModuleService = inject(FormModuleService);
+
+	// Inyección de servicios nativos de Angular
+  private readonly route = inject(ActivatedRoute);
+  private readonly router = inject(Router);
 
   entity!: FormModuleMod;
   selectFields: any[] = [];

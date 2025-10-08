@@ -13,8 +13,12 @@ import { PersonService } from '../../../../Core/Service/SecurityModule/person.se
   styleUrl: './create-person.component.css'
 })
 export class CreatePersonComponent {
-  private personService = inject(PersonService);
-  private router = inject(Router);
+
+	// Inyección de servicios propios del proyecto
+  private readonly personService = inject(PersonService);
+
+	// Inyección de servicios nativos de Angular
+  private readonly router = inject(Router);
 
   handleSavePerson(newPerson: PersonMod): void {
     // console.log(newPerson)

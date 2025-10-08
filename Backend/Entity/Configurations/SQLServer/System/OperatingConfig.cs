@@ -18,12 +18,17 @@ namespace Entity.Configurations.SQLServer.System
             builder.HasOne(o => o.User)
                 .WithOne(u => u.Operating)
                 .HasForeignKey<Operating>(o => o.UserId)
-                .OnDelete(DeleteBehavior.Restrict);
+                .OnDelete(DeleteBehavior.Cascade);
 
             builder.HasOne(o => o.OperationalGroup)
                 .WithMany(og => og.Operatings)
                 .HasForeignKey(o => o.OperationalGroupId)
-                .OnDelete(DeleteBehavior.Cascade);
+                .OnDelete(DeleteBehavior.SetNull);
+
+            builder.HasOne(o => o.CreatedByUser)
+                .WithMany() 
+                .HasForeignKey(o => o.CreatedByUserId)
+                .OnDelete(DeleteBehavior.Restrict);
 
             builder.Property(x => x.CreatedAt).HasColumnType("datetime2(3)").IsRequired();
             builder.Property(x => x.UpdatedAt).HasColumnType("datetime2(3)");
